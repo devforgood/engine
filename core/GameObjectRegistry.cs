@@ -12,6 +12,9 @@ namespace core
     {
         public delegate GameObject GameObjectCreationFunc();
 
+        Dictionary<uint32_t, GameObjectCreationFunc> mNameToGameObjectCreationFunctionMap = new Dictionary<uint32_t, GameObjectCreationFunc>();
+
+
         /// <summary>
         /// Global instance of GameObjectRegistry
         /// </summary>
@@ -49,6 +52,5 @@ namespace core
 
         }
 
-        Dictionary<uint32_t, GameObjectCreationFunc> mNameToGameObjectCreationFunctionMap;
     }
 }

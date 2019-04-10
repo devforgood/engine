@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lidgren.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,24 @@ using System.Threading.Tasks;
 
 namespace core
 {
+    public static class NetBufferExtensions
+    {
+        public static void Write(this NetBuffer buff, Vector3 vec)
+        {
+            buff.Write(vec.mX);
+            buff.Write(vec.mY);
+            buff.Write(vec.mZ);
+        }
+
+        public static void Read(this NetBuffer buff, Vector3 vec)
+        {
+            vec.mX = buff.ReadFloat();
+            vec.mY = buff.ReadFloat();
+            vec.mZ = buff.ReadFloat();
+        }
+    }
+
+
     public class Vector3
     {
         public static readonly Vector3 Zero = new Vector3 (0.0f, 0.0f, 0.0f);

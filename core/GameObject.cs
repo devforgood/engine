@@ -55,7 +55,7 @@ namespace core
 
 
         public Vector3 GetLocation() { return mLocation; }
-        void SetLocation(Vector3 inLocation) { mLocation = inLocation; }
+        public void SetLocation(Vector3 inLocation) { mLocation = inLocation; }
 
         public float GetCollisionRadius() { return mCollisionRadius; }
         public void SetCollisionRadius(float inRadius) { mCollisionRadius = inRadius; }

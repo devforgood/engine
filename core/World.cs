@@ -8,7 +8,7 @@ namespace core
 {
     public class World
     {
-        List<GameObject> mGameObjects;
+        List<GameObject> mGameObjects = new List<GameObject>();
 
 
         /// <summary>
