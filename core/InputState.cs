@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace core
 {
-    class InputState
+    public class InputState
     {
         float mDesiredRightAmount, mDesiredLeftAmount;
         float mDesiredForwardAmount, mDesiredBackAmount;
