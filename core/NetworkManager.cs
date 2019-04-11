@@ -9,7 +9,7 @@ using uint16_t = System.UInt16;
 
 namespace core
 {
-    enum PacketType
+    public enum PacketType
     {
         kHelloCC,
         kWelcomeCC,

@@ -152,6 +152,15 @@ namespace core
             return inA + t * (inB - inA);
         }
 
+        public Vector3 Clone()
+        {
+            return new Vector3()
+            {
+                mX = this.mX,
+                mY = this.mY,
+                mZ = this.mZ,
+            };
+        }
 
     }
 }

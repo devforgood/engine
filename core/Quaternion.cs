@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace core
 {
-    class Quaternion
+    public class Quaternion
     {
         public float mX = 0;
         public float mY = 0;

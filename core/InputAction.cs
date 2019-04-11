@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace core
 {
-    enum EInputAction
+    public enum EInputAction
     {
         EIA_Pressed,
         EIA_Repeat,

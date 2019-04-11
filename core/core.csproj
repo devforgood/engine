@@ -57,6 +57,7 @@
     <Compile Include="NetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quaternion.cs" />
+    <Compile Include="ReplicationCommand.cs" />
     <Compile Include="RoboCat.cs" />
     <Compile Include="Timing.cs" />
     <Compile Include="TransmissionData.cs" />
