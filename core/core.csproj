@@ -59,11 +59,13 @@
     <Compile Include="Quaternion.cs" />
     <Compile Include="ReplicationCommand.cs" />
     <Compile Include="RoboCat.cs" />
+    <Compile Include="ScoreBoardManager.cs" />
     <Compile Include="Timing.cs" />
     <Compile Include="TransmissionData.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="WeightedTimedMovingAverage.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="Yarn.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">
