@@ -11,7 +11,7 @@ namespace core
 {
     public class Yarn : GameObject
     {
-        public override uint32_t GetClassId() { return 4; }
+        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kYarn; }
 
         public static new GameObject CreateInstance() { return new Yarn(); }
 

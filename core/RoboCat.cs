@@ -14,7 +14,7 @@ namespace core
         static readonly float HALF_WORLD_HEIGHT = 3.6f;
         static readonly float HALF_WORLD_WIDTH = 6.4f;
 
-        public override uint32_t GetClassId() { return 3; }
+        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kRoboCat; }
 
         public static new GameObject CreateInstance() { return new RoboCat(); }
 

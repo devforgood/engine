@@ -12,7 +12,7 @@ namespace core
 {
     public class Mouse : GameObject
     {
-        public override uint32_t GetClassId() { return 2; }
+        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kMouse; }
 
         public static new GameObject CreateInstance() { return new Mouse(); }
 

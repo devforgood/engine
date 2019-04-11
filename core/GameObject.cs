@@ -27,7 +27,7 @@ namespace core
         int mNetworkId;
 
 
-        public virtual uint32_t GetClassId() { return 1; }
+        public virtual uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kGameObject; }
 
         public static GameObject CreateInstance() { return new GameObject(); }
 

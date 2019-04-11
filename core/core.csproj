@@ -45,6 +45,7 @@
     <Compile Include="DeliveryNotificationManager.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjectClassId.cs" />
     <Compile Include="GameObjectRegistry.cs" />
     <Compile Include="InFlightPacket.cs" />
     <Compile Include="InputAction.cs" />
