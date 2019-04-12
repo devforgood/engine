@@ -4,16 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5147C8B0-90C4-46F5-B533-886584B2D7BE}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{B073AEF0-4BF4-4682-B343-73637860BEA7}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>core</RootNamespace>
-    <AssemblyName>core</AssemblyName>
+    <RootNamespace>Server</RootNamespace>
+    <AssemblyName>Server</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,10 +23,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,36 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AckRange.cs" />
-    <Compile Include="DeliveryNotificationManager.cs" />
-    <Compile Include="Engine.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="GameObjectClassId.cs" />
-    <Compile Include="GameObjectRegistry.cs" />
-    <Compile Include="InFlightPacket.cs" />
-    <Compile Include="InputAction.cs" />
-    <Compile Include="InputState.cs" />
-    <Compile Include="LinkingContext.cs" />
-    <Compile Include="Math.cs" />
-    <Compile Include="Mouse.cs" />
-    <Compile Include="Move.cs" />
-    <Compile Include="MoveList.cs" />
-    <Compile Include="NetworkManager.cs" />
+    <Compile Include="ClientProxy.cs" />
+    <Compile Include="NetworkManagerServer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quaternion.cs" />
-    <Compile Include="ReplicationCommand.cs" />
-    <Compile Include="RoboCat.cs" />
-    <Compile Include="ScoreBoardManager.cs" />
-    <Compile Include="Timing.cs" />
-    <Compile Include="TransmissionData.cs" />
-    <Compile Include="Vector3.cs" />
-    <Compile Include="WeightedTimedMovingAverage.cs" />
-    <Compile Include="World.cs" />
-    <Compile Include="Yarn.cs" />
+    <Compile Include="ReplicationManagerServer.cs" />
+    <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">
-      <Project>{49ba1c69-6104-41ac-a5d8-b54fa9f696e8}</Project>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Assets\core\core.csproj">
+      <Project>{5147c8b0-90c4-46f5-b533-886584b2d7be}</Project>
+      <Name>core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Client\Assets\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
       <Name>Lidgren.Network</Name>
     </ProjectReference>
   </ItemGroup>

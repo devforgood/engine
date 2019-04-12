@@ -13,7 +13,7 @@ namespace core
         /// <summary>
         /// Global instance of Engine
         /// </summary>
-        public static readonly Engine sInstance = new Engine();
+        public static Engine sInstance = new Engine();
 
         protected Engine()
         {
@@ -21,8 +21,30 @@ namespace core
 
 
         }
+        public void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
 
+        protected virtual void DoFrame()
+        {
+            World.sInstance.Update();
+        }
+        public virtual int Run()
+        {
+            return DoRunLoop();
+        }
+        private int DoRunLoop()
+        {
+            // Main message loop
+            bool quit = false;
 
+            while (!quit && mShouldKeepRunning)
+
+            {
+                Timing.sInstance.Update();
+                DoFrame();
+            }
+
+            return 0;
+        }
 
     }
 }

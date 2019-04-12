@@ -16,7 +16,7 @@ namespace core
         kInputCC,
     }
 
-    class NetworkManager
+    public class NetworkManager
     {
         static readonly int kMaxPacketsPerFrameCount = 10;
 
@@ -88,7 +88,7 @@ namespace core
         public virtual void ProcessPacket(NetIncomingMessage inInputStream, System.Net.IPEndPoint inFromAddress) { }
         public virtual void HandleConnectionReset(System.Net.IPEndPoint inFromAddress) { }
 
-        void ProcessIncomingPackets()
+        public void ProcessIncomingPackets()
         {
             ReadIncomingPacketsIntoQueue();
 
