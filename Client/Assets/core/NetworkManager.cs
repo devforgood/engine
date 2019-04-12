@@ -20,7 +20,7 @@ namespace core
     {
         static readonly int kMaxPacketsPerFrameCount = 10;
 
-        NetServer mSocket;
+        protected NetServer mSocket;
 
         WeightedTimedMovingAverage mBytesReceivedPerSecond;
         WeightedTimedMovingAverage mBytesSentPerSecond;

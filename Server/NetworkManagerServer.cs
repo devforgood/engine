@@ -32,10 +32,9 @@ namespace Server
         float mClientDisconnectTimeout;
 
 
-        Dictionary<System.Net.IPEndPoint, ClientProxy> mAddressToClientMap;
-        Dictionary<int, ClientProxy> mPlayerIdToClientMap;
+        Dictionary<System.Net.IPEndPoint, ClientProxy> mAddressToClientMap = new Dictionary<System.Net.IPEndPoint, ClientProxy>();
+        Dictionary<int, ClientProxy> mPlayerIdToClientMap = new Dictionary<int, ClientProxy>();
 
-        protected Dictionary<int, GameObject> mNetworkIdToGameObjectMap;
 
 
         NetworkManagerServer()
@@ -82,8 +81,9 @@ namespace Server
             float time = Timing.sInstance.GetTimef();
 
             //let's send a client a state packet whenever their move has come in...
-            foreach (var clientProxy in mAddressToClientMap)
+            foreach (var c in mAddressToClientMap)
             {
+                var clientProxy = c.Value;
                 //process any timed out packets while we're going through the list
                 clientProxy.GetDeliveryNotificationManager().ProcessTimedOutPackets();
 
@@ -103,7 +103,7 @@ namespace Server
                 if (pair.Value.GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
                 {
                     //can't remove from map while in iterator, so just remember for later...
-                    clientsToDC.Add(pair.second);
+                    clientsToDC.Add(pair.Value);
                 }
             }
 
@@ -151,9 +151,9 @@ namespace Server
 
         public void RespawnCats()
         {
-            foreach (var clientProxy in mAddressToClientMap)
+            foreach (var c in mAddressToClientMap)
             {
-                clientProxy.RespawnCatIfNecessary();
+                c.Value.RespawnCatIfNecessary();
             }
         }
 
@@ -229,7 +229,7 @@ namespace Server
 
         void SendWelcomePacket(ClientProxy inClientProxy)
         {
-            NetOutgoingMessage welcomePacket = new NetOutgoingMessage();
+            NetOutgoingMessage welcomePacket = mSocket.CreateMessage();
 
             welcomePacket.Write((uint32_t)PacketType.kWelcomeCC);
             welcomePacket.Write(inClientProxy.GetPlayerId());
@@ -272,7 +272,7 @@ namespace Server
         void SendStatePacketToClient(ClientProxy inClientProxy)
         {
             //build state packet
-            NetOutgoingMessage statePacket = new NetOutgoingMessage();
+            NetOutgoingMessage statePacket = mSocket.CreateMessage();
 
             //it's state!
             statePacket.Write((uint32_t)PacketType.kStateCC);

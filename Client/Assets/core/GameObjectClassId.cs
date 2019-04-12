@@ -6,7 +6,7 @@ using System.Text;
 
 namespace core
 {
-    enum GameObjectClassId
+    public enum GameObjectClassId
     {
         kGameObject,
         kMouse,

@@ -13,7 +13,7 @@ namespace Server
 
 
         DeliveryNotificationManager mDeliveryNotificationManager;
-        ReplicationManagerServer mReplicationManagerServer;
+        ReplicationManagerServer mReplicationManagerServer = new ReplicationManagerServer();
 
         System.Net.IPEndPoint mSocketAddress;
         string mName;
@@ -25,7 +25,7 @@ namespace Server
         float mLastPacketFromClientTime;
         float mTimeToRespawn;
 
-        MoveList mUnprocessedMoveList;
+        MoveList mUnprocessedMoveList = new MoveList();
         bool mIsLastMoveTimestampDirty;
 
         public ClientProxy(System.Net.IPEndPoint inSocketAddress, string inName, int inPlayerId)
