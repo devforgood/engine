@@ -33,7 +33,7 @@ namespace core
         float mMuzzleSpeed;
         int mPlayerId;
 
-        Yarn()
+        protected Yarn()
         {
             mMuzzleSpeed = 3.0f;
             mVelocity = Vector3.Zero.Clone();

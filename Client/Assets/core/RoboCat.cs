@@ -17,7 +17,7 @@ namespace core
 
         public static new GameObject CreateInstance() { return new RoboCat(); }
 
-        enum ECatReplicationState
+        public enum ECatReplicationState
         {
             ECRS_Pose = 1 << 0,
             ECRS_Color = 1 << 1,

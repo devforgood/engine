@@ -10,7 +10,7 @@ namespace core
         float mLastMoveTimestamp;
         Queue<Move> mMoves = new Queue<Move>();
 
-        Queue<Move> Moves
+        public Queue<Move> Moves
         {
             get;
             set;
