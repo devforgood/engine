@@ -1,0 +1,103 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class InputManager : Singleton<InputManager>
+{
+    static readonly float kTimeBetweenInputSamples = 0.03f;
+
+
+
+    core.InputState mCurrentState;
+
+    InputManager()
+    {
+        mNextTimeToSampleInput = 0.0f;
+        mPendingMove = null;
+
+    }
+
+    bool IsTimeToSampleInput()
+    {
+        float time = core.Timing.sInstance.GetFrameStartTime();
+        if (time > mNextTimeToSampleInput)
+        {
+            mNextTimeToSampleInput = mNextTimeToSampleInput + kTimeBetweenInputSamples;
+            return true;
+        }
+
+        return false;
+    }
+    Move SampleInputAsMove()
+    {
+        return mMoveList.AddMove(GetState(), core.Timing.sInstance.GetFrameStartTime());
+
+    }
+
+    MoveList mMoveList;
+    float mNextTimeToSampleInput;
+    Move mPendingMove;
+
+    public void HandleInput(core.EInputAction inInputAction, int inKeyCode)
+    {
+        switch (inKeyCode)
+        {
+            case 'a':
+                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredLeftAmount);
+                break;
+            case 'd':
+                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredRightAmount);
+                break;
+            case 'w':
+                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredForwardAmount);
+                break;
+            case 's':
+                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredBackAmount);
+                break;
+            case 'k':
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsShooting);
+                break;
+        }
+    }
+
+    public core.InputState GetState() { return mCurrentState; }
+
+    public MoveList GetMoveList() { return mMoveList; }
+
+    public Move GetAndClearPendingMove() { var toRet = mPendingMove; mPendingMove = null; return toRet; }
+
+    public void Update()
+    {
+        if (IsTimeToSampleInput())
+        {
+            mPendingMove = SampleInputAsMove();
+        }
+    }
+
+
+    void UpdateDesireVariableFromKey(core.EInputAction inInputAction, out bool ioVariable )
+    {
+        ioVariable = false;
+        if (inInputAction == core.EInputAction.EIA_Pressed)
+        {
+            ioVariable = true;
+        }
+        else if (inInputAction == core.EInputAction.EIA_Released)
+        {
+            ioVariable = false;
+        }
+    }
+
+    void UpdateDesireFloatFromKey(core.EInputAction inInputAction, out float ioVariable )
+    {
+        ioVariable = 0.0f;
+        if (inInputAction == core.EInputAction.EIA_Pressed)
+        {
+            ioVariable = 1.0f;
+        }
+        else if (inInputAction == core.EInputAction.EIA_Released)
+        {
+            ioVariable = 0.0f;
+        }
+    }
+}

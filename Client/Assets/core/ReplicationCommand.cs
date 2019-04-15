@@ -23,7 +23,7 @@ namespace core
             buff.Write((byte)r, 2);
         }
 
-        public static void Read(this NetBuffer buff, ReplicationAction r)
+        public static void Read(this NetBuffer buff, out ReplicationAction r)
         {
             r = (ReplicationAction)buff.ReadByte(2);
         }

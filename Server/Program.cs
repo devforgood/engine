@@ -10,6 +10,10 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            if(Server.StaticInit(65000))
+            {
+                Server.sInstance.Run();
+            }
         }
     }
 }

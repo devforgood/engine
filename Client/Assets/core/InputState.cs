@@ -8,9 +8,9 @@ namespace core
 {
     public class InputState
     {
-        float mDesiredRightAmount, mDesiredLeftAmount;
-        float mDesiredForwardAmount, mDesiredBackAmount;
-        bool mIsShooting;
+        public float mDesiredRightAmount, mDesiredLeftAmount;
+        public float mDesiredForwardAmount, mDesiredBackAmount;
+        public bool mIsShooting;
 
         public InputState()
         {

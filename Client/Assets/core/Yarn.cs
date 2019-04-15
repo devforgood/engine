@@ -28,10 +28,10 @@ namespace core
         public override uint32_t GetAllStateMask() { return (uint32_t)EYarnReplicationState.EYRS_AllState; }
 
 
-        Vector3 mVelocity;
+        protected Vector3 mVelocity;
 
-        float mMuzzleSpeed;
-        int mPlayerId;
+        protected float mMuzzleSpeed;
+        protected int mPlayerId;
 
         protected Yarn()
         {
