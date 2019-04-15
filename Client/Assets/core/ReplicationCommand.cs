@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lidgren.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,19 @@ namespace core
         RA_RPC,
         RA_MAX
     };
+
+    public static partial class NetBufferExtensions
+    {
+        public static void Write(this NetBuffer buff, ReplicationAction r)
+        {
+            buff.Write((byte)r, 2);
+        }
+
+        public static void Read(this NetBuffer buff, ReplicationAction r)
+        {
+            r = (ReplicationAction)buff.ReadByte(2);
+        }
+    }
 
     public class ReplicationCommand
     {

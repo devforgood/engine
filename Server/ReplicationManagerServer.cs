@@ -39,6 +39,51 @@ namespace Server
             mNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
         }
 
+        public void Write(NetOutgoingMessage inOutputStream, ReplicationManagerTransmissionData ioTransmissinData)
+        {
+            //run through each replication command and do something...
+            foreach (var pair in mNetworkIdToReplicationCommand )
+            {
+                ReplicationCommand replicationCommand = pair.Value;
+                if (replicationCommand.HasDirtyState())
+                {
+                    int networkId = pair.Key;
+
+                    //well, first write the network id...
+                    inOutputStream.Write(networkId);
+
+                    //only need 2 bits for action...
+                    ReplicationAction action = replicationCommand.GetAction();
+                    inOutputStream.Write(action);
+
+                    uint32_t writtenState = 0;
+                    uint32_t dirtyState = replicationCommand.GetDirtyState();
+
+                    //now do what?
+                    switch (action)
+                    {
+                        case ReplicationAction.RA_Create:
+                            writtenState = WriteCreateAction(inOutputStream, networkId, dirtyState);
+                            break;
+                        case ReplicationAction.RA_Update:
+                            writtenState = WriteUpdateAction(inOutputStream, networkId, dirtyState);
+                            break;
+                        case ReplicationAction.RA_Destroy:
+                            //don't need anything other than state!
+                            writtenState = WriteDestroyAction(inOutputStream, networkId, dirtyState);
+                            break;
+                    }
+
+                    ioTransmissinData.AddTransmission(networkId, action, writtenState);
+
+                    //let's pretend everything was written- don't make this too hard
+                    replicationCommand.ClearDirtyState(writtenState);
+
+                }
+            }
+        }
+
+
         uint32_t WriteCreateAction(NetOutgoingMessage inOutputStream, int inNetworkId, uint32_t inDirtyState)
         {
             //need object

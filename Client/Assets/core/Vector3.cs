@@ -6,7 +6,7 @@ using System.Text;
 
 namespace core
 {
-    public static class NetBufferExtensions
+    public static partial class NetBufferExtensions
     {
         public static void Write(this NetBuffer buff, Vector3 vec)
         {

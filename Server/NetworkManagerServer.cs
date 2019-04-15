@@ -285,7 +285,7 @@ namespace Server
 
             var rmtd = new ReplicationManagerTransmissionData(inClientProxy.GetReplicationManagerServer());
             inClientProxy.GetReplicationManagerServer().Write(statePacket, rmtd);
-            ifp.SetTransmissionData((uint32_t)GameObjectClassId.kMouse, rmtd);
+            ifp.SetTransmissionData((int)TransmissionDataType.kReplicationManager, rmtd);
 
             SendPacket(statePacket, inClientProxy.GetSocketAddress());
         }

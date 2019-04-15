@@ -50,6 +50,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplicationManagerServer.cs" />
+    <Compile Include="ReplicationManagerTransmissionData.cs" />
     <Compile Include="RoboCatServer.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="YarnServer.cs" />
