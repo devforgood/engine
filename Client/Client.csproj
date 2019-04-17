@@ -196,7 +196,6 @@
     <Compile Include="Assets\Scripts\Client\NetworkManagerClient.cs" />
     <Compile Include="Assets\Scripts\Client\ReplicationManagerClient.cs" />
     <Compile Include="Assets\Scripts\Client\RoboCatClient.cs" />
-    <Compile Include="Assets\Scripts\Client\Singleton.cs" />
     <Compile Include="Assets\Scripts\Client\WeightedTimedMovingAverage.cs" />
     <Compile Include="Assets\Scripts\Client\YarnClient.cs" />
   </ItemGroup>

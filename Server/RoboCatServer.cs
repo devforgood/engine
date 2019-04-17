@@ -23,7 +23,16 @@ namespace Server
 
         void HandleShooting()
         {
+            float time = Timing.sInstance.GetFrameStartTime();
+            if (mIsShooting && Timing.sInstance.GetFrameStartTime() > mTimeOfNextShot)
+            {
+                //not exact, but okay
+                mTimeOfNextShot = time + mTimeBetweenShots;
 
+                //fire!
+                Yarn yarn = (Yarn)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kYarn);
+                yarn.InitFromShooter(this);
+            }
         }
 
         public static new NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new RoboCatServer()); }

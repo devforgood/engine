@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : Singleton<InputManager>
+public class InputManager 
 {
     static readonly float kTimeBetweenInputSamples = 0.03f;
 
+    /// <summary>
+    /// Global instance of NetworkManagerClient
+    /// </summary>
+    public static InputManager sInstance = new InputManager();
 
-
-    core.InputState mCurrentState;
+    core.InputState mCurrentState = new core.InputState();
 
     InputManager()
     {
@@ -34,9 +37,9 @@ public class InputManager : Singleton<InputManager>
 
     }
 
-    MoveList mMoveList;
+    MoveList mMoveList = new MoveList();
     float mNextTimeToSampleInput;
-    Move mPendingMove;
+    Move mPendingMove = new Move();
 
     public void HandleInput(core.EInputAction inInputAction, int inKeyCode)
     {

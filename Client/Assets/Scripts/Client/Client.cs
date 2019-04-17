@@ -9,12 +9,16 @@ public class Client : MonoBehaviour {
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kRoboCat, RoboCatClient.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kMouse, MouseClient.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kYarn, YarnClient.StaticCreate);
+
+        var addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse("127.0.0.1"), 65000);
+
+        NetworkManagerClient.StaticInit(addr, "test");
     }
 
     void FixedUpdate()
     {
 
-        InputManager.Instance.Update();
+        InputManager.sInstance.Update();
 
         core.Engine.sInstance.DoFrame();
 
@@ -26,44 +30,44 @@ public class Client : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Pressed, 'a');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'a');
         }
         if(Input.GetKeyDown(KeyCode.D))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Pressed, 'd');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'd');
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Pressed, 'w');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'w');
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Pressed, 's');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 's');
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Pressed, 'k');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'k');
         }
 
         if (Input.GetKeyUp(KeyCode.A))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Released, 'a');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'a');
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Released, 'd');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'd');
         }
         if (Input.GetKeyUp(KeyCode.W))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Released, 'w');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'w');
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Released, 's');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 's');
         }
         if (Input.GetKeyUp(KeyCode.K))
         {
-            InputManager.Instance.HandleInput(core.EInputAction.EIA_Released, 'k');
+            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'k');
         }
 
         NetworkManagerClient.sInstance.SendOutgoingPackets();

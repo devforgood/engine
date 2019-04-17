@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using uint32_t = System.UInt32;
 
 
@@ -17,7 +18,7 @@ public class RoboCatClient : core.RoboCat
     {
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {
-            Move pendingMove = InputManager.Instance.GetAndClearPendingMove();
+            Move pendingMove = InputManager.sInstance.GetAndClearPendingMove();
             //in theory, only do this if we want to sample input this frame / if there's a new move ( since we have to keep in sync with server )
             if (pendingMove != null) //is it time to sample a new move...
             {
@@ -31,7 +32,7 @@ public class RoboCatClient : core.RoboCat
 
                 SimulateMovement(deltaTime);
 
-                //LOG( "Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", latestMove.GetTimestamp(), deltaTime, GetRotation() );
+                Debug.Log( "Client Move Time: " + GetLocation() +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() );
             }
         }
         else
@@ -162,7 +163,7 @@ public class RoboCatClient : core.RoboCat
 
             //all processed moves have been removed, so all that are left are unprocessed moves
             //so we must apply them...
-            var moveList = InputManager.Instance.GetMoveList().mMoves;
+            var moveList = InputManager.sInstance.GetMoveList().mMoves;
 
             foreach (var move in moveList)
             {

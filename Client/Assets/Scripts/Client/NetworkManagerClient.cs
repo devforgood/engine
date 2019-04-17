@@ -100,6 +100,8 @@ public class NetworkManagerClient : core.NetworkManager
         mName = inName;
 
         mAvgRoundTripTime = new WeightedTimedMovingAverage(1.0f);
+
+        mSocket.Connect(mServerAddress);
     }
 
     void UpdateSayingHello()
@@ -160,7 +162,7 @@ public class NetworkManagerClient : core.NetworkManager
             mLastRoundTripTime = rtt;
             mAvgRoundTripTime.Update(rtt);
 
-            InputManager.Instance.GetMoveList().RemovedProcessedMoves(mLastMoveProcessedByServerTimestamp);
+            InputManager.sInstance.GetMoveList().RemovedProcessedMoves(mLastMoveProcessedByServerTimestamp);
 
         }
     }
@@ -217,7 +219,7 @@ public class NetworkManagerClient : core.NetworkManager
     void SendInputPacket()
     {
         //only send if there's any input to sent!
-        var moveList = InputManager.Instance.GetMoveList();
+        var moveList = InputManager.sInstance.GetMoveList();
 
         if (moveList.HasMoves())
         {
