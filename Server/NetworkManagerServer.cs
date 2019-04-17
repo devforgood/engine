@@ -65,7 +65,7 @@ namespace Server
             //try to get the client proxy for this address
             //pass this to the client proxy to process
             ClientProxy c = null;
-            if (mAddressToClientMap.TryGetValue(inFromAddress, out c) == true)
+            if (mAddressToClientMap.TryGetValue(inFromAddress, out c) == false)
             {
                 //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
                 HandlePacketFromNewClient(inInputStream, inFromAddress);
@@ -229,7 +229,7 @@ namespace Server
 
         void SendWelcomePacket(ClientProxy inClientProxy)
         {
-            NetOutgoingMessage welcomePacket = mSocket.CreateMessage();
+            NetOutgoingMessage welcomePacket = new NetOutgoingMessage();
 
             welcomePacket.Write((uint32_t)PacketType.kWelcomeCC);
             welcomePacket.Write(inClientProxy.GetPlayerId());
@@ -272,7 +272,7 @@ namespace Server
         void SendStatePacketToClient(ClientProxy inClientProxy)
         {
             //build state packet
-            NetOutgoingMessage statePacket = mSocket.CreateMessage();
+            NetOutgoingMessage statePacket = new NetOutgoingMessage();
 
             //it's state!
             statePacket.Write((uint32_t)PacketType.kStateCC);
@@ -329,7 +329,7 @@ namespace Server
             //was that the last client? if so, bye!
             if (mAddressToClientMap.Count == 0)
             {
-                Engine.sInstance.SetShouldKeepRunning(false);
+                //Engine.sInstance.SetShouldKeepRunning(false);
             }
         }
 

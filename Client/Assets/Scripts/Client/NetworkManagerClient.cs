@@ -118,7 +118,7 @@ public class NetworkManagerClient : core.NetworkManager
     }
     void SendHelloPacket()
     {
-        NetOutgoingMessage helloPacket = mSocket.CreateMessage();
+        NetOutgoingMessage helloPacket = new NetOutgoingMessage();
 
         helloPacket.Write((UInt32)core.PacketType.kHelloCC);
         helloPacket.Write(mName);
@@ -223,7 +223,7 @@ public class NetworkManagerClient : core.NetworkManager
 
         if (moveList.HasMoves())
         {
-            NetOutgoingMessage inputPacket = mSocket.CreateMessage();
+            NetOutgoingMessage inputPacket = new NetOutgoingMessage();
 
             inputPacket.Write((UInt32)core.PacketType.kInputCC);
 
@@ -244,7 +244,7 @@ public class NetworkManagerClient : core.NetworkManager
             for (; firstMoveIndex < moveCount; ++firstMoveIndex)
             {
                 ///would be nice to optimize the time stamp...
-                moveList.mMoves[firstMoveIndex].Write(inputPacket);
+                moveList.Moves[firstMoveIndex].Write(inputPacket);
             }
 
             SendPacket(inputPacket, mServerAddress);

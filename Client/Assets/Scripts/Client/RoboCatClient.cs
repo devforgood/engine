@@ -1,4 +1,5 @@
-﻿using Lidgren.Network;
+﻿using core;
+using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,7 +164,7 @@ public class RoboCatClient : core.RoboCat
 
             //all processed moves have been removed, so all that are left are unprocessed moves
             //so we must apply them...
-            var moveList = InputManager.sInstance.GetMoveList().mMoves;
+            var moveList = InputManager.sInstance.GetMoveList().Moves;
 
             foreach (var move in moveList)
             {

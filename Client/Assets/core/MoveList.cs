@@ -8,12 +8,12 @@ namespace core
     public class MoveList
     {
         float mLastMoveTimestamp;
-        Queue<Move> mMoves = new Queue<Move>();
+        List<Move> mMoves = new List<Move>();
 
-        public Queue<Move> Moves
+        public List<Move> Moves
         {
-            get;
-            set;
+            get { return mMoves; }
+            set { mMoves = value; }
         }
 
         public MoveList()
@@ -27,7 +27,7 @@ namespace core
             //first move has 0 time. it's okay, it only happens once
             float deltaTime = mLastMoveTimestamp >= 0.0f ? inTimestamp - mLastMoveTimestamp : 0.0f;
 
-            mMoves.Enqueue(new Move(inInputState, inTimestamp, deltaTime));
+            mMoves.Add(new Move(inInputState, inTimestamp, deltaTime));
 
             mLastMoveTimestamp = inTimestamp;
 
@@ -47,7 +47,7 @@ namespace core
 
                 mLastMoveTimestamp = timeStamp;
 
-                mMoves.Enqueue(new Move(inMove.GetInputState(), timeStamp, deltaTime));
+                mMoves.Add(new Move(inMove.GetInputState(), timeStamp, deltaTime));
                 return true;
             }
 
@@ -57,9 +57,9 @@ namespace core
 
 		public	void RemovedProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
         {
-            while (mMoves.Count != 0 && mMoves.Peek().GetTimestamp() <= inLastMoveProcessedOnServerTimestamp)
+            while (mMoves.Count != 0 && mMoves[0].GetTimestamp() <= inLastMoveProcessedOnServerTimestamp)
             {
-                mMoves.Dequeue();
+                mMoves.RemoveAt(0);
             }
         }
 

@@ -191,8 +191,6 @@
     <Compile Include="Assets\Scripts\Client\InputManager.cs" />
     <Compile Include="Assets\Scripts\Client\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\Client\MouseClient.cs" />
-    <Compile Include="Assets\Scripts\Client\Move.cs" />
-    <Compile Include="Assets\Scripts\Client\MoveList.cs" />
     <Compile Include="Assets\Scripts\Client\NetworkManagerClient.cs" />
     <Compile Include="Assets\Scripts\Client\ReplicationManagerClient.cs" />
     <Compile Include="Assets\Scripts\Client\RoboCatClient.cs" />

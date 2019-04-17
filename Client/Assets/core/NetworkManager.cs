@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 
 using uint16_t = System.UInt16;
@@ -19,8 +20,11 @@ namespace core
     public class NetworkManager
     {
         static readonly int kMaxPacketsPerFrameCount = 10;
+        static readonly int kMaxBufferSize = 1500;
 
-        protected NetServer mSocket;
+        protected Socket mSocket;
+        byte[] receiveBuffer = new byte[kMaxBufferSize];
+        System.Net.EndPoint senderRemote = new System.Net.IPEndPoint(0, 0);
 
         WeightedTimedMovingAverage mBytesReceivedPerSecond;
         WeightedTimedMovingAverage mBytesSentPerSecond;
@@ -65,23 +69,42 @@ namespace core
 
         }
 
-        public bool Init(uint16_t inPort)
+        public bool Init(uint16_t inPort, bool reBind = false)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.MaximumConnections = 100;
             config.Port = inPort;
-            mSocket = new NetServer(config);
+
+            try
+            {
+
+                if (mSocket == null)
+                    mSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+                if (reBind)
+                    mSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, (int)1);
+
+                mSocket.ReceiveBufferSize = kMaxBufferSize;
+                mSocket.SendBufferSize = kMaxBufferSize;
+                mSocket.Blocking = false;
+
+                if (inPort != 0)
+                {
+                    var ep = new System.Net.IPEndPoint(System.Net.IPAddress.Parse("127.0.0.1"), 65000);
+                    mSocket.Bind(ep);
+                }
+            }
+            catch( SocketException ex)
+            {
+
+            }
+
 
             //LOG("Initializing NetworkManager at port %d", inPort);
 
             mBytesReceivedPerSecond = new WeightedTimedMovingAverage(1.0f);
             mBytesSentPerSecond = new WeightedTimedMovingAverage(1.0f);
 
-            //did we bind okay?
-            if (mSocket == null)
-            {
-                return false;
-            }
 
             return true;
         }
@@ -100,6 +123,7 @@ namespace core
 
         void ReadIncomingPacketsIntoQueue()
         {
+
             //should we just keep a static one?
             //should we just keep a static one?
 
@@ -109,7 +133,48 @@ namespace core
 
             while (receivedPackedCount < kMaxPacketsPerFrameCount)
             {
-                var inputStream = mSocket.ReadMessage();
+
+                int bytesReceived = 0;
+                try
+                {
+                    if (!mSocket.Poll(1, SelectMode.SelectRead))
+                        return;
+
+                    bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
+                }
+                catch (SocketException sx)
+                {
+                    switch (sx.SocketErrorCode)
+                    {
+                        case SocketError.ConnectionReset:
+                            // connection reset by peer, aka connection forcibly closed aka "ICMP port unreachable"
+                            // we should shut down the connection; but m_senderRemote seemingly cannot be trusted, so which connection should we shut down?!
+                            // So, what to do?
+                            //LogWarning("ConnectionReset");
+                            return;
+
+                        case SocketError.NotConnected:
+                            // socket is unbound; try to rebind it (happens on mobile when process goes to sleep)
+                            //BindSocket(true);
+                            return;
+                        case SocketError.WouldBlock:
+
+
+                            return;
+                        default:
+                            //LogWarning("Socket exception: " + sx.ToString());
+                            return;
+                    }
+                }
+
+                var inputStream = new NetIncomingMessage();
+                inputStream.Data = receiveBuffer;
+                inputStream.LengthBytes = bytesReceived;
+                inputStream.SenderEndPoint = (System.Net.IPEndPoint)senderRemote;
+
+                // realloc
+                receiveBuffer = new byte[kMaxBufferSize];
+
                 if (inputStream == null)
                 {
                     //nothing to read
@@ -166,12 +231,18 @@ namespace core
 
         public void SendPacket(NetOutgoingMessage inOutputStream, System.Net.IPEndPoint inFromAddress)
         {
-
-            mSocket.SendUnconnectedMessage(inOutputStream, inFromAddress);
-
-            if (inOutputStream.LengthBytes > 0)
+            try
             {
-                mBytesSentThisFrame += inOutputStream.LengthBytes;
+                int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.Data.Length, SocketFlags.None, inFromAddress);
+
+                if (bytesSent > 0)
+                {
+                    mBytesSentThisFrame += inOutputStream.LengthBytes;
+                }
+            }
+            catch (SocketException ex)
+            {
+
             }
         }
 
