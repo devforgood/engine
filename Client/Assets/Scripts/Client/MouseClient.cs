@@ -6,7 +6,7 @@ using System.Text;
 
 public class MouseClient : core.Mouse
 {
-    public static new core.GameObject StaticCreate() { return new MouseClient(); }
+    public static new core.NetGameObject StaticCreate() { return new MouseClient(); }
 
     protected MouseClient()
     {

@@ -49,7 +49,7 @@ namespace core
         //Queue<ReceivedPacket> mPacketQueue = new Queue<ReceivedPacket>();
         Stack<ReceivedPacket> mPacketQueue = new Stack<ReceivedPacket>();
 
-        protected Dictionary<int, GameObject> mNetworkIdToGameObjectMap = new Dictionary<int, GameObject>();
+        protected Dictionary<int, NetGameObject> mNetworkIdToGameObjectMap = new Dictionary<int, NetGameObject>();
 
 
 
@@ -185,12 +185,12 @@ namespace core
             }
         }
 
-        public void AddToNetworkIdToGameObjectMap(GameObject inGameObject)
+        public void AddToNetworkIdToGameObjectMap(NetGameObject inGameObject)
         {
             mNetworkIdToGameObjectMap[inGameObject.GetNetworkId()] = inGameObject;
         }
 
-        public void RemoveFromNetworkIdToGameObjectMap(GameObject inGameObject)
+        public void RemoveFromNetworkIdToGameObjectMap(NetGameObject inGameObject)
         {
             mNetworkIdToGameObjectMap.Remove(inGameObject.GetNetworkId());
         }
@@ -201,9 +201,9 @@ namespace core
         public void SetDropPacketChance(float inChance) { mDropPacketChance = inChance; }
         public void SetSimulatedLatency(float inLatency) { mSimulatedLatency = inLatency; }
 
-        public GameObject GetGameObject(int inNetworkId)
+        public NetGameObject GetGameObject(int inNetworkId)
         {
-            GameObject gameObjectIt = null;
+            NetGameObject gameObjectIt = null;
             if (mNetworkIdToGameObjectMap.TryGetValue(inNetworkId, out gameObjectIt) == true)
             {
                 return gameObjectIt;

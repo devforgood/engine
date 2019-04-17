@@ -9,7 +9,7 @@ using uint8_t = System.Byte;
 
 namespace core
 {
-    public class GameObject
+    public class NetGameObject
     {
         Vector3 mLocation;
         Vector3 mColor;
@@ -28,14 +28,14 @@ namespace core
 
         public virtual uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kGameObject; }
 
-        public static GameObject CreateInstance() { return new GameObject(); }
+        public static NetGameObject CreateInstance() { return new NetGameObject(); }
 
         public virtual RoboCat GetAsCat() { return null; }
         public virtual uint32_t GetAllStateMask() { return 0; }
 
         public virtual bool HandleCollisionWithCat(RoboCat inCat) { return true; }
 
-        public virtual void Update() { }
+        public virtual void NetUpdate() { }
         public virtual void HandleDying() { }
 
         public void SetIndexInWorld(int inIndex) { mIndexInWorld = inIndex; }

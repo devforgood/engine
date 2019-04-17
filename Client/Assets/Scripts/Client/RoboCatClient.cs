@@ -8,12 +8,12 @@ using uint32_t = System.UInt32;
 
 public class RoboCatClient : core.RoboCat
 {
-    public static new core.GameObject StaticCreate() { return new RoboCatClient(); }
+    public static new core.NetGameObject StaticCreate() { return new RoboCatClient(); }
 
     float mTimeLocationBecameOutOfSync;
     float mTimeVelocityBecameOutOfSync;
 
-    public override void Update()
+    public override void NetUpdate()
     {
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {

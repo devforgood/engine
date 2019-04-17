@@ -92,7 +92,7 @@ namespace Server
 
         void HandleCreateDeliveryFailure(int inNetworkId)
         {
-            GameObject gameObject = NetworkManagerServer.sInstance.GetGameObject(inNetworkId);
+            NetGameObject gameObject = NetworkManagerServer.sInstance.GetGameObject(inNetworkId);
             if (gameObject != null)
             {
                 mReplicationManagerServer.ReplicateCreate(inNetworkId, gameObject.GetAllStateMask());

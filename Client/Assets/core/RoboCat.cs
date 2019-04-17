@@ -8,14 +8,14 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class RoboCat : GameObject
+    public class RoboCat : NetGameObject
     {
         static readonly float HALF_WORLD_HEIGHT = 3.6f;
         static readonly float HALF_WORLD_WIDTH = 6.4f;
 
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kRoboCat; }
 
-        public static new GameObject CreateInstance() { return new RoboCat(); }
+        public static new NetGameObject CreateInstance() { return new RoboCat(); }
 
         public enum ECatReplicationState
         {
@@ -83,12 +83,12 @@ namespace core
             ProcessCollisions();
         }
 
-        public static GameObject StaticCreate() { return new RoboCat(); }
+        public static NetGameObject StaticCreate() { return new RoboCat(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)ECatReplicationState.ECRS_AllState; }
 
         public override RoboCat GetAsCat() { return this; }
-        public override void Update()
+        public override void NetUpdate()
         {
 
         }

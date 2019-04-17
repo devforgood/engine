@@ -9,7 +9,7 @@ namespace core
 {
     public class GameObjectRegistry
     {
-        public delegate GameObject GameObjectCreationFunc();
+        public delegate NetGameObject GameObjectCreationFunc();
 
         Dictionary<uint32_t, GameObjectCreationFunc> mNameToGameObjectCreationFunctionMap = new Dictionary<uint32_t, GameObjectCreationFunc>();
 
@@ -30,7 +30,7 @@ namespace core
             mNameToGameObjectCreationFunctionMap[inFourCCName] = inCreationFunction;
         }
 
-        public GameObject CreateGameObject(uint32_t inFourCCName)
+        public NetGameObject CreateGameObject(uint32_t inFourCCName)
         {
             //no error checking- if the name isn't there, exception!
             GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];

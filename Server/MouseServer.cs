@@ -14,7 +14,7 @@ namespace Server
 
         }
 
-        public new static GameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new MouseServer()); }
+        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new MouseServer()); }
 
         public override void HandleDying()
         {

@@ -45,7 +45,7 @@ namespace Server
             mClientDisconnectTimeout = 3.0f;
         }
 
-        public GameObject RegisterAndReturn(GameObject inGameObject)
+        public NetGameObject RegisterAndReturn(NetGameObject inGameObject)
         {
             RegisterGameObject(inGameObject);
             return inGameObject;
@@ -113,7 +113,7 @@ namespace Server
             }
         }
 
-        public void RegisterGameObject(GameObject inGameObject)
+        public void RegisterGameObject(NetGameObject inGameObject)
         {
             //assign network id
             int newNetworkId = GetNewNetworkId();
@@ -128,7 +128,7 @@ namespace Server
                 pair.Value.GetReplicationManagerServer().ReplicateCreate(newNetworkId, inGameObject.GetAllStateMask());
             }
         }
-        public void UnregisterGameObject(GameObject inGameObject)
+        public void UnregisterGameObject(NetGameObject inGameObject)
         {
             int networkId = inGameObject.GetNetworkId();
             mNetworkIdToGameObjectMap.Remove(networkId);

@@ -8,11 +8,11 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class Yarn : GameObject
+    public class Yarn : NetGameObject
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kYarn; }
 
-        public static new GameObject CreateInstance() { return new Yarn(); }
+        public static new NetGameObject CreateInstance() { return new Yarn(); }
 
         enum EYarnReplicationState
         {
@@ -23,7 +23,7 @@ namespace core
             EYRS_AllState = EYRS_Pose | EYRS_Color | EYRS_PlayerId
         };
 
-        public static GameObject StaticCreate() { return new Yarn(); }
+        public static NetGameObject StaticCreate() { return new Yarn(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EYarnReplicationState.EYRS_AllState; }
 
@@ -126,7 +126,7 @@ namespace core
             SetRotation(inShooter.GetRotation());
         }
 
-        public override void Update()
+        public override void NetUpdate()
         {
 
             float deltaTime = Timing.sInstance.GetDeltaTime();

@@ -26,16 +26,16 @@ namespace Server
 
         }
 
-        public static new GameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new RoboCatServer()); }
+        public static new NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new RoboCatServer()); }
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
 
         }
 
-        public override void Update()
+        public override void NetUpdate()
         {
-            base.Update();
+            base.NetUpdate();
 
             Vector3 oldLocation = GetLocation();
             Vector3 oldVelocity = GetVelocity();

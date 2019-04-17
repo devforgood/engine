@@ -23,7 +23,7 @@ namespace core
         }
         public void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
 
-        protected virtual void DoFrame()
+        public virtual void DoFrame()
         {
             World.sInstance.Update();
         }

@@ -20,7 +20,7 @@ namespace Server
             return true;
         }
 
-        protected override void DoFrame()
+        public override void DoFrame()
         {
             NetworkManagerServer.sInstance.ProcessIncomingPackets();
 
@@ -33,7 +33,7 @@ namespace Server
             NetworkManagerServer.sInstance.SendOutgoingPackets();
         }
 
-	public override  int Run()
+        public override int Run()
         {
             SetupWorld();
             return base.Run();
@@ -68,7 +68,7 @@ namespace Server
             //but then we'd have to clean it up when the cat died, etc.
             //this will work for now until it's a perf issue
             var gameObjects = World.sInstance.GetGameObjects();
-            foreach( var go in gameObjects)
+            foreach (var go in gameObjects)
             {
                 RoboCat cat = go.GetAsCat();
                 if (cat != null && cat.GetPlayerId() == inPlayerId)
@@ -90,7 +90,7 @@ namespace Server
         }
 
 
-    	Server(uint16_t port)
+        Server(uint16_t port)
         {
             GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kRoboCat, RoboCatServer.StaticCreate);
             GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kMouse, MouseServer.StaticCreate);
@@ -118,9 +118,9 @@ namespace Server
         }
         void CreateRandomMice(int inMouseCount)
         {
-            Vector3 mouseMin = new Vector3(-5.0f, -3.0f, 0.0f );
-            Vector3 mouseMax = new Vector3(5.0f, 3.0f, 0.0f );
-            GameObject go;
+            Vector3 mouseMin = new Vector3(-5.0f, -3.0f, 0.0f);
+            Vector3 mouseMax = new Vector3(5.0f, 3.0f, 0.0f);
+            NetGameObject go;
 
             //make a mouse somewhere- where will these come from?
             for (int i = 0; i < inMouseCount; ++i)

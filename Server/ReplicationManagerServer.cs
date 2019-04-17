@@ -87,7 +87,7 @@ namespace Server
         uint32_t WriteCreateAction(NetOutgoingMessage inOutputStream, int inNetworkId, uint32_t inDirtyState)
         {
             //need object
-            GameObject gameObject = NetworkManagerServer.sInstance.GetGameObject(inNetworkId);
+            NetGameObject gameObject = NetworkManagerServer.sInstance.GetGameObject(inNetworkId);
             //need 4 cc
             inOutputStream.Write(gameObject.GetClassId());
             return gameObject.Write(inOutputStream, inDirtyState);
@@ -95,7 +95,7 @@ namespace Server
         uint32_t WriteUpdateAction(NetOutgoingMessage inOutputStream, int inNetworkId, uint32_t inDirtyState)
         {
             //need object
-            GameObject gameObject = NetworkManagerServer.sInstance.GetGameObject(inNetworkId);
+            NetGameObject gameObject = NetworkManagerServer.sInstance.GetGameObject(inNetworkId);
 
             //if we can't find the gameObject on the other side, we won't be able to read the written data ( since we won't know which class wrote it )
             //so we need to know how many bytes to skip.

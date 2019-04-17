@@ -9,11 +9,11 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class Mouse : GameObject
+    public class Mouse : NetGameObject
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kMouse; }
 
-        public static new GameObject CreateInstance() { return new Mouse(); }
+        public static new NetGameObject CreateInstance() { return new Mouse(); }
 
         enum EMouseReplicationState
         {
@@ -32,7 +32,7 @@ namespace core
         }
 
 
-        public static GameObject StaticCreate() { return new Mouse(); }
+        public static NetGameObject StaticCreate() { return new Mouse(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EMouseReplicationState.EMRS_AllState; }
 

@@ -9,9 +9,9 @@ namespace Server
 {
     public class YarnServer : Yarn
     {
-        public new static GameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new YarnServer()); }
+        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new YarnServer()); }
 
-    public override void HandleDying()
+        public override void HandleDying()
         {
 
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
@@ -31,18 +31,18 @@ namespace Server
             return false;
         }
 
-	public override void Update()
+        public override void NetUpdate()
+        {
+            base.NetUpdate();
+
+            if (Timing.sInstance.GetFrameStartTime() > mTimeToDie)
             {
-            	base.Update();
 
-	if( Timing.sInstance.GetFrameStartTime() > mTimeToDie )
-	{
+                SetDoesWantToDie(true);
+            }
+        }
 
-        SetDoesWantToDie( true );
-    }
-}
-
-	protected YarnServer()
+        protected YarnServer()
         {
             mTimeToDie = Timing.sInstance.GetFrameStartTime() + 1.0f;
 

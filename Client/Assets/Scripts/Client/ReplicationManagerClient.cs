@@ -43,7 +43,7 @@ public class ReplicationManagerClient
 
         //we might already have this object- could happen if our ack of the create got dropped so server resends create request 
         //( even though we might have created )
-        GameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
+        NetGameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
         if (gameObject == null)
         {
             //create the object and map it...
@@ -62,7 +62,7 @@ public class ReplicationManagerClient
     void ReadAndDoUpdateAction(NetIncomingMessage inInputStream, int inNetworkId)
     {
         //need object
-        GameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
+        NetGameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
 
         //gameObject MUST be found, because create was ack'd if we're getting an update...
         //and read state
@@ -73,7 +73,7 @@ public class ReplicationManagerClient
     {
         //if something was destroyed before the create went through, we'll never get it
         //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-        GameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
+        NetGameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
         if (gameObject != null)
         {
             gameObject.SetDoesWantToDie(true);

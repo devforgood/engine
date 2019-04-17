@@ -9,8 +9,8 @@ namespace core
 {
     class LinkingContext
     {
-        Dictionary<uint32_t, GameObject> mNetworkIdToGameObjectMap = new Dictionary<uint32_t, GameObject>();
-        Dictionary< GameObject, uint32_t > mGameObjectToNetworkIdMap = new Dictionary<GameObject, uint32_t>();
+        Dictionary<uint32_t, NetGameObject> mNetworkIdToGameObjectMap = new Dictionary<uint32_t, NetGameObject>();
+        Dictionary< NetGameObject, uint32_t > mGameObjectToNetworkIdMap = new Dictionary<NetGameObject, uint32_t>();
 
 	    uint32_t mNextNetworkId;
 
@@ -18,7 +18,7 @@ namespace core
         {
             mNextNetworkId = 0;
         }
-        public uint32_t GetNetworkId(GameObject inGameObject, bool inShouldCreateIfNotFound)
+        public uint32_t GetNetworkId(NetGameObject inGameObject, bool inShouldCreateIfNotFound)
         {
             uint32_t newNetworkId;
             if (mGameObjectToNetworkIdMap.TryGetValue(inGameObject, out newNetworkId) == true)
@@ -37,9 +37,9 @@ namespace core
             }
         }
 
-        public GameObject GetGameObject(uint32_t inNetworkId)
+        public NetGameObject GetGameObject(uint32_t inNetworkId)
         {
-            GameObject inGameObject = null;
+            NetGameObject inGameObject = null;
             if (mNetworkIdToGameObjectMap.TryGetValue(inNetworkId, out inGameObject) == false)
             {
                 return inGameObject;
@@ -50,13 +50,13 @@ namespace core
             }
         }
 
-        public void AddGameObject(GameObject inGameObject, uint32_t inNetworkId)
+        public void AddGameObject(NetGameObject inGameObject, uint32_t inNetworkId)
         {
             mNetworkIdToGameObjectMap[inNetworkId] = inGameObject;
             mGameObjectToNetworkIdMap[inGameObject] = inNetworkId;
         }
 
-        public void RemoveGameObject(GameObject inGameObject)
+        public void RemoveGameObject(NetGameObject inGameObject)
         {
             uint32_t networkId = mGameObjectToNetworkIdMap[inGameObject];
             mGameObjectToNetworkIdMap.Remove(inGameObject);

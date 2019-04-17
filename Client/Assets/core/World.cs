@@ -7,7 +7,7 @@ namespace core
 {
     public class World
     {
-        List<GameObject> mGameObjects = new List<GameObject>();
+        List<NetGameObject> mGameObjects = new List<NetGameObject>();
 
 
         /// <summary>
@@ -20,13 +20,13 @@ namespace core
             sInstance = new World();
         }
 
-        public void AddGameObject(GameObject inGameObject)
+        public void AddGameObject(NetGameObject inGameObject)
         {
             mGameObjects.Add(inGameObject);
             inGameObject.SetIndexInWorld(mGameObjects.Count - 1);
 
         }
-        public void RemoveGameObject(GameObject inGameObject)
+        public void RemoveGameObject(NetGameObject inGameObject)
         {
             int index = inGameObject.GetIndexInWorld();
 
@@ -49,12 +49,12 @@ namespace core
 
             for (int i = 0, c = mGameObjects.Count; i < c; ++i)
             {
-                GameObject go = mGameObjects[i];
+                NetGameObject go = mGameObjects[i];
 
 
                 if (!go.DoesWantToDie())
                 {
-                    go.Update();
+                    go.NetUpdate();
                 }
                 //you might suddenly want to die after your update, so check again
                 if (go.DoesWantToDie())
@@ -67,7 +67,7 @@ namespace core
             }
         }
 
-        public List<GameObject> GetGameObjects() { return mGameObjects; }
+        public List<NetGameObject> GetGameObjects() { return mGameObjects; }
 
 
         World()

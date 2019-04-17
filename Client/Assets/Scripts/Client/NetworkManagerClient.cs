@@ -180,7 +180,7 @@ public class NetworkManagerClient : core.NetworkManager
 
                 networkId = inInputStream.ReadInt32();
                 fourCC = inInputStream.ReadUInt32();
-                core.GameObject go = null;
+                core.NetGameObject go = null;
                 //didn't find it, better create it!
                 if (mNetworkIdToGameObjectMap.TryGetValue(networkId, out go) == false)
                 {
@@ -249,7 +249,7 @@ public class NetworkManagerClient : core.NetworkManager
         }
     }
 
-    void DestroyGameObjectsInMap(Dictionary<int, core.GameObject> inObjectsToDestroy)
+    void DestroyGameObjectsInMap(Dictionary<int, core.NetGameObject> inObjectsToDestroy)
     {
         foreach (var pair in inObjectsToDestroy)
         {

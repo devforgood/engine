@@ -7,7 +7,7 @@ using System.Text;
 
 class YarnClient : core.Yarn
 {
-    public static new core.GameObject StaticCreate() { return new YarnClient(); }
+    public static new core.NetGameObject StaticCreate() { return new YarnClient(); }
     public override void Read(NetIncomingMessage inInputStream )
     {
         bool stateBit;
