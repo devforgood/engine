@@ -17,7 +17,7 @@ public class Client : MonoBehaviour {
 
     void FixedUpdate()
     {
-
+        core.Timing.sInstance.Update();
         InputManager.sInstance.Update();
 
         core.Engine.sInstance.DoFrame();

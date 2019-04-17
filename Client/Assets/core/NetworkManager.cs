@@ -121,6 +121,46 @@ namespace core
 
         }
 
+        int Recv()
+        {
+            int bytesReceived = 0;
+            try
+            {
+                if (!mSocket.Poll(1, SelectMode.SelectRead))
+                    return 0;
+
+                bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
+            }
+            catch (SocketException sx)
+            {
+                switch (sx.SocketErrorCode)
+                {
+                    case SocketError.ConnectionReset:
+                        // connection reset by peer, aka connection forcibly closed aka "ICMP port unreachable"
+                        // we should shut down the connection; but m_senderRemote seemingly cannot be trusted, so which connection should we shut down?!
+                        // So, what to do?
+                        //LogWarning("ConnectionReset");
+                        HandleConnectionReset((System.Net.IPEndPoint)senderRemote);
+                        break;
+
+                    case SocketError.NotConnected:
+                        // socket is unbound; try to rebind it (happens on mobile when process goes to sleep)
+                        //BindSocket(true);
+                        break;
+                    case SocketError.WouldBlock:
+
+
+                        break;
+                    default:
+                        //LogWarning("Socket exception: " + sx.ToString());
+                        break;
+                }
+            }
+
+
+            return bytesReceived;
+        }
+
         void ReadIncomingPacketsIntoQueue()
         {
 
@@ -133,39 +173,9 @@ namespace core
 
             while (receivedPackedCount < kMaxPacketsPerFrameCount)
             {
-
-                int bytesReceived = 0;
-                try
-                {
-                    if (!mSocket.Poll(1, SelectMode.SelectRead))
-                        return;
-
-                    bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
-                }
-                catch (SocketException sx)
-                {
-                    switch (sx.SocketErrorCode)
-                    {
-                        case SocketError.ConnectionReset:
-                            // connection reset by peer, aka connection forcibly closed aka "ICMP port unreachable"
-                            // we should shut down the connection; but m_senderRemote seemingly cannot be trusted, so which connection should we shut down?!
-                            // So, what to do?
-                            //LogWarning("ConnectionReset");
-                            return;
-
-                        case SocketError.NotConnected:
-                            // socket is unbound; try to rebind it (happens on mobile when process goes to sleep)
-                            //BindSocket(true);
-                            return;
-                        case SocketError.WouldBlock:
-
-
-                            return;
-                        default:
-                            //LogWarning("Socket exception: " + sx.ToString());
-                            return;
-                    }
-                }
+                var bytesReceived = Recv();
+                if (bytesReceived == 0)
+                    break;
 
                 var inputStream = new NetIncomingMessage();
                 inputStream.Data = receiveBuffer;
