@@ -208,6 +208,11 @@ public class RoboCatClient : core.RoboCat
         mTimeLocationBecameOutOfSync = 0.0f;
         mTimeVelocityBecameOutOfSync = 0.0f;
 
+        GameObject prefab = Resources.Load("Prefabs/Brick") as GameObject;
+        GameObject brick = MonoBehaviour.Instantiate(prefab) as GameObject;
+        //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
+        var cube = brick.GetComponent<CubeNetwork>();
+        cube.robo = this;
     }
 
     void InterpolateClientSidePrediction(float inOldRotation, core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteCat)
