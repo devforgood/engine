@@ -291,7 +291,7 @@ namespace core
         public Vector3 GetVelocity() { return mVelocity; }
 
 
-        Vector3 mVelocity;
+        Vector3 mVelocity = new Vector3();
 
 
         float mMaxLinearSpeed;

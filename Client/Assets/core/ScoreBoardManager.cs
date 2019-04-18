@@ -88,7 +88,7 @@ namespace core
             }
             //public static uint32_t GetSerializedSize();
 
-            Vector3 mColor;
+            Vector3 mColor = new Vector3();
 
             uint32_t mPlayerId;
             string mPlayerName;

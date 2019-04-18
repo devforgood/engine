@@ -306,7 +306,7 @@ namespace Server
             Move move = new Move();
             byte[] buf = new byte[2];
             inInputStream.ReadBits(buf, 0, 2);
-            uint32_t moveCount = BitConverter.ToUInt32(buf, 0);
+            uint32_t moveCount = BitConverter.ToUInt16(buf, 0);
 
             for (; moveCount > 0; --moveCount)
             {

@@ -11,8 +11,8 @@ namespace core
 {
     public class NetGameObject
     {
-        Vector3 mLocation;
-        Vector3 mColor;
+        Vector3 mLocation = new Vector3();
+        Vector3 mColor = new Vector3();
 
         float mCollisionRadius;
 

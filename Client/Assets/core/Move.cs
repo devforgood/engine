@@ -8,7 +8,7 @@ namespace core
 {
     public class Move
     {
-        InputState mInputState;
+        InputState mInputState = new InputState();
         float mTimestamp;
         float mDeltaTime;
 

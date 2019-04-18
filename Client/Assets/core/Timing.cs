@@ -40,7 +40,7 @@ namespace core
 
         public double GetTime()
         {
-            return (DateTime.UtcNow - sStartTime).TotalMilliseconds;
+            return (DateTime.UtcNow - sStartTime).TotalMilliseconds/1000;
         }
 
         public float GetTimef()
