@@ -239,21 +239,24 @@ namespace core
         }
 
 
-        public void SendPacket(NetOutgoingMessage inOutputStream, System.Net.IPEndPoint inFromAddress)
+        public int SendPacket(NetOutgoingMessage inOutputStream, System.Net.IPEndPoint inFromAddress)
         {
             try
             {
-                int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.Data.Length, SocketFlags.None, inFromAddress);
+                int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.LengthBytes, SocketFlags.None, inFromAddress);
 
                 if (bytesSent > 0)
                 {
                     mBytesSentThisFrame += inOutputStream.LengthBytes;
                 }
+
+                return bytesSent;
             }
             catch (SocketException ex)
             {
 
             }
+            return 0;
         }
 
         public void UpdateBytesSentLastFrame()

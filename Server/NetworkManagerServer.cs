@@ -289,8 +289,10 @@ namespace Server
             inClientProxy.GetReplicationManagerServer().Write(statePacket, rmtd);
             ifp.SetTransmissionData((int)TransmissionDataType.kReplicationManager, rmtd);
 
-            SendPacket(statePacket, inClientProxy.GetSocketAddress());
+            int ret = SendPacket(statePacket, inClientProxy.GetSocketAddress());
+            log.InfoFormat("send {0}", ret);
         }
+
         void WriteLastMoveTimestampIfDirty(NetOutgoingMessage inOutputStream, ClientProxy inClientProxy)
         {
             //first, dirty?
