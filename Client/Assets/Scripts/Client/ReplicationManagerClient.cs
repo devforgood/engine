@@ -10,7 +10,7 @@ public class ReplicationManagerClient
 
     public void Read(NetIncomingMessage inInputStream )
     {
-        while (inInputStream.LengthBits >= 32)
+        while (inInputStream.LengthBits - inInputStream.Position >= 32)
         {
             //read the network id...
             int networkId = inInputStream.ReadInt32();

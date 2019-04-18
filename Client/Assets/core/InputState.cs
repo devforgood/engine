@@ -12,6 +12,16 @@ namespace core
         public float mDesiredForwardAmount, mDesiredBackAmount;
         public bool mIsShooting;
 
+        public override string ToString()
+        {
+            return "mDesiredRightAmount: " + mDesiredRightAmount
+                + ",mDesiredLeftAmount:  " + mDesiredLeftAmount
+                + ",mDesiredForwardAmount:  " + mDesiredForwardAmount
+                + ",mDesiredBackAmount:  " + mDesiredBackAmount
+                + ",mIsShooting:  " + mIsShooting
+                ;
+        }
+
         public InputState()
         {
             mDesiredRightAmount = 0;

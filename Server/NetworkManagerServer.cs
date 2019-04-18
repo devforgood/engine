@@ -13,6 +13,8 @@ namespace Server
 {
     public class NetworkManagerServer : NetworkManager
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Global instance of NetworkManagerServer
         /// </summary>
@@ -234,7 +236,7 @@ namespace Server
             welcomePacket.Write((uint32_t)PacketType.kWelcomeCC);
             welcomePacket.Write(inClientProxy.GetPlayerId());
 
-            //LOG("Server Welcoming, new client '%s' as player %d", inClientProxy.GetName(), inClientProxy.GetPlayerId());
+            log.Info(string.Format("Server Welcoming, new client {0} as player {1}", inClientProxy.GetName(), inClientProxy.GetPlayerId()));
 
             SendPacket(welcomePacket, inClientProxy.GetSocketAddress());
         }
@@ -314,6 +316,7 @@ namespace Server
                 {
                     if (inClientProxy.GetUnprocessedMoveList().AddMoveIfNew(move))
                     {
+                        log.InfoFormat("move {0}, {1}, {2}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp());
                         inClientProxy.SetIsLastMoveTimestampDirty(true);
                     }
                 }
