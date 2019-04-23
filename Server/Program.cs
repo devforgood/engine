@@ -24,7 +24,7 @@ namespace Server
 
             log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(log4net_config_dir));
 
-            log.Info("INFO 출력");
+            log.Info("server start");
             if (Server.StaticInit(65000))
             {
                 Server.sInstance.Run();
