@@ -55,6 +55,11 @@ namespace core
             mZ = z;
         }
 
+        public override string ToString()
+        {
+            return "x : " + mX  + ", y : " + mY + ", z : " + mZ;
+        }
+
         public static Vector3 operator +(Vector3 inLeft, Vector3 inRight)
         {
             return new Vector3(inLeft.mX + inRight.mX, inLeft.mY + inRight.mY, inLeft.mZ + inRight.mZ);
