@@ -34,7 +34,8 @@ namespace Lidgren.Network
 				{
 					return null;
 				}
-				return IPAddress.Parse(UnityEngine.Network.player.externalIP);
+                //return IPAddress.Parse(UnityEngine.Network.player.externalIP);
+                return null;
 			}
 			catch // Catch Access Denied errors
 			{
