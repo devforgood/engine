@@ -208,6 +208,10 @@ namespace Server
                 mAddressToClientMap[inFromAddress] = newClientProxy;
                 mPlayerIdToClientMap[newClientProxy.GetPlayerId()] = newClientProxy;
 
+
+                log.Info(string.Format("HandlePacketFromNewClient new client {0} as player {1}, addr_map{2}, id_map{3}", newClientProxy.GetName(), newClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
+
+
                 //tell the server about this client, spawn a cat, etc...
                 //if we had a generic message system, this would be a good use for it...
                 //instead we'll just tell the server directly
@@ -330,6 +334,9 @@ namespace Server
             mPlayerIdToClientMap.Remove(inClientProxy.GetPlayerId());
             mAddressToClientMap.Remove(inClientProxy.GetSocketAddress());
             ((Server)(Engine.sInstance)).HandleLostClient(inClientProxy);
+
+            log.Info(string.Format("HandleClientDisconnected client {0} as player {1}, addr_map{2}, id_map{3}", inClientProxy.GetName(), inClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
+
 
             //was that the last client? if so, bye!
             if (mAddressToClientMap.Count == 0)
