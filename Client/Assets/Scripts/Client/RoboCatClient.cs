@@ -15,6 +15,11 @@ public class RoboCatClient : core.RoboCat
     float mTimeLocationBecameOutOfSync;
     float mTimeVelocityBecameOutOfSync;
 
+    public bool IsLocalPlayer()
+    {
+        return GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId();
+    }
+
     public override void NetUpdate()
     {
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
@@ -33,7 +38,7 @@ public class RoboCatClient : core.RoboCat
 
                 SimulateMovement(deltaTime);
 
-                Debug.Log( "Client Move Time: " + GetLocation() +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() );
+                //Debug.Log( "Local Client Move Time: " + GetLocation() +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() );
             }
         }
         else
@@ -45,6 +50,9 @@ public class RoboCatClient : core.RoboCat
                 //we're in sync if our velocity is 0
                 mTimeLocationBecameOutOfSync = 0.0f;
             }
+
+            //Debug.Log("Remote Client Location : " + GetLocation() + ", player_id : " + GetPlayerId());
+
         }
     }
     public override void HandleDying()
@@ -89,6 +97,9 @@ public class RoboCatClient : core.RoboCat
 
             replicatedLocation.mX = inInputStream.ReadFloat();
             replicatedLocation.mY = inInputStream.ReadFloat();
+
+            //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
+
 
             SetLocation(replicatedLocation);
 

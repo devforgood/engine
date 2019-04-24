@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Client : MonoBehaviour {
 
+
+    public string server_ip_address = "127.0.0.1";
+    public int server_port = 65000;
+    public string user_id = "test";
+
 	// Use this for initialization
 	void Start () {
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kRoboCat, RoboCatClient.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kMouse, MouseClient.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kYarn, YarnClient.StaticCreate);
 
-        var addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse("127.0.0.1"), 65000);
+        var addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(server_ip_address), server_port);
 
-        NetworkManagerClient.StaticInit(addr, "test");
+        NetworkManagerClient.StaticInit(addr, user_id);
     }
 
     void FixedUpdate()
@@ -20,10 +25,12 @@ public class Client : MonoBehaviour {
         core.Timing.sInstance.Update();
         InputManager.sInstance.Update();
 
-        core.Engine.sInstance.DoFrame();
-
         NetworkManagerClient.sInstance.ProcessIncomingPackets();
 
+
+        core.Engine.sInstance.DoFrame();
+
+ 
     }
     // Update is called once per frame
     void Update ()

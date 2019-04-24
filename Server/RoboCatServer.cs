@@ -15,6 +15,8 @@ namespace Server
 
     public class RoboCatServer : RoboCat
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         ECatControlType mCatControlType;
 
 
@@ -57,9 +59,9 @@ namespace Server
                 ClientProxy client = NetworkManagerServer.sInstance.GetClientProxy((int)GetPlayerId());
                 if (client != null)
                 {
-                    MoveList  moveList = client.GetUnprocessedMoveList();
-                    foreach ( var unprocessedMove in moveList.Moves)
-			{
+                    MoveList moveList = client.GetUnprocessedMoveList();
+                    foreach (var unprocessedMove in moveList.Moves)
+                    {
                         var currentState = unprocessedMove.GetInputState();
 
                         float deltaTime = unprocessedMove.GetDeltaTime();
@@ -67,7 +69,7 @@ namespace Server
                         ProcessInput(deltaTime, currentState);
                         SimulateMovement(deltaTime);
 
-                        //LOG( "Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, GetRotation() );
+                        log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, player_id{3}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), GetPlayerId() );
 
                     }
 

@@ -16,7 +16,7 @@ public class NetworkManagerClient : core.NetworkManager
     };
 
     static readonly float kTimeBetweenHellos = 1.0f;
-    static readonly float kTimeBetweenInputPackets = 0.033f;
+    static readonly float kTimeBetweenInputPackets = 0.033f; // 30 FPS
 
 
     /// <summary>

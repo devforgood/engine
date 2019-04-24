@@ -31,6 +31,11 @@ namespace core
         public static readonly Vector3 UnitY = new Vector3(0.0f, 1.0f, 0.0f);
         public static readonly Vector3 UnitZ = new Vector3(0.0f, 0.0f, 1.0f);
 
+        public static readonly Vector3 forward = new Vector3(0, 1, 0); 
+        public static readonly Vector3 back = new Vector3(0, -1, 0); 
+        public static readonly Vector3 right = new Vector3(1, 0, 0); 
+        public static readonly Vector3 left = new Vector3(-1, 0, 0); 
+
         public float mX;
         public float mY;
         public float mZ;
@@ -119,6 +124,9 @@ namespace core
 
         public void Normalize()
         {
+            if (mX == 0 && mY == 0 && mZ == 0)
+                return;
+
             float length = Length();
             mX /= length;
             mY /= length;
@@ -127,6 +135,9 @@ namespace core
 
         public void Normalize2D()
         {
+            if (mX == 0 && mY == 0)
+                return;
+
             float length = Length2D();
             mX /= length;
             mY /= length;
