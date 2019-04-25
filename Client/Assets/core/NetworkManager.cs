@@ -130,6 +130,7 @@ namespace core
                     return 0;
 
                 bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
+                Net.Log("packet recv :" + bytesReceived);
             }
             catch (SocketException sx)
             {
@@ -244,6 +245,7 @@ namespace core
             try
             {
                 int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.LengthBytes, SocketFlags.None, inFromAddress);
+                Net.Log("packet send :" + bytesSent);
 
                 if (bytesSent > 0)
                 {

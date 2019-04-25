@@ -247,7 +247,7 @@ public class NetworkManagerClient : core.NetworkManager
             ++debug_index;
             for (; firstMoveIndex < moveCount; ++firstMoveIndex)
             {
-                Debug.Log("send move info " + debug_index + ", moveCount : " +  moveCount + ", firstMoveIndex :" + firstMoveIndex);
+                Debug.Log("send move info " + debug_index + ", moveCount : " +  moveCount + ", firstMoveIndex :" + firstMoveIndex + ", timestamp:" + moveList.mMoves[firstMoveIndex].GetTimestamp() + ", delta:" + moveList.mMoves[firstMoveIndex].GetDeltaTime());
                 ///would be nice to optimize the time stamp...
                 moveList.mMoves[firstMoveIndex].Write(inputPacket);
             }

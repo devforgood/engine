@@ -320,9 +320,9 @@ namespace Server
             {
                 if (move.Read(inInputStream))
                 {
+                    log.InfoFormat("recv move {0}, {1}, {2}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp());
                     if (inClientProxy.GetUnprocessedMoveList().AddMoveIfNew(move))
                     {
-                        log.InfoFormat("move {0}, {1}, {2}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp());
                         inClientProxy.SetIsLastMoveTimestampDirty(true);
                     }
                 }
