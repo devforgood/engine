@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using UnityEngine;
 using uint32_t = System.UInt32;
 
 public class NetworkManagerClient : core.NetworkManager
@@ -216,6 +216,9 @@ public class NetworkManagerClient : core.NetworkManager
             mTimeOfLastInputPacket = time;
         }
     }
+
+    static int debug_index = 0;
+
     void SendInputPacket()
     {
         //only send if there's any input to sent!
@@ -232,7 +235,7 @@ public class NetworkManagerClient : core.NetworkManager
             //eventually write the 3 latest moves so they have three chances to get through...
             int moveCount = moveList.GetMoveCount();
             int firstMoveIndex = moveCount - 3;
-            if (firstMoveIndex < 3)
+            if (firstMoveIndex < 0)
             {
                 firstMoveIndex = 0;
             }
@@ -241,10 +244,12 @@ public class NetworkManagerClient : core.NetworkManager
             //only need two bits to write the move count, because it's 0, 1, 2 or 3
             inputPacket.Write(moveCount - firstMoveIndex, 2);
 
+            ++debug_index;
             for (; firstMoveIndex < moveCount; ++firstMoveIndex)
             {
+                Debug.Log("send move info " + debug_index + ", moveCount : " +  moveCount + ", firstMoveIndex :" + firstMoveIndex);
                 ///would be nice to optimize the time stamp...
-                moveList.Moves[firstMoveIndex].Write(inputPacket);
+                moveList.mMoves[firstMoveIndex].Write(inputPacket);
             }
 
             SendPacket(inputPacket, mServerAddress);
