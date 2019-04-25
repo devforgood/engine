@@ -42,23 +42,23 @@ public class InputManager
     float mNextTimeToSampleInput;
     Move mPendingMove = new Move();
 
-    public void HandleInput(core.EInputAction inInputAction, int inKeyCode)
+    public void HandleInput(core.EInputAction inInputAction, KeyCode inKeyCode)
     {
         switch (inKeyCode)
         {
-            case 'a':
+            case KeyCode.A:
                 UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredLeftAmount);
                 break;
-            case 'd':
+            case KeyCode.D:
                 UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredRightAmount);
                 break;
-            case 'w':
+            case KeyCode.W:
                 UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredForwardAmount);
                 break;
-            case 's':
+            case KeyCode.S:
                 UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredBackAmount);
                 break;
-            case 'k':
+            case KeyCode.K:
                 UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsShooting);
                 break;
         }

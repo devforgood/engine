@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,18 @@ public class Client : MonoBehaviour {
     public string server_ip_address = "127.0.0.1";
     public int server_port = 65000;
     public string user_id = "test";
+
+
+    Dictionary<KeyCode, bool> key_event = new Dictionary<KeyCode, bool>()
+    {
+        { KeyCode.A , false },
+        { KeyCode.D , false },
+        { KeyCode.W , false },
+        { KeyCode.S , false },
+        { KeyCode.K , false },
+    };
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -24,60 +37,53 @@ public class Client : MonoBehaviour {
     {
         core.Timing.sInstance.Update();
         InputManager.sInstance.Update();
-
-        NetworkManagerClient.sInstance.ProcessIncomingPackets();
-
-
         core.Engine.sInstance.DoFrame();
 
- 
+        NetworkManagerClient.sInstance.ProcessIncomingPackets();
     }
+
     // Update is called once per frame
     void Update ()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'a');
-        }
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'd');
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'w');
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 's');
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, 'k');
-        }
+        KeyEvent(KeyCode.A);
+        KeyEvent(KeyCode.D);
+        KeyEvent(KeyCode.W);
+        KeyEvent(KeyCode.S);
+        KeyEvent(KeyCode.K);
 
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'a');
-        }
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'd');
-        }
-        if (Input.GetKeyUp(KeyCode.W))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'w');
-        }
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 's');
-        }
-        if (Input.GetKeyUp(KeyCode.K))
-        {
-            InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, 'k');
-        }
+    }
 
+    void LateUpdate()
+    {
         NetworkManagerClient.sInstance.SendOutgoingPackets();
 
+    }
+
+
+    void KeyEvent(KeyCode k)
+    {
+        bool last_key_state = key_event[k];
+        if (Input.GetKey(k))
+        {
+            key_event[k] = true;
+        }
+        else if (key_event[k] == true)
+        {
+            key_event[k] = false;
+        }
+
+        if (last_key_state != key_event[k])
+        {
+            if (key_event[k])
+            {
+                Debug.Log("key down " + k);
+                InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, k);
+            }
+            else
+            {
+                Debug.Log("key up " + k);
+                InputManager.sInstance.HandleInput(core.EInputAction.EIA_Released, k);
+            }
+        }
     }
 }

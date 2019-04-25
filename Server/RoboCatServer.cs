@@ -60,7 +60,7 @@ namespace Server
                 if (client != null)
                 {
                     MoveList moveList = client.GetUnprocessedMoveList();
-                    foreach (var unprocessedMove in moveList.Moves)
+                    foreach (var unprocessedMove in moveList.mMoves)
                     {
                         var currentState = unprocessedMove.GetInputState();
 

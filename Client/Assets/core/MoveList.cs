@@ -8,13 +8,7 @@ namespace core
     public class MoveList
     {
         float mLastMoveTimestamp;
-        List<Move> mMoves = new List<Move>();
-
-        public List<Move> Moves
-        {
-            get { return mMoves; }
-            set { mMoves = value; }
-        }
+        public List<Move> mMoves = new List<Move>();
 
         public MoveList()
         {

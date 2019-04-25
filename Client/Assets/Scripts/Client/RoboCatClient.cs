@@ -38,7 +38,7 @@ public class RoboCatClient : core.RoboCat
 
                 SimulateMovement(deltaTime);
 
-                //Debug.Log( "Local Client Move Time: " + GetLocation() +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() );
+                Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
             }
         }
         else
@@ -98,7 +98,7 @@ public class RoboCatClient : core.RoboCat
             replicatedLocation.mX = inInputStream.ReadFloat();
             replicatedLocation.mY = inInputStream.ReadFloat();
 
-            //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
+            Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
 
             SetLocation(replicatedLocation);
@@ -175,7 +175,7 @@ public class RoboCatClient : core.RoboCat
 
             //all processed moves have been removed, so all that are left are unprocessed moves
             //so we must apply them...
-            var moveList = InputManager.sInstance.GetMoveList().Moves;
+            var moveList = InputManager.sInstance.GetMoveList().mMoves;
 
             foreach (var move in moveList)
             {
