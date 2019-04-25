@@ -11,10 +11,10 @@ namespace core
 {
     public enum PacketType
     {
-        kHelloCC,
-        kWelcomeCC,
-        kStateCC,
-        kInputCC,
+        kHelloCC = 1212501071,
+        kWelcomeCC = 1464615757,
+        kStateCC = 1398030676,
+        kInputCC = 1229869140,
     }
 
     public class NetworkManager
@@ -50,8 +50,8 @@ namespace core
             NetIncomingMessage mPacketBuffer;
         };
 
-        //Queue<ReceivedPacket> mPacketQueue = new Queue<ReceivedPacket>();
-        Stack<ReceivedPacket> mPacketQueue = new Stack<ReceivedPacket>();
+        Queue<ReceivedPacket> mPacketQueue = new Queue<ReceivedPacket>();
+        //Stack<ReceivedPacket> mPacketQueue = new Stack<ReceivedPacket>();
 
         protected Dictionary<int, NetGameObject> mNetworkIdToGameObjectMap = new Dictionary<int, NetGameObject>();
 
@@ -204,7 +204,7 @@ namespace core
                         //this doesn't sim jitter, for that we would need to.....
 
                         float simulatedReceivedTime = Timing.sInstance.GetTimef() + mSimulatedLatency;
-                        mPacketQueue.Push(new ReceivedPacket(simulatedReceivedTime, inputStream));
+                        mPacketQueue.Enqueue(new ReceivedPacket(simulatedReceivedTime, inputStream));
                     }
                     else
                     {
@@ -229,7 +229,7 @@ namespace core
                 if (Timing.sInstance.GetTimef() > nextPacket.GetReceivedTime())
                 {
                     ProcessPacket(nextPacket.GetPacketBuffer(), nextPacket.GetPacketBuffer().SenderEndPoint);
-                    mPacketQueue.Pop();
+                    mPacketQueue.Dequeue();
                 }
                 else
                 {
