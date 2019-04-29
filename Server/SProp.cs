@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    public class MouseServer : Mouse
+    public class SProp : Prop
     {
-        protected MouseServer()
+        protected SProp()
         {
 
         }
 
-        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new MouseServer()); }
+        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProp()); }
 
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
 
         }
-        public override bool HandleCollisionWithCat(RoboCat inCat)
+        public override bool HandleCollisionWithCat(Actor inCat)
         {
             //kill yourself!
             SetDoesWantToDie(true);

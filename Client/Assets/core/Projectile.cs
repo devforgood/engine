@@ -8,11 +8,11 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class Yarn : NetGameObject
+    public class Projectile : NetGameObject
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kYarn; }
 
-        public static new NetGameObject CreateInstance() { return new Yarn(); }
+        public static new NetGameObject CreateInstance() { return new Projectile(); }
 
         enum EYarnReplicationState
         {
@@ -23,7 +23,7 @@ namespace core
             EYRS_AllState = EYRS_Pose | EYRS_Color | EYRS_PlayerId
         };
 
-        public static NetGameObject StaticCreate() { return new Yarn(); }
+        public static NetGameObject StaticCreate() { return new Projectile(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EYarnReplicationState.EYRS_AllState; }
 
@@ -33,7 +33,7 @@ namespace core
         protected float mMuzzleSpeed;
         protected int mPlayerId;
 
-        protected Yarn()
+        protected Projectile()
         {
             mMuzzleSpeed = 3.0f;
             mVelocity = Vector3.Zero.Clone();
@@ -104,7 +104,7 @@ namespace core
         }
 
 
-        public override bool HandleCollisionWithCat(RoboCat inCat)
+        public override bool HandleCollisionWithCat(Actor inCat)
         {
             //you hit a cat, so look like you hit a cat
 
@@ -114,7 +114,7 @@ namespace core
         }
 
 
-        public void InitFromShooter(RoboCat inShooter)
+        public void InitFromShooter(Actor inShooter)
         {
             SetColor(inShooter.GetColor());
             SetPlayerId((int)inShooter.GetPlayerId());

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 
 
-class YarnClient : core.Yarn
+class CProjectile : core.Projectile
 {
-    public static new core.NetGameObject StaticCreate() { return new YarnClient(); }
+    public static new core.NetGameObject StaticCreate() { return new CProjectile(); }
     public override void Read(NetIncomingMessage inInputStream )
     {
         bool stateBit;
@@ -49,7 +49,7 @@ class YarnClient : core.Yarn
         }
 
     }
-    public override bool HandleCollisionWithCat(core.RoboCat inCat)
+    public override bool HandleCollisionWithCat(core.Actor inCat)
     {
         if (GetPlayerId() != inCat.GetPlayerId())
         {

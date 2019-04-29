@@ -19,7 +19,7 @@
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\Server\bin\Debug\</OutputPath>
     <IntermediateOutputPath>..\..\..\Server\obj\Debug\</IntermediateOutputPath>
-   <BaseIntermediateOutputPath>..\..\..\Server\obj\Debug\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\Server\obj\Debug\</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -61,21 +61,21 @@
     <Compile Include="InputState.cs" />
     <Compile Include="LinkingContext.cs" />
     <Compile Include="Math.cs" />
-    <Compile Include="Mouse.cs" />
+    <Compile Include="Prop.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="MoveList.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="ReplicationCommand.cs" />
-    <Compile Include="RoboCat.cs" />
+    <Compile Include="Actor.cs" />
     <Compile Include="ScoreBoardManager.cs" />
     <Compile Include="Timing.cs" />
     <Compile Include="TransmissionData.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="WeightedTimedMovingAverage.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="Yarn.cs" />
+    <Compile Include="Projectile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">

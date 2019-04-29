@@ -9,11 +9,11 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class Mouse : NetGameObject
+    public class Prop : NetGameObject
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kMouse; }
 
-        public static new NetGameObject CreateInstance() { return new Mouse(); }
+        public static new NetGameObject CreateInstance() { return new Prop(); }
 
         enum EMouseReplicationState
         {
@@ -23,7 +23,7 @@ namespace core
             EMRS_AllState = EMRS_Pose | EMRS_Color
         };
 
-        public Mouse()
+        public Prop()
         {
 
             SetScale(GetScale() * 0.5f);
@@ -32,7 +32,7 @@ namespace core
         }
 
 
-        public static NetGameObject StaticCreate() { return new Mouse(); }
+        public static NetGameObject StaticCreate() { return new Prop(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EMouseReplicationState.EMRS_AllState; }
 
@@ -98,7 +98,7 @@ namespace core
             }
         }
 
-        public override bool HandleCollisionWithCat(RoboCat inCat)
+        public override bool HandleCollisionWithCat(Actor inCat)
         {
             return false;
         }

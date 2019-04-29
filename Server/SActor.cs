@@ -13,7 +13,7 @@ namespace Server
         ESCT_AI
     };
 
-    public class RoboCatServer : RoboCat
+    public class SActor : Actor
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -32,12 +32,12 @@ namespace Server
                 mTimeOfNextShot = time + mTimeBetweenShots;
 
                 //fire!
-                Yarn yarn = (Yarn)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kYarn);
+                Projectile yarn = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kYarn);
                 yarn.InitFromShooter(this);
             }
         }
 
-        public static new NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new RoboCatServer()); }
+        public static new NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SActor()); }
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
@@ -116,7 +116,7 @@ namespace Server
             //tell the world our health dropped
             NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)ECatReplicationState.ECRS_Health);
         }
-        protected RoboCatServer()
+        protected SActor()
         {
 
             mCatControlType = ECatControlType.ESCT_Human;

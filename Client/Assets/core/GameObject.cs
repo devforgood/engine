@@ -30,10 +30,10 @@ namespace core
 
         public static NetGameObject CreateInstance() { return new NetGameObject(); }
 
-        public virtual RoboCat GetAsCat() { return null; }
+        public virtual Actor GetAsActor() { return null; }
         public virtual uint32_t GetAllStateMask() { return 0; }
 
-        public virtual bool HandleCollisionWithCat(RoboCat inCat) { return true; }
+        public virtual bool HandleCollisionWithCat(Actor inCat) { return true; }
 
         public virtual void NetUpdate() { }
         public virtual void HandleDying() { }

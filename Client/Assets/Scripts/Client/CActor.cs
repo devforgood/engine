@@ -8,9 +8,9 @@ using UnityEngine;
 using uint32_t = System.UInt32;
 
 
-public class RoboCatClient : core.RoboCat
+public class CActor : core.Actor
 {
-    public static new core.NetGameObject StaticCreate() { return new RoboCatClient(); }
+    public static new core.NetGameObject StaticCreate() { return new CActor(); }
 
     float mTimeLocationBecameOutOfSync;
     float mTimeVelocityBecameOutOfSync;
@@ -214,7 +214,7 @@ public class RoboCatClient : core.RoboCat
         }
     }
 
-    protected RoboCatClient()
+    protected CActor()
     {
         mTimeLocationBecameOutOfSync = 0.0f;
         mTimeVelocityBecameOutOfSync = 0.0f;

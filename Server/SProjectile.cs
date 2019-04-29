@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    public class YarnServer : Yarn
+    public class SProjectile : Projectile
     {
-        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new YarnServer()); }
+        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProjectile()); }
 
         public override void HandleDying()
         {
@@ -17,14 +17,14 @@ namespace Server
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
         }
 
-        public override bool HandleCollisionWithCat(RoboCat inCat)
+        public override bool HandleCollisionWithCat(Actor inCat)
         {
             if (inCat.GetPlayerId() != GetPlayerId())
             {
                 //kill yourself!
                 SetDoesWantToDie(true);
 
-                ((RoboCatServer)(inCat)).TakeDamage(GetPlayerId());
+                ((SActor)(inCat)).TakeDamage(GetPlayerId());
 
             }
 
@@ -42,7 +42,7 @@ namespace Server
             }
         }
 
-        protected YarnServer()
+        protected SProjectile()
         {
             mTimeToDie = Timing.sInstance.GetFrameStartTime() + 1.0f;
 

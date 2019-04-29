@@ -8,14 +8,14 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class RoboCat : NetGameObject
+    public class Actor : NetGameObject
     {
         static readonly float HALF_WORLD_HEIGHT = 3.6f;
         static readonly float HALF_WORLD_WIDTH = 6.4f;
 
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kRoboCat; }
 
-        public static new NetGameObject CreateInstance() { return new RoboCat(); }
+        public static new NetGameObject CreateInstance() { return new Actor(); }
 
         public enum ECatReplicationState
         {
@@ -27,7 +27,7 @@ namespace core
             ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
         };
 
-        public RoboCat()
+        public Actor()
         {
             mMaxRotationSpeed = 5.0f;
             mMaxLinearSpeed = 50.0f;
@@ -83,11 +83,11 @@ namespace core
             ProcessCollisions();
         }
 
-        public static NetGameObject StaticCreate() { return new RoboCat(); }
+        public static NetGameObject StaticCreate() { return new Actor(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)ECatReplicationState.ECRS_AllState; }
 
-        public override RoboCat GetAsCat() { return this; }
+        public override Actor GetAsActor() { return this; }
         public override void NetUpdate()
         {
 
@@ -174,10 +174,10 @@ namespace core
                             Vector3 relVel = mVelocity;
 
                             //if other object is a cat, it might have velocity, so there might be relative velocity...
-                            RoboCat targetCat = target.GetAsCat();
-                            if (targetCat != null)
+                            Actor targetActor = target.GetAsActor();
+                            if (targetActor != null)
                             {
-                                relVel -= targetCat.mVelocity;
+                                relVel -= targetActor.mVelocity;
                             }
 
                             //got vel with dir between objects to figure out if they're moving towards each other
@@ -188,7 +188,7 @@ namespace core
                             {
                                 Vector3 impulse = relVelDotDir * dirToTarget;
 
-                                if (targetCat != null)
+                                if (targetActor != null)
                                 {
                                     mVelocity -= impulse;
                                     mVelocity *= mCatRestitution;

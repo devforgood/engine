@@ -54,14 +54,14 @@ namespace Server
             int playerId = inClientProxy.GetPlayerId();
 
             ScoreBoardManager.sInstance.RemoveEntry((uint32_t)playerId);
-            RoboCat cat = GetCatForPlayer(playerId);
+            Actor cat = GetCatForPlayer(playerId);
             if (cat != null)
             {
                 cat.SetDoesWantToDie(true);
             }
         }
 
-        public RoboCat GetCatForPlayer(int inPlayerId)
+        public Actor GetCatForPlayer(int inPlayerId)
         {
             //run through the objects till we find the cat...
             //it would be nice if we kept a pointer to the cat on the clientproxy
@@ -70,10 +70,10 @@ namespace Server
             var gameObjects = World.sInstance.GetGameObjects();
             foreach (var go in gameObjects)
             {
-                RoboCat cat = go.GetAsCat();
+                Actor cat = go.GetAsActor();
                 if (cat != null && cat.GetPlayerId() == inPlayerId)
                 {
-                    return (RoboCat)go;
+                    return (Actor)go;
                 }
             }
 
@@ -82,7 +82,7 @@ namespace Server
 
         public void SpawnCatForPlayer(int inPlayerId)
         {
-            RoboCat cat = (RoboCat)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kRoboCat);
+            Actor cat = (Actor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kRoboCat);
             cat.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
             cat.SetPlayerId((uint32_t)inPlayerId);
             //gotta pick a better spawn location than this...
@@ -92,9 +92,9 @@ namespace Server
 
         Server(uint16_t port)
         {
-            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kRoboCat, RoboCatServer.StaticCreate);
-            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kMouse, MouseServer.StaticCreate);
-            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kYarn, YarnServer.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kRoboCat, SActor.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kMouse, SProp.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kYarn, SProjectile.StaticCreate);
 
             InitNetworkManager(port);
 

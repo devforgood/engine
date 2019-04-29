@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CubeNetwork : MonoBehaviour {
 
-    public RoboCatClient robo = null;
+    public CActor robo = null;
 
 	// Use this for initialization
 	void Start () {

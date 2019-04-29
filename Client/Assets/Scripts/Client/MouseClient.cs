@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 
 
-public class MouseClient : core.Mouse
-{
-    public static new core.NetGameObject StaticCreate() { return new MouseClient(); }
+public class CProp : core.Prop
+{ 
+    public static new core.NetGameObject StaticCreate() { return new CProp(); }
 
-    protected MouseClient()
+    protected CProp()
     {
 
     }

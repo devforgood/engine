@@ -49,15 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientProxy.cs" />
-    <Compile Include="MouseServer.cs" />
+    <Compile Include="SProp.cs" />
     <Compile Include="NetworkManagerServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplicationManagerServer.cs" />
     <Compile Include="ReplicationManagerTransmissionData.cs" />
-    <Compile Include="RoboCatServer.cs" />
+    <Compile Include="SActor.cs" />
     <Compile Include="Server.cs" />
-    <Compile Include="YarnServer.cs" />
+    <Compile Include="SProjectile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
