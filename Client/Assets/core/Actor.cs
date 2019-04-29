@@ -46,7 +46,8 @@ namespace core
             SetCollisionRadius(0.5f);
         }
 
-        public void ProcessInput(float inDeltaTime, InputState inInputState)
+#if USE_INPUT_STATE_OLD
+        public void ProcessInput(float inDeltaTime, InputStateOld inInputState )
         {
             //process our input....
 
@@ -63,6 +64,37 @@ namespace core
             mIsShooting = inInputState.IsShooting();
 
         }
+#else
+    public void ProcessInput(float inDeltaTime, InputState inInputState)
+        {
+            //process our input....
+            Vector3 direction = new Vector3();
+            if (inInputState.mIsForward)
+                direction += Vector3.forward;
+            if (inInputState.mIsBack)
+                direction += Vector3.back;
+            if (inInputState.mIsRight)
+                direction += Vector3.right;
+            if (inInputState.mIsLeft)
+                direction += Vector3.left;
+
+            direction.Normalize();
+            mDirection = direction;
+
+            //turning...
+
+
+            //moving...
+            //float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
+            mThrustDir = 1.0f;
+
+
+            mIsShooting = inInputState.IsShooting();
+
+        }
+#endif
+
+
 
         public void AdjustVelocityByThrust(float inDeltaTime)
         {
@@ -238,8 +270,12 @@ namespace core
                 inOutputStream.Write(location.mX);
                 inOutputStream.Write(location.mY);
 
+#if USE_INPUT_STATE_OLD
                 inOutputStream.Write(GetRotation());
-
+#else
+                inOutputStream.Write(mDirection.mX);
+                inOutputStream.Write(mDirection.mY);
+#endif
                 writtenState |= (uint32_t)ECatReplicationState.ECRS_Pose;
             }
             else
@@ -247,6 +283,7 @@ namespace core
                 inOutputStream.Write((bool)false);
             }
 
+#if USE_INPUT_STATE_OLD
             //always write mThrustDir- it's just two bits
             if (mThrustDir != 0.0f)
             {
@@ -257,6 +294,7 @@ namespace core
             {
                 inOutputStream.Write(false);
             }
+#endif
 
             if ((inDirtyState & (uint32_t)ECatReplicationState.ECRS_Color) != 0)
             {

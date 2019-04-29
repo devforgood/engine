@@ -50,7 +50,11 @@ namespace Server
 
             Vector3 oldLocation = GetLocation();
             Vector3 oldVelocity = GetVelocity();
+#if USE_INPUT_STATE_OLD
             float oldRotation = GetRotation();
+#else
+            Vector3 oldRotation = GetRotation();
+#endif 
 
             //are you controlled by a player?
             //if so, is there a move we haven't processed yet?
@@ -67,6 +71,7 @@ namespace Server
                         float deltaTime = unprocessedMove.GetDeltaTime();
 
                         ProcessInput(deltaTime, currentState);
+
                         SimulateMovement(deltaTime);
 
                         log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, player_id{3}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), GetPlayerId() );

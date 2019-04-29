@@ -6,7 +6,8 @@ using System.Text;
 
 namespace core
 {
-    public class InputState
+
+    public class InputStateOld 
     {
         public float mDesiredRightAmount, mDesiredLeftAmount;
         public float mDesiredForwardAmount, mDesiredBackAmount;
@@ -22,7 +23,7 @@ namespace core
                 ;
         }
 
-        public InputState()
+        public InputStateOld()
         {
             mDesiredRightAmount = 0;
             mDesiredLeftAmount = 0;
@@ -71,6 +72,58 @@ namespace core
         {
             ReadSignedBinaryValue(inInputStream, out mDesiredRightAmount);
             ReadSignedBinaryValue(inInputStream, out mDesiredForwardAmount);
+            mIsShooting = inInputStream.ReadBoolean();
+
+            return true;
+        }
+    }
+
+    public class InputState
+    {
+        public bool mIsForward;
+        public bool mIsBack;
+        public bool mIsRight;
+        public bool mIsLeft;
+        public bool mIsShooting;
+
+        public override string ToString()
+        {
+            return "mIsForward: " + mIsForward
+                + ",mIsBack:  " + mIsBack
+                + ",mIsRight:  " + mIsRight
+                + ",mIsLeft:  " + mIsLeft
+                + ",mIsShooting:  " + mIsShooting
+                ;
+        }
+
+        public InputState()
+        {
+            mIsForward = false;
+            mIsBack = false;
+            mIsRight = false;
+            mIsLeft = false;
+            mIsShooting = false;
+        }
+
+        public bool IsShooting() { return mIsShooting; }
+
+
+        public bool Write(NetOutgoingMessage inOutputStream)
+        {
+            inOutputStream.Write(mIsForward);
+            inOutputStream.Write(mIsBack);
+            inOutputStream.Write(mIsRight);
+            inOutputStream.Write(mIsLeft);
+            inOutputStream.Write(mIsShooting);
+
+            return false;
+        }
+        public bool Read(NetIncomingMessage inInputStream)
+        {
+            mIsForward = inInputStream.ReadBoolean();
+            mIsBack = inInputStream.ReadBoolean();
+            mIsRight = inInputStream.ReadBoolean();
+            mIsLeft = inInputStream.ReadBoolean();
             mIsShooting = inInputStream.ReadBoolean();
 
             return true;

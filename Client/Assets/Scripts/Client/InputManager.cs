@@ -44,6 +44,7 @@ public class InputManager
 
     public void HandleInput(core.EInputAction inInputAction, KeyCode inKeyCode)
     {
+#if USE_INPUT_STATE_OLD
         switch (inKeyCode)
         {
             case KeyCode.A:
@@ -62,6 +63,26 @@ public class InputManager
                 UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsShooting);
                 break;
         }
+#else
+        switch (inKeyCode)
+        {
+            case KeyCode.A:
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsLeft);
+                break;
+            case KeyCode.D:
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsRight);
+                break;
+            case KeyCode.W:
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsForward);
+                break;
+            case KeyCode.S:
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsBack);
+                break;
+            case KeyCode.K:
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsShooting);
+                break;
+        }
+#endif
     }
 
     public core.InputState GetState() { return mCurrentState; }

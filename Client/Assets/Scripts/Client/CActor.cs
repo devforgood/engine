@@ -79,11 +79,15 @@ public class CActor : core.Actor
             readState |= (uint32_t)ECatReplicationState.ECRS_PlayerId;
         }
 
+#if USE_INPUT_STATE_OLD
         float oldRotation = GetRotation();
+        float replicatedRotation;
+#else
+        core.Vector3 oldRotation = GetRotation();
+#endif
         core.Vector3 oldLocation = GetLocation();
         core.Vector3 oldVelocity = GetVelocity();
 
-        float replicatedRotation;
         core.Vector3 replicatedLocation = new core.Vector3();
         core.Vector3 replicatedVelocity = new core.Vector3();
 
@@ -103,12 +107,19 @@ public class CActor : core.Actor
 
             SetLocation(replicatedLocation);
 
+#if USE_INPUT_STATE_OLD
             replicatedRotation = inInputStream.ReadFloat();
             SetRotation(replicatedRotation);
-
+#else
+            mDirection.mX = inInputStream.ReadFloat();
+            mDirection.mY = inInputStream.ReadFloat();
+            mThrustDir = 1.0f;
+#endif
             readState |= (uint32_t)ECatReplicationState.ECRS_Pose;
         }
 
+
+#if USE_INPUT_STATE_OLD
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
@@ -119,6 +130,7 @@ public class CActor : core.Actor
         {
             mThrustDir = 0.0f;
         }
+#endif
 
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
@@ -226,7 +238,13 @@ public class CActor : core.Actor
         cube.robo = this;
     }
 
-    void InterpolateClientSidePrediction(float inOldRotation, core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteCat)
+    void InterpolateClientSidePrediction(
+#if USE_INPUT_STATE_OLD
+        float inOldRotation, 
+#else
+        core.Vector3 inOldRotation,
+#endif 
+        core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteCat)
     {
         if (inOldRotation != GetRotation() && !inIsForRemoteCat)
         {

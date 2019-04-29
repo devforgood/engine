@@ -29,8 +29,13 @@ class CProjectile : core.Projectile
             SetLocation(location + velocity * NetworkManagerClient.sInstance.GetRoundTripTime());
 
 
+#if USE_INPUT_STATE_OLD
             float rotation = inInputStream.ReadFloat();
             SetRotation(rotation);
+#else
+            mDirection.mX = inInputStream.ReadFloat();
+            mDirection.mY = inInputStream.ReadFloat();
+#endif
         }
 
 

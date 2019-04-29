@@ -13,11 +13,26 @@ namespace core
     {
         Vector3 mLocation = new Vector3();
         Vector3 mColor = new Vector3();
+#if USE_INPUT_STATE_OLD
+        float mRotation;
+
+        public void SetRotation(float inRotation)
+        {
+            //should we normalize using fmodf?
+            mRotation = inRotation;
+        }
+
+        public float GetRotation() { return mRotation; }
+
+
+#else 
+        public Vector3 mDirection = new Vector3();
+        public Vector3 GetRotation() { return mDirection; }
+#endif
 
         float mCollisionRadius;
 
 
-        float mRotation;
         float mScale;
         int mIndexInWorld;
 
@@ -41,13 +56,7 @@ namespace core
         public void SetIndexInWorld(int inIndex) { mIndexInWorld = inIndex; }
         public int GetIndexInWorld() { return mIndexInWorld; }
 
-        public void SetRotation(float inRotation)
-        {
-            //should we normalize using fmodf?
-            mRotation = inRotation;
-        }
 
-        public float GetRotation() { return mRotation; }
 
         public void SetScale(float inScale) { mScale = inScale; }
         public float GetScale() { return mScale; }
@@ -61,8 +70,12 @@ namespace core
 
         public Vector3 GetForwardVector()
         {
+#if USE_INPUT_STATE_OLD
             //should we cache this when you turn?
             return new Vector3((float)Math.Sin(mRotation), (float)-Math.Cos(mRotation), 0.0f);
+#else
+            return mDirection;
+#endif
         }
 
 

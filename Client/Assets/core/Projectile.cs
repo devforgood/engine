@@ -65,7 +65,12 @@ namespace core
                 inOutputStream.Write(velocity.mX);
                 inOutputStream.Write(velocity.mY);
 
+#if USE_INPUT_STATE_OLD
                 inOutputStream.Write(GetRotation());
+#else
+                inOutputStream.Write(mDirection.mX);
+                inOutputStream.Write(mDirection.mY);
+#endif 
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Pose;
             }
@@ -123,7 +128,7 @@ namespace core
             SetVelocity(inShooter.GetVelocity() + forward * mMuzzleSpeed);
             SetLocation(inShooter.GetLocation() /* + forward * 0.55f */ );
 
-            SetRotation(inShooter.GetRotation());
+            mDirection = inShooter.GetRotation();
         }
 
         public override void NetUpdate()

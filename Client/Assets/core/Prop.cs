@@ -48,7 +48,12 @@ namespace core
                 inOutputStream.Write(location.mX);
                 inOutputStream.Write(location.mY);
 
+#if USE_INPUT_STATE_OLD
                 inOutputStream.Write(GetRotation());
+#else
+                inOutputStream.Write(mDirection.mX);
+                inOutputStream.Write(mDirection.mY);
+#endif 
 
                 writtenState |= (uint32_t)EMouseReplicationState.EMRS_Pose;
             }
@@ -84,8 +89,13 @@ namespace core
                 location.mY = inInputStream.ReadFloat();
                 SetLocation(location);
 
+#if USE_INPUT_STATE_OLD
                 float rotation = inInputStream.ReadFloat();
                 SetRotation(rotation);
+#else
+                mDirection.mX = inInputStream.ReadFloat();
+                mDirection.mY = inInputStream.ReadFloat();
+#endif
             }
 
 
