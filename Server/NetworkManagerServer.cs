@@ -312,15 +312,13 @@ namespace Server
         void HandleInputPacket(ClientProxy inClientProxy, NetIncomingMessage inInputStream)
         {
             Move move = new Move();
-            byte[] buf = new byte[2];
-            inInputStream.ReadBits(buf, 0, 2);
-            uint32_t moveCount = BitConverter.ToUInt16(buf, 0);
+            uint32_t moveCount = inInputStream.ReadUInt32(2);
 
             for (; moveCount > 0; --moveCount)
             {
                 if (move.Read(inInputStream))
                 {
-                    log.InfoFormat("recv move {0}, {1}, {2}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp());
+                    log.InfoFormat("recv move {0}, {1}, {2}, {3}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp(), moveCount);
                     if (inClientProxy.GetUnprocessedMoveList().AddMoveIfNew(move))
                     {
                         inClientProxy.SetIsLastMoveTimestampDirty(true);

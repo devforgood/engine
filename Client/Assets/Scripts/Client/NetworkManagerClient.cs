@@ -242,7 +242,7 @@ public class NetworkManagerClient : core.NetworkManager
             //auto move = moveList.begin() + firstMoveIndex;
 
             //only need two bits to write the move count, because it's 0, 1, 2 or 3
-            inputPacket.Write(moveCount - firstMoveIndex, 2);
+            inputPacket.Write((uint32_t)(moveCount - firstMoveIndex), 2);
 
             ++debug_index;
             for (; firstMoveIndex < moveCount; ++firstMoveIndex)
