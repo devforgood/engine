@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    public enum ECatControlType
+    public enum EActorControlType
     {
         ESCT_Human,
         ESCT_AI
@@ -17,7 +17,7 @@ namespace Server
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        ECatControlType mCatControlType;
+        EActorControlType mActorControlType;
 
 
         float mTimeOfNextShot;
@@ -32,7 +32,7 @@ namespace Server
                 mTimeOfNextShot = time + mTimeBetweenShots;
 
                 //fire!
-                Projectile yarn = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kYarn);
+                Projectile yarn = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kProjectile);
                 yarn.InitFromShooter(this);
             }
         }
@@ -54,7 +54,7 @@ namespace Server
 
             //are you controlled by a player?
             //if so, is there a move we haven't processed yet?
-            if (mCatControlType == ECatControlType.ESCT_Human)
+            if (mActorControlType == EActorControlType.ESCT_Human)
             {
                 ClientProxy client = NetworkManagerServer.sInstance.GetClientProxy((int)GetPlayerId());
                 if (client != null)
@@ -92,7 +92,7 @@ namespace Server
             }
         }
 
-        public void SetCatControlType(ECatControlType inCatControlType) { mCatControlType = inCatControlType; }
+        public void SetActorControlType(EActorControlType inActorControlType) { mActorControlType = inActorControlType; }
 
         public void TakeDamage(int inDamagingPlayerId)
         {
@@ -119,7 +119,7 @@ namespace Server
         protected SActor()
         {
 
-            mCatControlType = ECatControlType.ESCT_Human;
+            mActorControlType = EActorControlType.ESCT_Human;
             mTimeOfNextShot = 0.0f;
             mTimeBetweenShots = 0.2f;
         }

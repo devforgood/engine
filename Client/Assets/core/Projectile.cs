@@ -10,7 +10,7 @@ namespace core
 {
     public class Projectile : NetGameObject
     {
-        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kYarn; }
+        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kProjectile; }
 
         public static new NetGameObject CreateInstance() { return new Projectile(); }
 
@@ -104,7 +104,7 @@ namespace core
         }
 
 
-        public override bool HandleCollisionWithCat(Actor inCat)
+        public override bool HandleCollisionWithActor(Actor inActor)
         {
             //you hit a cat, so look like you hit a cat
 

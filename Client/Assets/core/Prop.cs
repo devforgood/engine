@@ -11,7 +11,7 @@ namespace core
 {
     public class Prop : NetGameObject
     {
-        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kMouse; }
+        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kProp; }
 
         public static new NetGameObject CreateInstance() { return new Prop(); }
 
@@ -98,7 +98,7 @@ namespace core
             }
         }
 
-        public override bool HandleCollisionWithCat(Actor inCat)
+        public override bool HandleCollisionWithActor(Actor inActor)
         {
             return false;
         }

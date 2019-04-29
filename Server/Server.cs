@@ -26,7 +26,7 @@ namespace Server
 
             NetworkManagerServer.sInstance.CheckForDisconnects();
 
-            NetworkManagerServer.sInstance.RespawnCats();
+            NetworkManagerServer.sInstance.RespawnActors();
 
             base.DoFrame();
 
@@ -45,33 +45,33 @@ namespace Server
             int playerId = inClientProxy.GetPlayerId();
 
             ScoreBoardManager.sInstance.AddEntry((uint32_t)playerId, inClientProxy.GetName());
-            SpawnCatForPlayer(playerId);
+            SpawnActorForPlayer(playerId);
         }
         public void HandleLostClient(ClientProxy inClientProxy)
         {
-            //kill client's cat
+            //kill client's actor
             //remove client from scoreboard
             int playerId = inClientProxy.GetPlayerId();
 
             ScoreBoardManager.sInstance.RemoveEntry((uint32_t)playerId);
-            Actor cat = GetCatForPlayer(playerId);
-            if (cat != null)
+            Actor actor = GetActorForPlayer(playerId);
+            if (actor != null)
             {
-                cat.SetDoesWantToDie(true);
+                actor.SetDoesWantToDie(true);
             }
         }
 
-        public Actor GetCatForPlayer(int inPlayerId)
+        public Actor GetActorForPlayer(int inPlayerId)
         {
-            //run through the objects till we find the cat...
-            //it would be nice if we kept a pointer to the cat on the clientproxy
-            //but then we'd have to clean it up when the cat died, etc.
+            //run through the objects till we find the actor...
+            //it would be nice if we kept a pointer to the actor on the clientproxy
+            //but then we'd have to clean it up when the actor died, etc.
             //this will work for now until it's a perf issue
             var gameObjects = World.sInstance.GetGameObjects();
             foreach (var go in gameObjects)
             {
-                Actor cat = go.GetAsActor();
-                if (cat != null && cat.GetPlayerId() == inPlayerId)
+                Actor actor = go.GetAsActor();
+                if (actor != null && actor.GetPlayerId() == inPlayerId)
                 {
                     return (Actor)go;
                 }
@@ -80,21 +80,21 @@ namespace Server
             return null;
         }
 
-        public void SpawnCatForPlayer(int inPlayerId)
+        public void SpawnActorForPlayer(int inPlayerId)
         {
-            Actor cat = (Actor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kRoboCat);
-            cat.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
-            cat.SetPlayerId((uint32_t)inPlayerId);
+            Actor actor = (Actor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kActor);
+            actor.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
+            actor.SetPlayerId((uint32_t)inPlayerId);
             //gotta pick a better spawn location than this...
-            cat.SetLocation(new Vector3(1.0f - (float)(inPlayerId), 0.0f, 0.0f));
+            actor.SetLocation(new Vector3(1.0f - (float)(inPlayerId), 0.0f, 0.0f));
         }
 
 
         Server(uint16_t port)
         {
-            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kRoboCat, SActor.StaticCreate);
-            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kMouse, SProp.StaticCreate);
-            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kYarn, SProjectile.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kActor, SActor.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kProp, SProp.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kProjectile, SProjectile.StaticCreate);
 
             InitNetworkManager(port);
 
@@ -125,7 +125,7 @@ namespace Server
             //make a mouse somewhere- where will these come from?
             for (int i = 0; i < inMouseCount; ++i)
             {
-                go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kMouse);
+                go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp);
                 Vector3 mouseLocation = RoboMath.GetRandomVector(mouseMin, mouseMax);
                 go.SetLocation(mouseLocation);
             }

@@ -24,9 +24,9 @@ public class Client : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kRoboCat, CActor.StaticCreate);
-        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kMouse, CProp.StaticCreate);
-        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kYarn, CProjectile.StaticCreate);
+        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kActor, CActor.StaticCreate);
+        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProp, CProp.StaticCreate);
+        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProjectile, CProjectile.StaticCreate);
 
         var addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(server_ip_address), server_port);
 

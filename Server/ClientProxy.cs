@@ -51,11 +51,11 @@ namespace Server
             mTimeToRespawn = Timing.sInstance.GetFrameStartTime() + kRespawnDelay;
         }
 
-        public void RespawnCatIfNecessary()
+        public void RespawnActorIfNecessary()
         {
             if (mTimeToRespawn != 0.0f && Timing.sInstance.GetFrameStartTime() > mTimeToRespawn)
             {
-                ((Server)(Engine.sInstance)).SpawnCatForPlayer(mPlayerId);
+                ((Server)(Engine.sInstance)).SpawnActorForPlayer(mPlayerId);
                 mTimeToRespawn = 0.0f;
             }
         }

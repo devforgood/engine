@@ -9,8 +9,8 @@ namespace core
     public enum GameObjectClassId
     {
         kGameObject     = 1196376650,
-        kMouse          = 1297044819,
-        kRoboCat        = 1380139348,
-        kYarn           = 1497453134,
+        kProp          = 1297044819,
+        kActor        = 1380139348,
+        kProjectile           = 1497453134,
     }
 }

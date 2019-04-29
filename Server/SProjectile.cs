@@ -17,14 +17,14 @@ namespace Server
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
         }
 
-        public override bool HandleCollisionWithCat(Actor inCat)
+        public override bool HandleCollisionWithActor(Actor inActor)
         {
-            if (inCat.GetPlayerId() != GetPlayerId())
+            if (inActor.GetPlayerId() != GetPlayerId())
             {
                 //kill yourself!
                 SetDoesWantToDie(true);
 
-                ((SActor)(inCat)).TakeDamage(GetPlayerId());
+                ((SActor)(inActor)).TakeDamage(GetPlayerId());
 
             }
 

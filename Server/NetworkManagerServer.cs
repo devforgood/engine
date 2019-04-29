@@ -151,11 +151,11 @@ namespace Server
             }
         }
 
-        public void RespawnCats()
+        public void RespawnActors()
         {
             foreach (var c in mAddressToClientMap)
             {
-                c.Value.RespawnCatIfNecessary();
+                c.Value.RespawnActorIfNecessary();
             }
         }
 

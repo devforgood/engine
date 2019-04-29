@@ -21,12 +21,12 @@ namespace Server
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
 
         }
-        public override bool HandleCollisionWithCat(Actor inCat)
+        public override bool HandleCollisionWithActor(Actor inActor)
         {
             //kill yourself!
             SetDoesWantToDie(true);
 
-            ScoreBoardManager.sInstance.IncScore(inCat.GetPlayerId(), 1);
+            ScoreBoardManager.sInstance.IncScore(inActor.GetPlayerId(), 1);
 
             return false;
         }

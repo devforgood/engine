@@ -33,7 +33,7 @@ namespace core
         public virtual Actor GetAsActor() { return null; }
         public virtual uint32_t GetAllStateMask() { return 0; }
 
-        public virtual bool HandleCollisionWithCat(Actor inCat) { return true; }
+        public virtual bool HandleCollisionWithActor(Actor inActor) { return true; }
 
         public virtual void NetUpdate() { }
         public virtual void HandleDying() { }

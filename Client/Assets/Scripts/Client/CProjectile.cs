@@ -49,9 +49,9 @@ class CProjectile : core.Projectile
         }
 
     }
-    public override bool HandleCollisionWithCat(core.Actor inCat)
+    public override bool HandleCollisionWithActor(core.Actor inActor)
     {
-        if (GetPlayerId() != inCat.GetPlayerId())
+        if (GetPlayerId() != inActor.GetPlayerId())
         {
             //RenderManager.sInstance.RemoveComponent(mSpriteComponent.get());
         }

@@ -13,7 +13,7 @@ namespace core
         static readonly float HALF_WORLD_HEIGHT = 3.6f;
         static readonly float HALF_WORLD_WIDTH = 6.4f;
 
-        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kRoboCat; }
+        public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kActor; }
 
         public static new NetGameObject CreateInstance() { return new Actor(); }
 
@@ -160,7 +160,7 @@ namespace core
                     {
                         //first, tell the other guy there was a collision with a cat, so it can do something...
 
-                        if (target.HandleCollisionWithCat(this))
+                        if (target.HandleCollisionWithActor(this))
                         {
                             //okay, you hit something!
                             //so, project your location far enough that you're not colliding
