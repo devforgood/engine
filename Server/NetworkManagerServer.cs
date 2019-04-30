@@ -314,10 +314,6 @@ namespace Server
             InFlightPacket ifp = inClientProxy.GetDeliveryNotificationManager().WriteState(statePacket);
 
 
-            var rmtd = new ReplicationManagerTransmissionData(inClientProxy.GetReplicationManagerServer());
-            inClientProxy.GetReplicationManagerServer().Write(statePacket, rmtd);
-            ifp.SetTransmissionData((int)TransmissionDataType.kReplicationManager, rmtd);
-
             int ret = SendPacket(statePacket, inClientProxy.GetSocketAddress());
             log.InfoFormat("send rpc {0}", ret);
         }
