@@ -191,6 +191,12 @@ namespace Server
                         HandleInputPacket(inClientProxy, inInputStream);
                     }
                     break;
+                case PacketType.kRPC:
+                    if (inClientProxy.GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
+                    {
+                        HandleRPCPacket(inClientProxy, inInputStream);
+                    }
+                    break;
                 default:
                     //LOG("Unknown packet type received from %s", inClientProxy.GetSocketAddress().ToString().c_str());
                     break;
@@ -297,6 +303,25 @@ namespace Server
             log.InfoFormat("send {0}", ret);
         }
 
+        void SendRPCPacketToClient(ClientProxy inClientProxy)
+        {
+            //build state packet
+            NetOutgoingMessage statePacket = new NetOutgoingMessage();
+
+            //it's state!
+            statePacket.Write((uint32_t)PacketType.kRPC);
+
+            InFlightPacket ifp = inClientProxy.GetDeliveryNotificationManager().WriteState(statePacket);
+
+
+            var rmtd = new ReplicationManagerTransmissionData(inClientProxy.GetReplicationManagerServer());
+            inClientProxy.GetReplicationManagerServer().Write(statePacket, rmtd);
+            ifp.SetTransmissionData((int)TransmissionDataType.kReplicationManager, rmtd);
+
+            int ret = SendPacket(statePacket, inClientProxy.GetSocketAddress());
+            log.InfoFormat("send rpc {0}", ret);
+        }
+
         void WriteLastMoveTimestampIfDirty(NetOutgoingMessage inOutputStream, ClientProxy inClientProxy)
         {
             //first, dirty?
@@ -324,6 +349,14 @@ namespace Server
                         inClientProxy.SetIsLastMoveTimestampDirty(true);
                     }
                 }
+            }
+        }
+
+        void HandleRPCPacket(ClientProxy inClientProxy, NetIncomingMessage inInputStream)
+        {
+            foreach (var it in mAddressToClientMap)
+            {
+                SendRPCPacketToClient(it.Value);
             }
         }
 

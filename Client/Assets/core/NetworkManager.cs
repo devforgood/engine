@@ -11,10 +11,11 @@ namespace core
 {
     public enum PacketType
     {
-        kHelloCC = 1212501071,
-        kWelcomeCC = 1464615757,
-        kStateCC = 1398030676,
-        kInputCC = 1229869140,
+        kHelloCC    = 1212501071,
+        kWelcomeCC  = 1464615757,
+        kStateCC    = 1398030676,
+        kInputCC    = 1229869140,
+        kRPC        = 1111111111,
     }
 
     public class NetworkManager
@@ -130,7 +131,7 @@ namespace core
                     return 0;
 
                 bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
-                Net.Log("packet recv :" + bytesReceived);
+                //Net.Log("packet recv :" + bytesReceived);
             }
             catch (SocketException sx)
             {
@@ -245,7 +246,7 @@ namespace core
             try
             {
                 int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.LengthBytes, SocketFlags.None, inFromAddress);
-                Net.Log("packet send :" + bytesSent);
+                //Net.Log("packet send :" + bytesSent);
 
                 if (bytesSent > 0)
                 {

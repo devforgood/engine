@@ -38,7 +38,7 @@ public class CActor : core.Actor
 
                 SimulateMovement(deltaTime);
 
-                Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
+                //Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
             }
         }
         else
@@ -102,7 +102,7 @@ public class CActor : core.Actor
             replicatedLocation.mX = inInputStream.ReadFloat();
             replicatedLocation.mY = inInputStream.ReadFloat();
 
-            Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
+            //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
 
             SetLocation(replicatedLocation);

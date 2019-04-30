@@ -18,6 +18,7 @@ public class Client : MonoBehaviour {
         { KeyCode.W , false },
         { KeyCode.S , false },
         { KeyCode.K , false },
+        { KeyCode.R , false },
     };
 
 
@@ -50,6 +51,7 @@ public class Client : MonoBehaviour {
         KeyEvent(KeyCode.W);
         KeyEvent(KeyCode.S);
         KeyEvent(KeyCode.K);
+        KeyEvent(KeyCode.R);
 
     }
 
@@ -78,6 +80,10 @@ public class Client : MonoBehaviour {
             {
                 Debug.Log("key down " + k);
                 InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, k);
+                if(k==KeyCode.R)
+                {
+                    NetworkManagerClient.sInstance.SendRPCPacket();
+                }
             }
             else
             {

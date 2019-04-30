@@ -75,6 +75,12 @@ public class NetworkManagerClient : core.NetworkManager
                     HandleStatePacket(inInputStream);
                 }
                 break;
+            case core.PacketType.kRPC:
+                if (mDeliveryNotificationManager.ReadAndProcessState(inInputStream))
+                {
+                    HandleRPCPacket(inInputStream);
+                }
+                break;
         }
     }
 
@@ -151,6 +157,13 @@ public class NetworkManagerClient : core.NetworkManager
             mReplicationManagerClient.Read(inInputStream);
         }
     }
+
+    void HandleRPCPacket(NetIncomingMessage inInputStream)
+    {
+        Debug.Log("RPC ");
+
+    }
+
     void ReadLastMoveProcessedOnServerTimestamp(NetIncomingMessage inInputStream)
     {
         bool isTimestampDirty = inInputStream.ReadBoolean();
@@ -247,7 +260,7 @@ public class NetworkManagerClient : core.NetworkManager
             ++debug_index;
             for (; firstMoveIndex < moveCount; ++firstMoveIndex)
             {
-                Debug.Log("send move info " + debug_index + ", moveCount : " +  moveCount + ", firstMoveIndex :" + firstMoveIndex + ", timestamp:" + moveList.mMoves[firstMoveIndex].GetTimestamp() + ", delta:" + moveList.mMoves[firstMoveIndex].GetDeltaTime());
+                //Debug.Log("send move info " + debug_index + ", moveCount : " +  moveCount + ", firstMoveIndex :" + firstMoveIndex + ", timestamp:" + moveList.mMoves[firstMoveIndex].GetTimestamp() + ", delta:" + moveList.mMoves[firstMoveIndex].GetDeltaTime());
                 ///would be nice to optimize the time stamp...
                 moveList.mMoves[firstMoveIndex].Write(inputPacket);
             }
@@ -265,5 +278,16 @@ public class NetworkManagerClient : core.NetworkManager
             mNetworkIdToGameObjectMap.Remove(pair.Key);
         }
 
+    }
+
+    public void SendRPCPacket()
+    {
+        NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
+
+        rpcPacket.Write((UInt32)core.PacketType.kRPC);
+        mDeliveryNotificationManager.WriteState(rpcPacket);
+
+
+        SendPacket(rpcPacket, mServerAddress);
     }
 }
