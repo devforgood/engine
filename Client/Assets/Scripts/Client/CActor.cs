@@ -157,7 +157,7 @@ public class CActor : core.Actor
                 //HUD::sInstance->SetPlayerHealth(mHealth);
             }
 
-            DoClientSidePredictionAfterReplicationForLocalCat(readState);
+            DoClientSidePredictionAfterReplicationForLocalActor(readState);
 
             //if this is a create packet, don't interpolate
             if ((readState & (uint32_t)ECatReplicationState.ECRS_PlayerId) == 0)
@@ -167,7 +167,7 @@ public class CActor : core.Actor
         }
         else
         {
-            DoClientSidePredictionAfterReplicationForRemoteCat(readState);
+            DoClientSidePredictionAfterReplicationForRemoteActor(readState);
 
             //will this smooth us out too? it'll interpolate us just 10% of the way there...
             if ((readState & (uint32_t)ECatReplicationState.ECRS_PlayerId) == 0)
@@ -178,7 +178,7 @@ public class CActor : core.Actor
         }
     }
 
-    public void DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
+    public void DoClientSidePredictionAfterReplicationForLocalActor(uint32_t inReadState)
     {
         if ((inReadState & (uint32_t)ECatReplicationState.ECRS_Pose) != 0)
         {
@@ -198,7 +198,7 @@ public class CActor : core.Actor
             }
         }
     }
-    public void DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
+    public void DoClientSidePredictionAfterReplicationForRemoteActor(uint32_t inReadState)
     {
         if ((inReadState & (uint32_t)ECatReplicationState.ECRS_Pose) != 0)
         {
