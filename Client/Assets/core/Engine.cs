@@ -7,6 +7,14 @@ namespace core
 {
     public class Engine
     {
+        public int ServerClientId { get; set; }
+        public bool IsServer { get; set; }
+        public bool IsClient { get; set; }
+
+        public bool IsRunning
+        {
+            get { return mShouldKeepRunning; }
+        }
 
         bool mShouldKeepRunning;
 

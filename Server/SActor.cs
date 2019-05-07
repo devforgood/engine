@@ -1,4 +1,5 @@
 ﻿using core;
+using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,7 +128,19 @@ namespace Server
             mActorControlType = EActorControlType.ESCT_Human;
             mTimeOfNextShot = 0.0f;
             mTimeBetweenShots = 0.2f;
+
+            CacheAttributes();
+
         }
 
+        public override void Send(int clientId, NetBuffer inOutputStream)
+        {
+            NetworkManagerServer.sInstance.SendPacket(clientId, inOutputStream);
+        }
+
+        [ServerRPC(RequireOwnership = false)]
+        public override void PingServer(int number)
+        {
+        }
     }
 }

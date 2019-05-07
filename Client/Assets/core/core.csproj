@@ -50,10 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AckRange.cs" />
-    <Compile Include="DebugLog.cs" />
+    <Compile Include="AttributeMessageMode.cs" />
+    <Compile Include="HashCode.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="DeliveryNotificationManager.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameObject.Rpc.cs" />
+    <Compile Include="GameObject.RpcOverloads.cs" />
     <Compile Include="GameObjectClassId.cs" />
     <Compile Include="GameObjectRegistry.cs" />
     <Compile Include="InFlightPacket.cs" />
@@ -61,6 +65,7 @@
     <Compile Include="InputState.cs" />
     <Compile Include="LinkingContext.cs" />
     <Compile Include="Math.cs" />
+    <Compile Include="NetBufferExtensions.cs" />
     <Compile Include="Prop.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="MoveList.cs" />
@@ -69,9 +74,12 @@
     <Compile Include="Quaternion.cs" />
     <Compile Include="ReplicationCommand.cs" />
     <Compile Include="Actor.cs" />
+    <Compile Include="RpcResponse.cs" />
     <Compile Include="ScoreBoardManager.cs" />
+    <Compile Include="SecuritySendFlags.cs" />
     <Compile Include="Timing.cs" />
     <Compile Include="TransmissionData.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="WeightedTimedMovingAverage.cs" />
     <Compile Include="World.cs" />

@@ -29,6 +29,9 @@ public class Client : MonoBehaviour {
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProp, CProp.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProjectile, CProjectile.StaticCreate);
 
+        core.Engine.sInstance.IsClient = true;
+        core.Engine.sInstance.IsServer = false;
+
         var addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(server_ip_address), server_port);
 
         NetworkManagerClient.StaticInit(addr, user_id);

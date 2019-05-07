@@ -34,6 +34,8 @@ public class NetworkManagerClient : core.NetworkManager
     ReplicationManagerClient mReplicationManagerClient = new ReplicationManagerClient();
 
     System.Net.IPEndPoint mServerAddress;
+    public System.Net.IPEndPoint ServerAddress { get { return mServerAddress; } }
+
 
     NetworkClientState mState;
 
@@ -140,6 +142,7 @@ public class NetworkManagerClient : core.NetworkManager
             int playerId = (int)inInputStream.ReadUInt32();
             mPlayerId = playerId;
             mState = NetworkClientState.NCS_Welcomed;
+            core.Engine.sInstance.ServerClientId = mPlayerId;
             //LOG("'%s' was welcomed on client as player %d", mName.c_str(), mPlayerId);
         }
     }
@@ -161,6 +164,15 @@ public class NetworkManagerClient : core.NetworkManager
     void HandleRPCPacket(NetIncomingMessage inInputStream)
     {
         Debug.Log("RPC ");
+
+        int networkId = inInputStream.ReadInt32();
+        ulong hash = inInputStream.ReadUInt64();
+
+        core.NetGameObject obj;
+        if (mNetworkIdToGameObjectMap.TryGetValue(networkId, out obj) == true)
+        {
+            obj.OnRemoteClientRPC(hash, 0, inInputStream);
+        }
 
     }
 
@@ -282,12 +294,15 @@ public class NetworkManagerClient : core.NetworkManager
 
     public void SendRPCPacket()
     {
-        NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
+        //NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
 
-        rpcPacket.Write((UInt32)core.PacketType.kRPC);
-        mDeliveryNotificationManager.WriteState(rpcPacket);
+        //rpcPacket.Write((UInt32)core.PacketType.kRPC);
+        //mDeliveryNotificationManager.WriteState(rpcPacket);
 
 
-        SendPacket(rpcPacket, mServerAddress);
+        //SendPacket(rpcPacket, mServerAddress);
+
+        //InvokeServerRpc(PingServer, 1);
+
     }
 }

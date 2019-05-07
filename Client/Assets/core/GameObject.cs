@@ -9,7 +9,7 @@ using uint8_t = System.Byte;
 
 namespace core
 {
-    public class NetGameObject
+    public partial class NetGameObject
     {
         Vector3 mLocation = new Vector3();
         Vector3 mColor = new Vector3();
@@ -40,6 +40,7 @@ namespace core
 
         int mNetworkId;
 
+        public int NetworkId { get { return mNetworkId; } }
 
         public virtual uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kGameObject; }
 

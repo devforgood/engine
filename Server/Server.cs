@@ -102,6 +102,8 @@ namespace Server
             //NetworkManagerServer::sInstance->SetSimulatedLatency( 0.25f );
             //NetworkManagerServer::sInstance->SetSimulatedLatency( 0.5f );
             //NetworkManagerServer::sInstance->SetSimulatedLatency( 0.1f );
+            IsClient = false;
+            IsServer = true;
         }
 
         bool InitNetworkManager(uint16_t port)

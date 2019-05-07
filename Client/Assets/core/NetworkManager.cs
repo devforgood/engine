@@ -131,7 +131,7 @@ namespace core
                     return 0;
 
                 bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
-                //Net.Log("packet recv :" + bytesReceived);
+                //LogHelper.LogInfo("packet recv :" + bytesReceived);
             }
             catch (SocketException sx)
             {
@@ -240,13 +240,12 @@ namespace core
             }
         }
 
-
-        public int SendPacket(NetOutgoingMessage inOutputStream, System.Net.IPEndPoint inFromAddress)
+        public int SendPacket(NetBuffer inOutputStream, System.Net.IPEndPoint inFromAddress)
         {
             try
             {
                 int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.LengthBytes, SocketFlags.None, inFromAddress);
-                //Net.Log("packet send :" + bytesSent);
+                //LogHelper.LogInfo("packet send :" + bytesSent);
 
                 if (bytesSent > 0)
                 {
@@ -260,6 +259,12 @@ namespace core
 
             }
             return 0;
+        }
+
+
+        public int SendPacket(NetOutgoingMessage inOutputStream, System.Net.IPEndPoint inFromAddress)
+        {
+            return SendPacket((NetBuffer)inOutputStream, inFromAddress);
         }
 
         public void UpdateBytesSentLastFrame()

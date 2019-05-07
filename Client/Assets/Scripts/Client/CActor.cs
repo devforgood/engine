@@ -235,7 +235,7 @@ public class CActor : core.Actor
         GameObject brick = MonoBehaviour.Instantiate(prefab) as GameObject;
         //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
         var cube = brick.GetComponent<CubeNetwork>();
-        cube.robo = this;
+        cube.actor = this;
     }
 
     void InterpolateClientSidePrediction(
@@ -305,8 +305,13 @@ public class CActor : core.Actor
             //we're in sync
             mTimeVelocityBecameOutOfSync = 0.0f;
         }
+
+
     }
 
-
+    public override void Send(int clientId, NetBuffer inOutputStream)
+    {
+        NetworkManagerClient.sInstance.SendPacket(inOutputStream, NetworkManagerClient.sInstance.ServerAddress);
+    }
 
 }

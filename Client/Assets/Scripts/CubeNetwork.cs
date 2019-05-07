@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CubeNetwork : MonoBehaviour {
 
-    public CActor robo = null;
+    public CActor actor = null;
 
 	// Use this for initialization
 	void Start () {
@@ -14,11 +14,22 @@ public class CubeNetwork : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if(robo != null)
+        if(actor != null)
         {
-            transform.position = new Vector3(robo.GetLocation().mX, robo.GetLocation().mY, robo.GetLocation().mZ);
-            if(robo.IsLocalPlayer() == false)
-                Debug.Log("Draw Remote Client Location : " + robo.GetLocation() + ", player_id : " + robo.GetPlayerId());
+            transform.position = new Vector3(actor.GetLocation().mX, actor.GetLocation().mY, actor.GetLocation().mZ);
+            if(actor.IsLocalPlayer() == false)
+                Debug.Log("Draw Remote Client Location : " + actor.GetLocation() + ", player_id : " + actor.GetPlayerId());
+
+
+            if(actor.IsLocalPlayer())
+            {
+                if (Input.GetKey(KeyCode.R))
+                {
+                    actor.InvokeServerRpc(actor.PingServer, 19);
+                }
+
+
+            }
         }
     }
 }

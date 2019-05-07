@@ -44,6 +44,8 @@ namespace core
 
             mHealth = 10;
             SetCollisionRadius(0.5f);
+
+            CacheAttributes();
         }
 
 #if USE_INPUT_STATE_OLD
@@ -352,5 +354,17 @@ namespace core
         protected int mHealth;
 
         protected bool mIsShooting;
+
+
+        [ServerRPC(RequireOwnership = false)]
+        public virtual void PingServer(int number)
+        {
+        }
+
+        [ClientRPC]
+        public void PingClient(int number)
+        {
+        }
+
     }
 }

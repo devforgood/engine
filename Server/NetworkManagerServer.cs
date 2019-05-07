@@ -170,6 +170,16 @@ namespace Server
             return null;
         }
 
+        public int SendPacket(int inPlayerId, NetBuffer inOutputStream)
+        {
+            var c = GetClientProxy(inPlayerId);
+            if(c!=null)
+            {
+                return SendPacket(inOutputStream, c.GetSocketAddress());
+            }
+            return 0;
+        }
+
 
         void ProcessPacket(ClientProxy inClientProxy, NetIncomingMessage inInputStream)
         {
@@ -192,7 +202,7 @@ namespace Server
                     }
                     break;
                 case PacketType.kRPC:
-                    if (inClientProxy.GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
+                    //if (inClientProxy.GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
                     {
                         HandleRPCPacket(inClientProxy, inInputStream);
                     }
@@ -303,7 +313,7 @@ namespace Server
             log.InfoFormat("send {0}", ret);
         }
 
-        void SendRPCPacketToClient(ClientProxy inClientProxy)
+       public void SendRPCPacketToClient(ClientProxy inClientProxy)
         {
             //build state packet
             NetOutgoingMessage statePacket = new NetOutgoingMessage();
@@ -350,10 +360,20 @@ namespace Server
 
         void HandleRPCPacket(ClientProxy inClientProxy, NetIncomingMessage inInputStream)
         {
-            foreach (var it in mAddressToClientMap)
+            int networkId = inInputStream.ReadInt32();
+            ulong hash = inInputStream.ReadUInt64();
+            int senderClientId = inClientProxy.GetPlayerId();
+
+            NetGameObject obj;
+            if(mNetworkIdToGameObjectMap.TryGetValue(networkId, out obj)==true)
             {
-                SendRPCPacketToClient(it.Value);
+                obj.OnRemoteServerRPC(hash, senderClientId, inInputStream);
             }
+
+            //foreach (var it in mAddressToClientMap)
+            //{
+            //    SendRPCPacketToClient(it.Value);
+            //}
         }
 
         void HandleClientDisconnected(ClientProxy inClientProxy)
