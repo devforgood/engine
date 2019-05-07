@@ -76,7 +76,7 @@ public class CActor : core.Actor
         {
             uint32_t playerId = inInputStream.ReadUInt32();
             SetPlayerId(playerId);
-            readState |= (uint32_t)ECatReplicationState.ECRS_PlayerId;
+            readState |= (uint32_t)EActorReplicationState.ECRS_PlayerId;
         }
 
 #if USE_INPUT_STATE_OLD
@@ -115,7 +115,7 @@ public class CActor : core.Actor
             mDirection.mY = inInputStream.ReadFloat();
             mThrustDir = 1.0f;
 #endif
-            readState |= (uint32_t)ECatReplicationState.ECRS_Pose;
+            readState |= (uint32_t)EActorReplicationState.ECRS_Pose;
         }
 
 
@@ -138,7 +138,7 @@ public class CActor : core.Actor
             core.Vector3 color = new core.Vector3();
             inInputStream.Read(color);
             SetColor(color);
-            readState |= (uint32_t)ECatReplicationState.ECRS_Color;
+            readState |= (uint32_t)EActorReplicationState.ECRS_Color;
         }
 
         stateBit = inInputStream.ReadBoolean();
@@ -146,13 +146,13 @@ public class CActor : core.Actor
         {
             mHealth = 0;
             mHealth = inInputStream.ReadInt32(4);
-            readState |= (uint32_t)ECatReplicationState.ECRS_Health;
+            readState |= (uint32_t)EActorReplicationState.ECRS_Health;
         }
 
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {
             //did we get health? if so, tell the hud!
-            if ((readState & (uint32_t)ECatReplicationState.ECRS_Health) != 0)
+            if ((readState & (uint32_t)EActorReplicationState.ECRS_Health) != 0)
             {
                 //HUD::sInstance->SetPlayerHealth(mHealth);
             }
@@ -160,7 +160,7 @@ public class CActor : core.Actor
             DoClientSidePredictionAfterReplicationForLocalActor(readState);
 
             //if this is a create packet, don't interpolate
-            if ((readState & (uint32_t)ECatReplicationState.ECRS_PlayerId) == 0)
+            if ((readState & (uint32_t)EActorReplicationState.ECRS_PlayerId) == 0)
             {
                 InterpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, false);
             }
@@ -170,7 +170,7 @@ public class CActor : core.Actor
             DoClientSidePredictionAfterReplicationForRemoteActor(readState);
 
             //will this smooth us out too? it'll interpolate us just 10% of the way there...
-            if ((readState & (uint32_t)ECatReplicationState.ECRS_PlayerId) == 0)
+            if ((readState & (uint32_t)EActorReplicationState.ECRS_PlayerId) == 0)
             {
                 InterpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
             }
@@ -180,7 +180,7 @@ public class CActor : core.Actor
 
     public void DoClientSidePredictionAfterReplicationForLocalActor(uint32_t inReadState)
     {
-        if ((inReadState & (uint32_t)ECatReplicationState.ECRS_Pose) != 0)
+        if ((inReadState & (uint32_t)EActorReplicationState.ECRS_Pose) != 0)
         {
             //simulate pose only if we received new pose- might have just gotten thrustDir
             //in which case we don't need to replay moves because we haven't warped backwards
@@ -200,7 +200,7 @@ public class CActor : core.Actor
     }
     public void DoClientSidePredictionAfterReplicationForRemoteActor(uint32_t inReadState)
     {
-        if ((inReadState & (uint32_t)ECatReplicationState.ECRS_Pose) != 0)
+        if ((inReadState & (uint32_t)EActorReplicationState.ECRS_Pose) != 0)
         {
 
             //simulate movement for an additional RTT

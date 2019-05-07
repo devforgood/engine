@@ -46,7 +46,7 @@ namespace Server
             mLastPacketFromClientTime = Timing.sInstance.GetTimef();
         }
 
-        public void HandleCatDied()
+        public void HandleActorDied()
         {
             mTimeToRespawn = Timing.sInstance.GetFrameStartTime() + kRespawnDelay;
         }

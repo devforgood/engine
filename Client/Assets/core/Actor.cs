@@ -17,7 +17,7 @@ namespace core
 
         public static new NetGameObject CreateInstance() { return new Actor(); }
 
-        public enum ECatReplicationState
+        public enum EActorReplicationState
         {
             ECRS_Pose = 1 << 0,
             ECRS_Color = 1 << 1,
@@ -34,7 +34,7 @@ namespace core
             mVelocity = Vector3.Zero.Clone();
             mWallRestitution = 0.1f;
 
-            mCatRestitution = 0.1f;
+            mActorRestitution = 0.1f;
 
             mThrustDir = 0.0f;
 
@@ -119,7 +119,7 @@ namespace core
 
         public static NetGameObject StaticCreate() { return new Actor(); }
 
-        public override uint32_t GetAllStateMask() { return (uint32_t)ECatReplicationState.ECRS_AllState; }
+        public override uint32_t GetAllStateMask() { return (uint32_t)EActorReplicationState.ECRS_AllState; }
 
         public override Actor GetAsActor() { return this; }
         public override void NetUpdate()
@@ -225,7 +225,7 @@ namespace core
                                 if (targetActor != null)
                                 {
                                     mVelocity -= impulse;
-                                    mVelocity *= mCatRestitution;
+                                    mVelocity *= mActorRestitution;
                                 }
                                 else
                                 {
@@ -247,12 +247,12 @@ namespace core
 
             uint32_t writtenState = 0;
 
-            if ((inDirtyState & (uint32_t)ECatReplicationState.ECRS_PlayerId) != 0)
+            if ((inDirtyState & (uint32_t)EActorReplicationState.ECRS_PlayerId) != 0)
             {
                 inOutputStream.Write((bool)true);
                 inOutputStream.Write(GetPlayerId());
 
-                writtenState |= (uint32_t)ECatReplicationState.ECRS_PlayerId;
+                writtenState |= (uint32_t)EActorReplicationState.ECRS_PlayerId;
             }
             else
             {
@@ -260,7 +260,7 @@ namespace core
             }
 
 
-            if ((inDirtyState & (uint32_t)ECatReplicationState.ECRS_Pose) != 0)
+            if ((inDirtyState & (uint32_t)EActorReplicationState.ECRS_Pose) != 0)
             {
                 inOutputStream.Write((bool)true);
 
@@ -278,7 +278,7 @@ namespace core
                 inOutputStream.Write(mDirection.mX);
                 inOutputStream.Write(mDirection.mY);
 #endif
-                writtenState |= (uint32_t)ECatReplicationState.ECRS_Pose;
+                writtenState |= (uint32_t)EActorReplicationState.ECRS_Pose;
             }
             else
             {
@@ -298,24 +298,24 @@ namespace core
             }
 #endif
 
-            if ((inDirtyState & (uint32_t)ECatReplicationState.ECRS_Color) != 0)
+            if ((inDirtyState & (uint32_t)EActorReplicationState.ECRS_Color) != 0)
             {
                 inOutputStream.Write((bool)true);
                 inOutputStream.Write(GetColor());
 
-                writtenState |= (uint32_t)ECatReplicationState.ECRS_Color;
+                writtenState |= (uint32_t)EActorReplicationState.ECRS_Color;
             }
             else
             {
                 inOutputStream.Write((bool)false);
             }
 
-            if ((inDirtyState & (uint32_t)ECatReplicationState.ECRS_Health) != 0)
+            if ((inDirtyState & (uint32_t)EActorReplicationState.ECRS_Health) != 0)
             {
                 inOutputStream.Write((bool)true);
                 inOutputStream.Write(mHealth, 4);
 
-                writtenState |= (uint32_t)ECatReplicationState.ECRS_Health;
+                writtenState |= (uint32_t)EActorReplicationState.ECRS_Health;
             }
             else
             {
@@ -339,7 +339,7 @@ namespace core
 
         //bounce fraction when hitting various things
         float mWallRestitution;
-        float mCatRestitution;
+        float mActorRestitution;
 
 
         uint32_t mPlayerId;

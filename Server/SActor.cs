@@ -94,7 +94,7 @@ namespace Server
                 !RoboMath.Is2DVectorEqual(oldVelocity, GetVelocity()) ||
                 oldRotation != GetRotation())
             {
-                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)ECatReplicationState.ECRS_Pose);
+                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)EActorReplicationState.ECRS_Pose);
             }
         }
 
@@ -115,12 +115,12 @@ namespace Server
                 ClientProxy clientProxy = NetworkManagerServer.sInstance.GetClientProxy((int)GetPlayerId());
                 if (clientProxy != null)
                 {
-                    clientProxy.HandleCatDied();
+                    clientProxy.HandleActorDied();
                 }
             }
 
             //tell the world our health dropped
-            NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)ECatReplicationState.ECRS_Health);
+            NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)EActorReplicationState.ECRS_Health);
         }
         protected SActor()
         {
