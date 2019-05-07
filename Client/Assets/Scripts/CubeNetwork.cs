@@ -23,7 +23,7 @@ public class CubeNetwork : MonoBehaviour {
 
             if(actor.IsLocalPlayer())
             {
-                if (Input.GetKey(KeyCode.R))
+                if (Input.GetKeyUp(KeyCode.R))
                 {
                     actor.InvokeServerRpc(actor.PingServer, 19);
                 }

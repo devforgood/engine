@@ -52,15 +52,12 @@ namespace core
 
         internal object Invoke(object instance, NetBuffer stream)
         {
-
                 for (int i = 0; i < parameterTypes.Length; i++)
                 {
                     parameterRefs[i] = stream.ReadObjectPacked(parameterTypes[i]);
                 }
 
                 return method.Invoke(instance, parameterRefs);
-
-            
         }
     }
 
