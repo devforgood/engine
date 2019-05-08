@@ -362,7 +362,7 @@ namespace core
         }
 
         [ClientRPC]
-        public void PingClient(int number)
+        public virtual void PingClient(int number)
         {
         }
 

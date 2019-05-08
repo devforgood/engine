@@ -17,8 +17,8 @@ public class CubeNetwork : MonoBehaviour {
         if(actor != null)
         {
             transform.position = new Vector3(actor.GetLocation().mX, actor.GetLocation().mY, actor.GetLocation().mZ);
-            if(actor.IsLocalPlayer() == false)
-                Debug.Log("Draw Remote Client Location : " + actor.GetLocation() + ", player_id : " + actor.GetPlayerId());
+            //if(actor.IsLocalPlayer() == false)
+                //Debug.Log("Draw Remote Client Location : " + actor.GetLocation() + ", player_id : " + actor.GetPlayerId());
 
 
             if(actor.IsLocalPlayer())

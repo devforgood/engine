@@ -204,10 +204,7 @@ namespace Server
                     }
                     break;
                 case PacketType.kRPC:
-                    if (inClientProxy.GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
-                    {
-                        HandleRPCPacket(inClientProxy, inInputStream);
-                    }
+                    HandleRPCPacket(inClientProxy, inInputStream);
                     break;
                 default:
                     //LOG("Unknown packet type received from %s", inClientProxy.GetSocketAddress().ToString().c_str());
@@ -360,11 +357,6 @@ namespace Server
             {
                 obj.OnRemoteServerRPC(hash, senderClientId, inInputStream);
             }
-
-            //foreach (var it in mAddressToClientMap)
-            //{
-            //    SendRPCPacketToClient(it.Value);
-            //}
         }
 
         void HandleClientDisconnected(ClientProxy inClientProxy)

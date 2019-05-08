@@ -138,17 +138,8 @@ namespace Server
             //build state packet
             var rpcPacket = NetworkManagerServer.sInstance.GetServer().CreateMessage();
 
-            var inClientProxy = NetworkManagerServer.sInstance.GetClientProxy(clientId);
-            if (inClientProxy == null)
-                return null;
-
             //it's rpc!
             rpcPacket.Write((UInt32)PacketType.kRPC);
-
-            InFlightPacket ifp = inClientProxy.GetDeliveryNotificationManager().WriteState(rpcPacket);
-            var rmtd = new RpcTransmissionData();
-            ifp.SetTransmissionData((int)TransmissionDataType.kRpcManager, rmtd);
-            rmtd.mOutputStream = rpcPacket;
 
             return rpcPacket;
         }
@@ -161,6 +152,7 @@ namespace Server
         [ServerRPC(RequireOwnership = false)]
         public override void PingServer(int number)
         {
+            InvokeClientRpcOnClient(PingClient, (int)GetPlayerId(), number);
         }
     }
 }

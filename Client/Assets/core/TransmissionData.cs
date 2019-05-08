@@ -8,7 +8,6 @@ namespace core
     public enum TransmissionDataType
     {
         kReplicationManager,
-        kRpcManager,
     }
 
     public abstract class TransmissionData

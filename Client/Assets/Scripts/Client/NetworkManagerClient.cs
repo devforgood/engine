@@ -31,7 +31,7 @@ public class NetworkManagerClient : core.NetworkManager
     }
 
     core.DeliveryNotificationManager mDeliveryNotificationManager;
-    public core.DeliveryNotificationManager DeliveryNotificationManager { get {return mDeliveryNotificationManager;}}
+    public core.DeliveryNotificationManager DeliveryNotificationManager { get { return mDeliveryNotificationManager; } }
 
     ReplicationManagerClient mReplicationManagerClient = new ReplicationManagerClient();
 
@@ -82,10 +82,7 @@ public class NetworkManagerClient : core.NetworkManager
                 }
                 break;
             case core.PacketType.kRPC:
-                if (mDeliveryNotificationManager.ReadAndProcessState(inInputStream))
-                {
-                    HandleRPCPacket(inInputStream);
-                }
+                HandleRPCPacket(inInputStream);
                 break;
         }
     }
@@ -168,7 +165,7 @@ public class NetworkManagerClient : core.NetworkManager
 
     void HandleRPCPacket(NetIncomingMessage inInputStream)
     {
-        Debug.Log("RPC ");
+        Debug.Log("Handle RPC Packet ");
 
         int networkId = inInputStream.ReadInt32();
         ulong hash = inInputStream.ReadUInt64();

@@ -314,15 +314,8 @@ public class CActor : core.Actor
         //build state packet
         NetOutgoingMessage rpcPacket = NetworkManagerClient.sInstance.GetClient().CreateMessage();
 
-
         //it's rpc!
         rpcPacket.Write((UInt32)PacketType.kRPC);
-
-        InFlightPacket ifp = NetworkManagerClient.sInstance.DeliveryNotificationManager.WriteState(rpcPacket);
-        var rmtd = new RpcTransmissionData();
-        if(ifp!=null)
-            ifp.SetTransmissionData((int)TransmissionDataType.kRpcManager, rmtd);
-        rmtd.mOutputStream = rpcPacket;
 
         return rpcPacket;
     }
@@ -330,6 +323,12 @@ public class CActor : core.Actor
     public override void Send(int clientId, NetBuffer inOutputStream)
     {
         NetworkManagerClient.sInstance.GetClient().SendMessage((NetOutgoingMessage)inOutputStream, NetDeliveryMethod.ReliableSequenced);
+    }
+
+    [ClientRPC]
+    public override void PingClient(int number)
+    {
+        Debug.Log("Ping " + number);
     }
 
 }
