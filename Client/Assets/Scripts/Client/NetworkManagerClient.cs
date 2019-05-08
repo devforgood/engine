@@ -31,6 +31,8 @@ public class NetworkManagerClient : core.NetworkManager
     }
 
     core.DeliveryNotificationManager mDeliveryNotificationManager;
+    public core.DeliveryNotificationManager DeliveryNotificationManager { get {return mDeliveryNotificationManager;}}
+
     ReplicationManagerClient mReplicationManagerClient = new ReplicationManagerClient();
 
     System.Net.IPEndPoint mServerAddress;

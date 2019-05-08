@@ -17,6 +17,11 @@ namespace core
 
         int OwnerClientId => Engine.sInstance.ServerClientId;
 
+        public virtual NetBuffer CreateRpcPacket(int clientId)
+        {
+            return null;
+        }
+
         public virtual void Send(int clientId, NetBuffer inOutputStream)
         {
         }
@@ -32,7 +37,7 @@ namespace core
 
         private ulong HashMethodName(string name)
         {
-            HashSize mode = HashSize.VarIntTwoBytes;
+            HashSize mode = HashSize.VarIntEightBytes;
 
             if (mode == HashSize.VarIntTwoBytes)
                 return name.GetStableHash16();
@@ -310,8 +315,7 @@ namespace core
         //Technically boxed writes are not needed. But save LOC for the non performance sends.
         internal void SendServerRPCBoxed(ulong hash, string channel, SecuritySendFlags security, params object[] parameters)
         {
-            var writer = new NetBuffer();
-            writer.Write((UInt32)PacketType.kRPC);
+            var writer = CreateRpcPacket(Engine.sInstance.ServerClientId);
             writer.Write(NetworkId);
             writer.Write(hash);
 
@@ -326,8 +330,7 @@ namespace core
 
         internal RpcResponse<T> SendServerRPCBoxedResponse<T>(ulong hash, string channel, SecuritySendFlags security, params object[] parameters)
         {
-            var writer = new NetBuffer();
-            writer.Write((UInt32)PacketType.kRPC);
+            var writer = CreateRpcPacket(Engine.sInstance.ServerClientId);
             writer.Write(NetworkId);
             writer.Write(hash);
 
@@ -342,8 +345,7 @@ namespace core
 
         internal void SendClientRPCBoxedToClient(ulong hash, int clientId, string channel, SecuritySendFlags security, params object[] parameters)
         {
-            var writer = new NetBuffer();
-            writer.Write((UInt32)PacketType.kRPC);
+            var writer = CreateRpcPacket(clientId);
             writer.Write(NetworkId);
             writer.Write(hash);
 
@@ -357,8 +359,7 @@ namespace core
 
         internal RpcResponse<T> SendClientRPCBoxedResponse<T>(ulong hash, int clientId, string channel, SecuritySendFlags security, params object[] parameters)
         {
-            var writer = new NetBuffer();
-            writer.Write((UInt32)PacketType.kRPC);
+            var writer = CreateRpcPacket(clientId);
             writer.Write(NetworkId);
             writer.Write(hash);
 
@@ -373,31 +374,12 @@ namespace core
 
         internal void SendClientRPCBoxed(ulong hash, List<int> clientIds, string channel, SecuritySendFlags security, params object[] parameters)
         {
-            var writer = new NetBuffer();
-            writer.Write((UInt32)PacketType.kRPC);
-            writer.Write(NetworkId);
-            writer.Write(hash);
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                writer.WriteObjectPacked(parameters[i]);
-            }
-            SendClientRPCPerformance(hash, clientIds, writer, channel, security);
+            SendClientRPCPerformance(hash, clientIds, channel, security, parameters);
 
         }
 
         internal void SendClientRPCBoxedToEveryoneExcept(int clientIdToIgnore, ulong hash, string channel, SecuritySendFlags security, params object[] parameters)
         {
-            var writer = new NetBuffer();
-            writer.Write((UInt32)PacketType.kRPC);
-            writer.Write(NetworkId);
-            writer.Write(hash);
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                writer.WriteObjectPacked(parameters[i]);
-            }
-            SendClientRPCPerformance(hash, writer, clientIdToIgnore, channel, security);
 
         }
 
@@ -429,7 +411,7 @@ namespace core
             return null;
         }
 
-        internal void SendClientRPCPerformance(ulong hash, List<int> clientIds, NetBuffer messageStream, string channel, SecuritySendFlags security)
+        internal void SendClientRPCPerformance(ulong hash, List<int> clientIds, string channel, SecuritySendFlags security, params object[] parameters)
         {
             if (!IsServer && IsRunning)
             {
@@ -438,7 +420,21 @@ namespace core
                 return;
             }
 
-            Send(Engine.sInstance.ServerClientId, messageStream);
+            for (int i = 0; i < clientIds.Count; i++)
+            {
+
+
+                var messageStream = CreateRpcPacket(clientIds[i]);
+                messageStream.Write(NetworkId);
+                messageStream.Write(hash);
+
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    messageStream.WriteObjectPacked(parameters[j]);
+                }
+
+                Send(clientIds[i], messageStream);
+            }
         }
 
         internal void SendClientRPCPerformance(ulong hash, NetBuffer messageStream, int clientIdToIgnore, string channel, SecuritySendFlags security)
@@ -463,7 +459,7 @@ namespace core
                 return;
             }
 
-            Send(Engine.sInstance.ServerClientId, messageStream);
+            Send(clientId, messageStream);
         }
 
         internal RpcResponse<T> SendClientRPCPerformanceResponse<T>(ulong hash, int clientId, NetBuffer messageStream, string channel, SecuritySendFlags security)
@@ -475,7 +471,7 @@ namespace core
                 return null;
             }
 
-            Send(Engine.sInstance.ServerClientId, messageStream);
+            Send(clientId, messageStream);
 
             return null;
         }

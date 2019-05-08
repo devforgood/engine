@@ -202,7 +202,7 @@ namespace Server
                     }
                     break;
                 case PacketType.kRPC:
-                    //if (inClientProxy.GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
+                    if (inClientProxy.GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
                     {
                         HandleRPCPacket(inClientProxy, inInputStream);
                     }

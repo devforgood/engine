@@ -129,8 +129,28 @@ namespace Server
             mTimeOfNextShot = 0.0f;
             mTimeBetweenShots = 0.2f;
 
-            CacheAttributes();
+            //CacheAttributes();
 
+        }
+
+        public override NetBuffer CreateRpcPacket(int clientId)
+        {
+            //build state packet
+            NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
+
+            var inClientProxy = NetworkManagerServer.sInstance.GetClientProxy(clientId);
+            if (inClientProxy == null)
+                return null;
+
+            //it's rpc!
+            rpcPacket.Write((UInt32)PacketType.kRPC);
+
+            InFlightPacket ifp = inClientProxy.GetDeliveryNotificationManager().WriteState(rpcPacket);
+            var rmtd = new RpcTransmissionData();
+            ifp.SetTransmissionData((int)TransmissionDataType.kRpcManager, rmtd);
+            rmtd.mOutputStream = rpcPacket;
+
+            return rpcPacket;
         }
 
         public override void Send(int clientId, NetBuffer inOutputStream)

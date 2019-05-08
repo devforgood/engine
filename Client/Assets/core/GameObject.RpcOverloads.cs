@@ -3111,60 +3111,8 @@ namespace core
 #pragma warning restore HAA0101 // Array allocation for params parameter
 #pragma warning restore HAA0601 // Value type to reference type conversion causing boxing allocation
         #region PERFORMANCE CLIENT RPC
-        [Obsolete("Use InvokeClientRpcPerformance instead")]
-        public void InvokeClientRpc(RpcDelegate method, List<int> clientIds, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), clientIds, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnOwnerPerformance instead")]
-        public void InvokeClientRpcOnOwner(RpcDelegate method, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), OwnerClientId, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnClientPerformance instead")]
-        public void InvokeClientRpcOnClient(RpcDelegate method, int clientId, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), clientId, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnEveryonePerformance instead")]
-        public void InvokeClientRpcOnEveryone(RpcDelegate method, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), null, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnEveryoneExceptPerformance instead")]
-        public void InvokeClientRpcOnEveryoneExcept(RpcDelegate method, int clientIdToIgnore, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), stream, clientIdToIgnore, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcPerformance instead")]
-        public void InvokeClientRpc(string methodName, List<int> clientIds, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), clientIds, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnClientPerformance instead")]
-        public void InvokeClientRpcOnClient(string methodName, int clientId, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), clientId, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnOwnerPerformance instead")]
-        public void InvokeClientRpcOnOwner(string methodName, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), OwnerClientId, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnEveryonePerformance instead")]
-        public void InvokeClientRpcOnEveryone(string methodName, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), null, stream, channel, security);
-        }
-        [Obsolete("Use InvokeClientRpcOnEveryoneExceptPerformance instead")]
-        public void InvokeClientRpcOnEveryoneExcept(string methodName, int clientIdToIgnore, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), stream, clientIdToIgnore, channel, security);
-        }
-        public void InvokeClientRpcPerformance(RpcDelegate method, List<int> clientIds, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), clientIds, stream, channel, security);
-        }
+  
+
         public void InvokeClientRpcOnOwnerPerformance(RpcDelegate method, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
         {
             SendClientRPCPerformance(HashMethod(method.Method), OwnerClientId, stream, channel, security);
@@ -3173,17 +3121,9 @@ namespace core
         {
             SendClientRPCPerformance(HashMethod(method.Method), clientId, stream, channel, security);
         }
-        public void InvokeClientRpcOnEveryonePerformance(RpcDelegate method, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethod(method.Method), null, stream, channel, security);
-        }
         public void InvokeClientRpcOnEveryoneExceptPerformance(RpcDelegate method, int clientIdToIgnore, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
         {
             SendClientRPCPerformance(HashMethod(method.Method), stream, clientIdToIgnore, channel, security);
-        }
-        public void InvokeClientRpcPerformance(string methodName, List<int> clientIds, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), clientIds, stream, channel, security);
         }
         public void InvokeClientRpcOnClientPerformance(string methodName, int clientId, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
         {
@@ -3193,26 +3133,13 @@ namespace core
         {
             SendClientRPCPerformance(HashMethodName(methodName), OwnerClientId, stream, channel, security);
         }
-        public void InvokeClientRpcOnEveryonePerformance(string methodName, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendClientRPCPerformance(HashMethodName(methodName), null, stream, channel, security);
-        }
         public void InvokeClientRpcOnEveryoneExceptPerformance(string methodName, int clientIdToIgnore, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
         {
             SendClientRPCPerformance(HashMethodName(methodName), stream, clientIdToIgnore, channel, security);
         }
         #endregion
         #region PERFORMANCE SERVER RPC
-        [Obsolete("Use InvokeServerRpcPerformance instead")]
-        public void InvokeServerRpc(RpcDelegate method, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendServerRPCPerformance(HashMethod(method.Method), stream, channel, security);
-        }
-        [Obsolete("Use InvokeServerRpcPerformance instead")]
-        public void InvokeServerRpc(string methodName, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
-        {
-            SendServerRPCPerformance(HashMethodName(methodName), stream, channel, security);
-        }
+
         public void InvokeServerRpcPerformance(RpcDelegate method, NetBuffer stream, string channel = null, SecuritySendFlags security = SecuritySendFlags.None)
         {
             SendServerRPCPerformance(HashMethod(method.Method), stream, channel, security);

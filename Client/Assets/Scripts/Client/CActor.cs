@@ -309,6 +309,24 @@ public class CActor : core.Actor
 
     }
 
+    public override NetBuffer CreateRpcPacket(int clientId)
+    {
+        //build state packet
+        NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
+
+
+        //it's rpc!
+        rpcPacket.Write((UInt32)PacketType.kRPC);
+
+        InFlightPacket ifp = NetworkManagerClient.sInstance.DeliveryNotificationManager.WriteState(rpcPacket);
+        var rmtd = new RpcTransmissionData();
+        if(ifp!=null)
+            ifp.SetTransmissionData((int)TransmissionDataType.kRpcManager, rmtd);
+        rmtd.mOutputStream = rpcPacket;
+
+        return rpcPacket;
+    }
+
     public override void Send(int clientId, NetBuffer inOutputStream)
     {
         NetworkManagerClient.sInstance.SendPacket(inOutputStream, NetworkManagerClient.sInstance.ServerAddress);
