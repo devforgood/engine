@@ -1,4 +1,5 @@
 ﻿using core;
+using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Server
     {
         static readonly float kRespawnDelay = 3.0f;
 
+        public NetConnection mConnection;
 
         DeliveryNotificationManager mDeliveryNotificationManager;
         ReplicationManagerServer mReplicationManagerServer = new ReplicationManagerServer();

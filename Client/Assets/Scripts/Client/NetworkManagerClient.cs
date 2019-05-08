@@ -35,6 +35,8 @@ public class NetworkManagerClient : core.NetworkManager
 
     ReplicationManagerClient mReplicationManagerClient = new ReplicationManagerClient();
 
+    public NetClient GetClient() { return (NetClient)mNetPeer; }
+
     System.Net.IPEndPoint mServerAddress;
     public System.Net.IPEndPoint ServerAddress { get { return mServerAddress; } }
 
@@ -111,7 +113,8 @@ public class NetworkManagerClient : core.NetworkManager
 
         mAvgRoundTripTime = new WeightedTimedMovingAverage(1.0f);
 
-        mSocket.Connect(mServerAddress);
+        NetOutgoingMessage hail = GetClient().CreateMessage("hail");
+        GetClient().Connect(mServerAddress, hail);
     }
 
     void UpdateSayingHello()
@@ -128,12 +131,12 @@ public class NetworkManagerClient : core.NetworkManager
     }
     void SendHelloPacket()
     {
-        NetOutgoingMessage helloPacket = new NetOutgoingMessage();
+        NetOutgoingMessage helloPacket = GetClient().CreateMessage();
 
         helloPacket.Write((UInt32)core.PacketType.kHelloCC);
         helloPacket.Write(mName);
 
-        SendPacket(helloPacket, mServerAddress);
+        GetClient().SendMessage(helloPacket, NetDeliveryMethod.Unreliable);
     }
 
     void HandleWelcomePacket(NetIncomingMessage inInputStream)
@@ -253,7 +256,7 @@ public class NetworkManagerClient : core.NetworkManager
 
         if (moveList.HasMoves())
         {
-            NetOutgoingMessage inputPacket = new NetOutgoingMessage();
+            NetOutgoingMessage inputPacket = GetClient().CreateMessage();
 
             inputPacket.Write((UInt32)core.PacketType.kInputCC);
 
@@ -279,7 +282,7 @@ public class NetworkManagerClient : core.NetworkManager
                 moveList.mMoves[firstMoveIndex].Write(inputPacket);
             }
 
-            SendPacket(inputPacket, mServerAddress);
+            GetClient().SendMessage(inputPacket, NetDeliveryMethod.Unreliable);
         }
     }
 

@@ -23,9 +23,9 @@ namespace core
         static readonly int kMaxPacketsPerFrameCount = 10;
         static readonly int kMaxBufferSize = 1500;
 
-        protected Socket mSocket;
-        byte[] receiveBuffer = new byte[kMaxBufferSize];
-        System.Net.EndPoint senderRemote = new System.Net.IPEndPoint(0, 0);
+
+
+        protected NetPeer mNetPeer;
 
         WeightedTimedMovingAverage mBytesReceivedPerSecond;
         WeightedTimedMovingAverage mBytesSentPerSecond;
@@ -72,33 +72,25 @@ namespace core
 
         public bool Init(uint16_t inPort, bool reBind = false)
         {
-            NetPeerConfiguration config = new NetPeerConfiguration("chat");
-            config.MaximumConnections = 100;
-            config.Port = inPort;
 
-            try
+
+            if(inPort == 0)
             {
-
-                if (mSocket == null)
-                    mSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-                if (reBind)
-                    mSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, (int)1);
-
-                mSocket.ReceiveBufferSize = kMaxBufferSize;
-                mSocket.SendBufferSize = kMaxBufferSize;
-                mSocket.Blocking = false;
-
-                if (inPort != 0)
-                {
-                    var ep = new System.Net.IPEndPoint(System.Net.IPAddress.Parse("127.0.0.1"), 65000);
-                    mSocket.Bind(ep);
-                }
+                // client
+                NetPeerConfiguration config = new NetPeerConfiguration("game");
+                //config.AutoFlushSendQueue = false;
+                mNetPeer = new NetClient(config);
             }
-            catch( SocketException ex)
+            else
             {
-
+                // server
+                NetPeerConfiguration config = new NetPeerConfiguration("game");
+                config.MaximumConnections = 1000;
+                config.Port = inPort;
+                mNetPeer = new NetServer(config);
             }
+
+            mNetPeer.Start();
 
 
             //LOG("Initializing NetworkManager at port %d", inPort);
@@ -114,157 +106,63 @@ namespace core
 
         public void ProcessIncomingPackets()
         {
-            ReadIncomingPacketsIntoQueue();
-
-            ProcessQueuedPackets();
+             ProcessQueuedPackets();
 
             UpdateBytesSentLastFrame();
 
         }
 
-        int Recv()
+
+        public void ProcessQueuedPackets()
         {
-            int bytesReceived = 0;
-            try
-            {
-                if (!mSocket.Poll(1, SelectMode.SelectRead))
-                    return 0;
 
-                bytesReceived = mSocket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref senderRemote);
-                //LogHelper.LogInfo("packet recv :" + bytesReceived);
-            }
-            catch (SocketException sx)
+            int totalReadByteCount = 0;
+
+            NetIncomingMessage im;
+            while ((im = mNetPeer.ReadMessage()) != null)
             {
-                switch (sx.SocketErrorCode)
+
+                // handle incoming message
+                switch (im.MessageType)
                 {
-                    case SocketError.ConnectionReset:
-                        // connection reset by peer, aka connection forcibly closed aka "ICMP port unreachable"
-                        // we should shut down the connection; but m_senderRemote seemingly cannot be trusted, so which connection should we shut down?!
-                        // So, what to do?
-                        //LogWarning("ConnectionReset");
-                        HandleConnectionReset((System.Net.IPEndPoint)senderRemote);
+                    case NetIncomingMessageType.DebugMessage:
+                    case NetIncomingMessageType.ErrorMessage:
+                    case NetIncomingMessageType.WarningMessage:
+                    case NetIncomingMessageType.VerboseDebugMessage:
+                        string text = im.ReadString();
+                        LogHelper.LogInfo(text);
                         break;
 
-                    case SocketError.NotConnected:
-                        // socket is unbound; try to rebind it (happens on mobile when process goes to sleep)
-                        //BindSocket(true);
-                        break;
-                    case SocketError.WouldBlock:
+                    case NetIncomingMessageType.StatusChanged:
+                        NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
 
+                        string reason = im.ReadString();
+                        LogHelper.LogInfo("status " + NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
+
+                        if (status == NetConnectionStatus.Connected)
+                        {
+                            //LogHelper.LogInfo("Remote hail: " + im.SenderConnection.RemoteHailMessage.ReadString());
+                        }
+
+                        //UpdateConnectionsList();
+                        break;
+                    case NetIncomingMessageType.Data:
+                        totalReadByteCount += im.LengthBytes;
+
+                        ProcessPacket(im, im.SenderEndPoint);
 
                         break;
                     default:
-                        //LogWarning("Socket exception: " + sx.ToString());
+                        LogHelper.LogInfo("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
                         break;
                 }
-            }
-
-
-            return bytesReceived;
-        }
-
-        void ReadIncomingPacketsIntoQueue()
-        {
-
-            //should we just keep a static one?
-            //should we just keep a static one?
-
-            //keep reading until we don't have anything to read ( or we hit a max number that we'll process per frame )
-            int receivedPackedCount = 0;
-            int totalReadByteCount = 0;
-
-            while (receivedPackedCount < kMaxPacketsPerFrameCount)
-            {
-                var bytesReceived = Recv();
-                if (bytesReceived == 0)
-                    break;
-
-                var inputStream = new NetIncomingMessage();
-                inputStream.Data = receiveBuffer;
-                inputStream.LengthBytes = bytesReceived;
-                inputStream.SenderEndPoint = (System.Net.IPEndPoint)senderRemote;
-
-                // realloc
-                receiveBuffer = new byte[kMaxBufferSize];
-
-                if (inputStream == null)
-                {
-                    //nothing to read
-                    break;
-                }
-                else
-                {
-                    ++receivedPackedCount;
-                    totalReadByteCount += inputStream.LengthBytes;
-
-                    //now, should we drop the packet?
-                    if (RoboMath.GetRandomFloat() >= mDropPacketChance)
-                    {
-                        //we made it
-                        //shove the packet into the queue and we'll handle it as soon as we should...
-                        //we'll pretend it wasn't received until simulated latency from now
-                        //this doesn't sim jitter, for that we would need to.....
-
-                        float simulatedReceivedTime = Timing.sInstance.GetTimef() + mSimulatedLatency;
-                        mPacketQueue.Enqueue(new ReceivedPacket(simulatedReceivedTime, inputStream));
-                    }
-                    else
-                    {
-                        //LOG("Dropped packet!", 0);
-                        //dropped!
-                    }
-                }
+                mNetPeer.Recycle(im);
             }
 
             if (totalReadByteCount > 0)
             {
                 mBytesReceivedPerSecond.UpdatePerSecond((float)(totalReadByteCount));
             }
-        }
-
-        public void ProcessQueuedPackets()
-        {
-            //look at the front packet...
-            while (mPacketQueue.Count != 0)
-            {
-                ReceivedPacket nextPacket = mPacketQueue.Peek();
-                if (Timing.sInstance.GetTimef() > nextPacket.GetReceivedTime())
-                {
-                    ProcessPacket(nextPacket.GetPacketBuffer(), nextPacket.GetPacketBuffer().SenderEndPoint);
-                    mPacketQueue.Dequeue();
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
-        public int SendPacket(NetBuffer inOutputStream, System.Net.IPEndPoint inFromAddress)
-        {
-            try
-            {
-                int bytesSent = mSocket.SendTo(inOutputStream.Data, 0, inOutputStream.LengthBytes, SocketFlags.None, inFromAddress);
-                //LogHelper.LogInfo("packet send :" + bytesSent);
-
-                if (bytesSent > 0)
-                {
-                    mBytesSentThisFrame += inOutputStream.LengthBytes;
-                }
-
-                return bytesSent;
-            }
-            catch (SocketException ex)
-            {
-
-            }
-            return 0;
-        }
-
-
-        public int SendPacket(NetOutgoingMessage inOutputStream, System.Net.IPEndPoint inFromAddress)
-        {
-            return SendPacket((NetBuffer)inOutputStream, inFromAddress);
         }
 
         public void UpdateBytesSentLastFrame()

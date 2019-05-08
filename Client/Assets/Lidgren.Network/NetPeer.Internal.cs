@@ -116,44 +116,32 @@ namespace Lidgren.Network
 			}
 			m_lastSocketBind = now;
 
-			using (var mutex = new Mutex(false, "Global\\lidgrenSocketBind"))
-			{
-				try
-				{
-					mutex.WaitOne();
+            if (m_socket == null)
+                m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-					if (m_socket == null)
-						m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            if (reBind)
+                m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, (int)1);
 
-					if (reBind)
-						m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, (int)1);
+            m_socket.ReceiveBufferSize = m_configuration.ReceiveBufferSize;
+            m_socket.SendBufferSize = m_configuration.SendBufferSize;
+            m_socket.Blocking = false;
 
-					m_socket.ReceiveBufferSize = m_configuration.ReceiveBufferSize;
-					m_socket.SendBufferSize = m_configuration.SendBufferSize;
-					m_socket.Blocking = false;
+            var ep = (EndPoint)new NetEndPoint(m_configuration.LocalAddress, reBind ? m_listenPort : m_configuration.Port);
+            m_socket.Bind(ep);
 
-					var ep = (EndPoint)new NetEndPoint(m_configuration.LocalAddress, reBind ? m_listenPort : m_configuration.Port);
-					m_socket.Bind(ep);
+            try
+            {
+                const uint IOC_IN = 0x80000000;
+                const uint IOC_VENDOR = 0x18000000;
+                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+                m_socket.IOControl((int)SIO_UDP_CONNRESET, new byte[] { Convert.ToByte(false) }, null);
+            }
+            catch
+            {
+                // ignore; SIO_UDP_CONNRESET not supported on this platform
+            }
 
-					try
-					{
-						const uint IOC_IN = 0x80000000;
-						const uint IOC_VENDOR = 0x18000000;
-						uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-						m_socket.IOControl((int)SIO_UDP_CONNRESET, new byte[] { Convert.ToByte(false) }, null);
-					}
-					catch
-					{
-						// ignore; SIO_UDP_CONNRESET not supported on this platform
-					}
-				}
-				finally
-				{
-					mutex.ReleaseMutex();
-				}
-			}
-
-			var boundEp = m_socket.LocalEndPoint as NetEndPoint;
+            var boundEp = m_socket.LocalEndPoint as NetEndPoint;
 			LogDebug("Socket bound to " + boundEp + ": " + m_socket.IsBound);
 			m_listenPort = boundEp.Port;
 		}

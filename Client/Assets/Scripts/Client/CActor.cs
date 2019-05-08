@@ -312,7 +312,7 @@ public class CActor : core.Actor
     public override NetBuffer CreateRpcPacket(int clientId)
     {
         //build state packet
-        NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
+        NetOutgoingMessage rpcPacket = NetworkManagerClient.sInstance.GetClient().CreateMessage();
 
 
         //it's rpc!
@@ -329,7 +329,7 @@ public class CActor : core.Actor
 
     public override void Send(int clientId, NetBuffer inOutputStream)
     {
-        NetworkManagerClient.sInstance.SendPacket(inOutputStream, NetworkManagerClient.sInstance.ServerAddress);
+        NetworkManagerClient.sInstance.GetClient().SendMessage((NetOutgoingMessage)inOutputStream, NetDeliveryMethod.ReliableSequenced);
     }
 
 }

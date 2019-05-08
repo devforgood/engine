@@ -136,7 +136,7 @@ namespace Server
         public override NetBuffer CreateRpcPacket(int clientId)
         {
             //build state packet
-            NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
+            var rpcPacket = NetworkManagerServer.sInstance.GetServer().CreateMessage();
 
             var inClientProxy = NetworkManagerServer.sInstance.GetClientProxy(clientId);
             if (inClientProxy == null)

@@ -25,6 +25,8 @@ namespace Server
             return sInstance.Init(inPort);
         }
 
+        public NetPeer GetServer() { return (NetServer)mNetPeer; }
+
 
         int mNewPlayerId;
         int mNewNetworkId;
@@ -175,9 +177,9 @@ namespace Server
             var c = GetClientProxy(inPlayerId);
             if(c!=null)
             {
-                return SendPacket(inOutputStream, c.GetSocketAddress());
+                return (int)GetServer().SendMessage((NetOutgoingMessage)inOutputStream, c.mConnection, NetDeliveryMethod.ReliableSequenced);
             }
-            return 0;
+            return -1;
         }
 
 
@@ -221,6 +223,7 @@ namespace Server
                 //read the name
                 string name = inInputStream.ReadString();
                 ClientProxy newClientProxy = new ClientProxy(inFromAddress, name, mNewPlayerId++);
+                newClientProxy.mConnection = inInputStream.SenderConnection;
                 mAddressToClientMap[inFromAddress] = newClientProxy;
                 mPlayerIdToClientMap[newClientProxy.GetPlayerId()] = newClientProxy;
 
@@ -251,14 +254,16 @@ namespace Server
 
         void SendWelcomePacket(ClientProxy inClientProxy)
         {
-            NetOutgoingMessage welcomePacket = new NetOutgoingMessage();
+            var welcomePacket = GetServer().CreateMessage();
 
             welcomePacket.Write((uint32_t)PacketType.kWelcomeCC);
             welcomePacket.Write(inClientProxy.GetPlayerId());
 
             log.Info(string.Format("Server Welcoming, new client {0} as player {1}", inClientProxy.GetName(), inClientProxy.GetPlayerId()));
 
-            SendPacket(welcomePacket, inClientProxy.GetSocketAddress());
+            GetServer().SendMessage(welcomePacket, inClientProxy.mConnection, NetDeliveryMethod.Unreliable);
+
+
         }
         void UpdateAllClients()
         {
@@ -294,7 +299,7 @@ namespace Server
         void SendStatePacketToClient(ClientProxy inClientProxy)
         {
             //build state packet
-            NetOutgoingMessage statePacket = new NetOutgoingMessage();
+            var statePacket = GetServer().CreateMessage();
 
             //it's state!
             statePacket.Write((uint32_t)PacketType.kStateCC);
@@ -309,24 +314,10 @@ namespace Server
             inClientProxy.GetReplicationManagerServer().Write(statePacket, rmtd);
             ifp.SetTransmissionData((int)TransmissionDataType.kReplicationManager, rmtd);
 
-            int ret = SendPacket(statePacket, inClientProxy.GetSocketAddress());
+            var ret = GetServer().SendMessage(statePacket, inClientProxy.mConnection, NetDeliveryMethod.Unreliable);
             log.InfoFormat("send {0}", ret);
         }
 
-       public void SendRPCPacketToClient(ClientProxy inClientProxy)
-        {
-            //build state packet
-            NetOutgoingMessage statePacket = new NetOutgoingMessage();
-
-            //it's state!
-            statePacket.Write((uint32_t)PacketType.kRPC);
-
-            InFlightPacket ifp = inClientProxy.GetDeliveryNotificationManager().WriteState(statePacket);
-
-
-            int ret = SendPacket(statePacket, inClientProxy.GetSocketAddress());
-            log.InfoFormat("send rpc {0}", ret);
-        }
 
         void WriteLastMoveTimestampIfDirty(NetOutgoingMessage inOutputStream, ClientProxy inClientProxy)
         {
