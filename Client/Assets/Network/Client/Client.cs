@@ -39,16 +39,19 @@ public class Client : MonoBehaviour {
 
     void FixedUpdate()
     {
-        core.Timing.sInstance.Update();
-        InputManager.sInstance.Update();
-        core.Engine.sInstance.DoFrame();
 
-        NetworkManagerClient.sInstance.ProcessIncomingPackets();
     }
 
     // Update is called once per frame
     void Update ()
     {
+
+        core.Timing.sInstance.Update();
+        InputManager.sInstance.Update();
+        core.Engine.sInstance.DoFrame();
+
+        NetworkManagerClient.sInstance.ProcessIncomingPackets();
+
         KeyEvent(KeyCode.A);
         KeyEvent(KeyCode.D);
         KeyEvent(KeyCode.W);
