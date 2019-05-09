@@ -129,6 +129,8 @@ namespace core
 
         void ProcessCollisionsWithScreenWalls()
         {
+            return;
+
             Vector3 location = GetLocation();
             float x = location.mX;
             float y = location.mY;
