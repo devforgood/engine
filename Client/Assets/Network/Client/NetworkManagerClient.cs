@@ -51,7 +51,7 @@ public class NetworkManagerClient : core.NetworkManager
 
     float mLastMoveProcessedByServerTimestamp;
 
-    WeightedTimedMovingAverage mAvgRoundTripTime;
+    core.WeightedTimedMovingAverage mAvgRoundTripTime;
     float mLastRoundTripTime;
 
     public void SendOutgoingPackets()
@@ -87,7 +87,7 @@ public class NetworkManagerClient : core.NetworkManager
         }
     }
 
-    public WeightedTimedMovingAverage GetAvgRoundTripTime() { return mAvgRoundTripTime; }
+    public core.WeightedTimedMovingAverage GetAvgRoundTripTime() { return mAvgRoundTripTime; }
     public float GetRoundTripTime() { return mAvgRoundTripTime.GetValue(); }
     public int GetPlayerId() { return mPlayerId; }
     public float GetLastMoveProcessedByServerTimestamp() { return mLastMoveProcessedByServerTimestamp; }
@@ -108,7 +108,7 @@ public class NetworkManagerClient : core.NetworkManager
         mTimeOfLastHello = 0.0f;
         mName = inName;
 
-        mAvgRoundTripTime = new WeightedTimedMovingAverage(1.0f);
+        mAvgRoundTripTime = new core.WeightedTimedMovingAverage(1.0f);
 
         NetOutgoingMessage hail = GetClient().CreateMessage("hail");
         GetClient().Connect(mServerAddress, hail);

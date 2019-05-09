@@ -32,7 +32,9 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Server\bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\Server\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\Server\obj\Debug\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\Debug\</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
