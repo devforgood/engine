@@ -49,12 +49,12 @@ namespace Server
         {
             base.NetUpdate();
 
-            Vector3 oldLocation = GetLocation();
-            Vector3 oldVelocity = GetVelocity();
+            Vector3 oldLocation = GetLocation().Clone();
+            Vector3 oldVelocity = GetVelocity().Clone();
 #if USE_INPUT_STATE_OLD
             float oldRotation = GetRotation();
 #else
-            Vector3 oldRotation = GetRotation();
+            Vector3 oldRotation = GetRotation().Clone();
 #endif 
 
             //are you controlled by a player?
@@ -75,7 +75,7 @@ namespace Server
 
                         SimulateMovement(deltaTime);
 
-                        //log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, player_id{3}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), GetPlayerId() );
+                        log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, old_location{3}, player_id{4}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), oldLocation, GetPlayerId() );
 
                     }
 
@@ -95,6 +95,7 @@ namespace Server
                 !RoboMath.Is2DVectorEqual(oldRotation, GetRotation())
                 )
             {
+                log.InfoFormat("ol {0} cl {1} ov {2} cv {3} or{4} cr{5}", oldLocation, GetLocation(), oldVelocity, GetVelocity(), oldRotation, GetRotation());
                 NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)EActorReplicationState.ECRS_Pose);
             }
         }

@@ -231,7 +231,7 @@ public class CActor : core.Actor
         mTimeLocationBecameOutOfSync = 0.0f;
         mTimeVelocityBecameOutOfSync = 0.0f;
 
-        GameObject prefab = Resources.Load("Prefabs/Brick") as GameObject;
+        GameObject prefab = Resources.Load("Ralph") as GameObject;
         GameObject brick = MonoBehaviour.Instantiate(prefab) as GameObject;
         //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
         var cube = brick.GetComponent<CubeNetwork>();

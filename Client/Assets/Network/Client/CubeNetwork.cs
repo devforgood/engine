@@ -38,7 +38,7 @@ public class CubeNetwork : MonoBehaviour {
             }
             else
             {
-               transform.rotation = Quaternion.LookRotation(new Vector3(actor.mDirection.mX, 0, actor.mDirection.mY));
+                transform.rotation = Quaternion.LookRotation(new Vector3(actor.mDirection.mX, 0, actor.mDirection.mY));
             }
 
             if (actor.IsLocalPlayer())

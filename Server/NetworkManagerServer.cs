@@ -312,7 +312,7 @@ namespace Server
             ifp.SetTransmissionData((int)TransmissionDataType.kReplicationManager, rmtd);
 
             var ret = GetServer().SendMessage(statePacket, inClientProxy.mConnection, NetDeliveryMethod.Unreliable);
-            log.InfoFormat("send {0}", ret);
+            //log.InfoFormat("send {0}", ret);
         }
 
 
@@ -337,7 +337,7 @@ namespace Server
             {
                 if (move.Read(inInputStream))
                 {
-                    log.InfoFormat("recv move {0}, {1}, {2}, {3}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp(), moveCount);
+                    //log.InfoFormat("recv move {0}, {1}, {2}, {3}", move.GetDeltaTime(), move.GetInputState(), move.GetTimestamp(), moveCount);
                     if (inClientProxy.GetUnprocessedMoveList().AddMoveIfNew(move))
                     {
                         inClientProxy.SetIsLastMoveTimestampDirty(true);
