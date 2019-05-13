@@ -7,6 +7,8 @@ public class CubeNetwork : MonoBehaviour {
     public CActor actor = null;
     public Animator animator;
 
+    private bool is_run = false;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -23,9 +25,23 @@ public class CubeNetwork : MonoBehaviour {
 
             animator.SetFloat("Speed", actor.GetVelocity().magnitude);
 
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.nameHash == Animator.StringToHash("Base Layer.Locomotion"))
+            {
+
+            }
+
             if (actor.GetVelocity().IsZero() == true)
             {
-                animator.Play("Locomotion");
+                if (is_run)
+                {
+                    animator.Play("Locomotion");
+                    is_run = false;
+                }
+            }
+            else
+            {
+                is_run = true;
             }
 
             Debug.Log("Client speed : " + actor.GetVelocity().magnitude + ", player_id : " + actor.GetPlayerId());
@@ -44,6 +60,11 @@ public class CubeNetwork : MonoBehaviour {
                 if (Input.GetKeyUp(KeyCode.R))
                 {
                     actor.InvokeServerRpc(actor.PingServer, 19);
+                }
+
+                if(Input.GetKeyUp(KeyCode.F))
+                {
+                    animator.Play("Bomb");
                 }
 
 
