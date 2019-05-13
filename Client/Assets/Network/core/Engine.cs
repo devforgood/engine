@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace core
 {
@@ -49,6 +50,9 @@ namespace core
             {
                 Timing.sInstance.Update();
                 DoFrame();
+
+                Thread.Sleep(1);
+
             }
 
             return 0;
