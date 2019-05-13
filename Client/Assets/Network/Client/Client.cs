@@ -89,10 +89,6 @@ public class Client : MonoBehaviour {
             {
                 Debug.Log("key down " + k);
                 InputManager.sInstance.HandleInput(core.EInputAction.EIA_Pressed, k);
-                if(k==KeyCode.R)
-                {
-                    NetworkManagerClient.sInstance.SendRPCPacket();
-                }
             }
             else
             {

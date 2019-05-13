@@ -298,18 +298,4 @@ public class NetworkManagerClient : core.NetworkManager
         }
 
     }
-
-    public void SendRPCPacket()
-    {
-        //NetOutgoingMessage rpcPacket = new NetOutgoingMessage();
-
-        //rpcPacket.Write((UInt32)core.PacketType.kRPC);
-        //mDeliveryNotificationManager.WriteState(rpcPacket);
-
-
-        //SendPacket(rpcPacket, mServerAddress);
-
-        //InvokeServerRpc(PingServer, 1);
-
-    }
 }

@@ -12,6 +12,7 @@ public class CActor : core.Actor
 {
     public static new core.NetGameObject StaticCreate() { return new CActor(); }
     public GameObject mTarget = null;
+    public ActorBehaviour mActorBehaviour = null;
 
     float mTimeLocationBecameOutOfSync;
     float mTimeVelocityBecameOutOfSync;
@@ -239,9 +240,9 @@ public class CActor : core.Actor
         mTarget = actor;
 
         //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
-        var cube = actor.GetComponent<CubeNetwork>();
-        
-        cube.actor = this;
+        mActorBehaviour = actor.GetComponent<ActorBehaviour>();
+
+        mActorBehaviour.actor = this;
     }
 
     void InterpolateClientSidePrediction(
