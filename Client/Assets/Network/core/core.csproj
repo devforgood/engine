@@ -50,13 +50,14 @@
   <ItemGroup>
     <Compile Include="AckRange.cs" />
     <Compile Include="AttributeMessageMode.cs" />
+    <Compile Include="GameObject\Bomb.cs" />
     <Compile Include="HashCode.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="DeliveryNotificationManager.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="GameObject.Rpc.cs" />
-    <Compile Include="GameObject.RpcOverloads.cs" />
+    <Compile Include="GameObject\GameObject.cs" />
+    <Compile Include="GameObject\GameObject.Rpc.cs" />
+    <Compile Include="GameObject\GameObject.RpcOverloads.cs" />
     <Compile Include="GameObjectClassId.cs" />
     <Compile Include="GameObjectRegistry.cs" />
     <Compile Include="InFlightPacket.cs" />
@@ -65,14 +66,14 @@
     <Compile Include="LinkingContext.cs" />
     <Compile Include="Math.cs" />
     <Compile Include="NetBufferExtensions.cs" />
-    <Compile Include="Prop.cs" />
+    <Compile Include="GameObject\Prop.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="MoveList.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="ReplicationCommand.cs" />
-    <Compile Include="Actor.cs" />
+    <Compile Include="GameObject\Actor.cs" />
     <Compile Include="RpcResponse.cs" />
     <Compile Include="ScoreBoardManager.cs" />
     <Compile Include="SecuritySendFlags.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Vector3.cs" />
     <Compile Include="WeightedTimedMovingAverage.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="Projectile.cs" />
+    <Compile Include="GameObject\Projectile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">

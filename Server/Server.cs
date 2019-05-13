@@ -95,6 +95,7 @@ namespace Server
             GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kActor, SActor.StaticCreate);
             GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kProp, SProp.StaticCreate);
             GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kProjectile, SProjectile.StaticCreate);
+            GameObjectRegistry.sInstance.RegisterCreationFunction((uint32_t)GameObjectClassId.kBomb, SBomb.StaticCreate);
 
             InitNetworkManager(port);
 

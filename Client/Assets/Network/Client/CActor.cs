@@ -11,6 +11,7 @@ using uint32_t = System.UInt32;
 public class CActor : core.Actor
 {
     public static new core.NetGameObject StaticCreate() { return new CActor(); }
+    public GameObject mTarget = null;
 
     float mTimeLocationBecameOutOfSync;
     float mTimeVelocityBecameOutOfSync;
@@ -58,6 +59,8 @@ public class CActor : core.Actor
     public override void HandleDying()
     {
         base.HandleDying();
+        if (mTarget != null)
+            GameObject.Destroy(mTarget, 0.3f);
 
         //and if we're local, tell the hud so our health goes away!
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
@@ -232,9 +235,12 @@ public class CActor : core.Actor
         mTimeVelocityBecameOutOfSync = 0.0f;
 
         GameObject prefab = Resources.Load("Ralph") as GameObject;
-        GameObject brick = MonoBehaviour.Instantiate(prefab) as GameObject;
+        GameObject actor = MonoBehaviour.Instantiate(prefab) as GameObject;
+        mTarget = actor;
+
         //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
-        var cube = brick.GetComponent<CubeNetwork>();
+        var cube = actor.GetComponent<CubeNetwork>();
+        
         cube.actor = this;
     }
 

@@ -57,6 +57,7 @@ public class ReplicationManagerClient
 
         //and read state
         gameObject.Read(inInputStream);
+        gameObject.CompleteCreate();
     }
 
     void ReadAndDoUpdateAction(NetIncomingMessage inInputStream, int inNetworkId)

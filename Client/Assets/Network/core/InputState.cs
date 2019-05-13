@@ -85,6 +85,7 @@ namespace core
         public bool mIsRight;
         public bool mIsLeft;
         public bool mIsShooting;
+        public bool mIsBomb;
 
         public override string ToString()
         {
@@ -93,6 +94,7 @@ namespace core
                 + ",mIsRight:  " + mIsRight
                 + ",mIsLeft:  " + mIsLeft
                 + ",mIsShooting:  " + mIsShooting
+                + ",mIsBomb:  " + mIsBomb
                 ;
         }
 
@@ -103,6 +105,7 @@ namespace core
             mIsRight = false;
             mIsLeft = false;
             mIsShooting = false;
+            mIsBomb = false;
         }
 
         public bool IsShooting() { return mIsShooting; }
@@ -115,6 +118,7 @@ namespace core
             inOutputStream.Write(mIsRight);
             inOutputStream.Write(mIsLeft);
             inOutputStream.Write(mIsShooting);
+            inOutputStream.Write(mIsBomb);
 
             return false;
         }
@@ -125,6 +129,7 @@ namespace core
             mIsRight = inInputStream.ReadBoolean();
             mIsLeft = inInputStream.ReadBoolean();
             mIsShooting = inInputStream.ReadBoolean();
+            mIsBomb = inInputStream.ReadBoolean();
 
             return true;
         }

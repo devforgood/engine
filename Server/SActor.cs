@@ -24,6 +24,9 @@ namespace Server
         float mTimeOfNextShot;
         float mTimeBetweenShots;
 
+        float mTimeOfNextBomb;
+        float mTimeBetweenBomb;
+
         void HandleShooting()
         {
             float time = Timing.sInstance.GetFrameStartTime();
@@ -33,8 +36,22 @@ namespace Server
                 mTimeOfNextShot = time + mTimeBetweenShots;
 
                 //fire!
-                Projectile yarn = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kProjectile);
-                yarn.InitFromShooter(this);
+                Projectile bullet = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kProjectile);
+                bullet.InitFromShooter(this);
+            }
+        }
+
+        void HandleBomb()
+        {
+            float time = Timing.sInstance.GetFrameStartTime();
+            if (mIsBomb && Timing.sInstance.GetFrameStartTime() > mTimeOfNextBomb)
+            {
+                //not exact, but okay
+                mTimeOfNextBomb = time + mTimeBetweenBomb;
+
+                //install bomb
+                Bomb bomb = (Bomb)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kBomb);
+                bomb.InitFrom(this);
             }
         }
 
@@ -89,6 +106,7 @@ namespace Server
             }
 
             HandleShooting();
+            HandleBomb();
 
             if (!RoboMath.Is2DVectorEqual(oldLocation, GetLocation()) ||
                 !RoboMath.Is2DVectorEqual(oldVelocity, GetVelocity()) ||
@@ -130,6 +148,9 @@ namespace Server
             mActorControlType = EActorControlType.ESCT_Human;
             mTimeOfNextShot = 0.0f;
             mTimeBetweenShots = 0.2f;
+
+            mTimeOfNextBomb = 0.0f;
+            mTimeBetweenBomb = 0.2f;
 
             //CacheAttributes();
 

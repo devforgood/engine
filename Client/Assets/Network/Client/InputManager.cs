@@ -81,6 +81,9 @@ public class InputManager
             case KeyCode.K:
                 UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsShooting);
                 break;
+            case KeyCode.B:
+                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsBomb);
+                break;
         }
 #endif
     }

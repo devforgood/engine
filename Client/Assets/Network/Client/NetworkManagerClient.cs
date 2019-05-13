@@ -210,17 +210,22 @@ public class NetworkManagerClient : core.NetworkManager
                 networkId = inInputStream.ReadInt32();
                 fourCC = inInputStream.ReadUInt32();
                 core.NetGameObject go = null;
+                bool is_create = false;
                 //didn't find it, better create it!
                 if (mNetworkIdToGameObjectMap.TryGetValue(networkId, out go) == false)
                 {
                     go = core.GameObjectRegistry.sInstance.CreateGameObject(fourCC);
                     go.SetNetworkId(networkId);
                     AddToNetworkIdToGameObjectMap(go);
+                    is_create = true;
                 }
 
 
                 //now we can update into it
                 go.Read(inInputStream);
+                if (is_create)
+                    go.CompleteCreate();
+
                 objectsToDestroy.Remove(networkId);
             }
         }

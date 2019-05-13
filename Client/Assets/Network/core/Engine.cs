@@ -46,7 +46,6 @@ namespace core
             bool quit = false;
 
             while (!quit && mShouldKeepRunning)
-
             {
                 Timing.sInstance.Update();
                 DoFrame();

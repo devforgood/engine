@@ -19,6 +19,7 @@ public class Client : MonoBehaviour {
         { KeyCode.S , false },
         { KeyCode.K , false },
         { KeyCode.R , false },
+        { KeyCode.B , false },
     };
 
 
@@ -28,6 +29,7 @@ public class Client : MonoBehaviour {
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kActor, CActor.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProp, CProp.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProjectile, CProjectile.StaticCreate);
+        core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kBomb, CBomb.StaticCreate);
 
         core.Engine.sInstance.IsClient = true;
         core.Engine.sInstance.IsServer = false;
@@ -58,6 +60,7 @@ public class Client : MonoBehaviour {
         KeyEvent(KeyCode.S);
         KeyEvent(KeyCode.K);
         KeyEvent(KeyCode.R);
+        KeyEvent(KeyCode.B);
 
     }
 
