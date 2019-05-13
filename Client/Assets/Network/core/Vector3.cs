@@ -107,6 +107,22 @@ namespace core
             return (float)Math.Sqrt(mX * mX + mY * mY + mZ * mZ);
         }
 
+        public float magnitude
+        {
+            get
+            {
+                if (IsZero())
+                    return 0;
+
+                return (float)Math.Sqrt(mX * mX + mY * mY + mZ * mZ);
+            }
+        }
+
+        public bool IsZero()
+        {
+            return mX == 0 && mY == 0 && mZ == 0;
+        }
+
         public float LengthSq()
         {
             return mX * mX + mY * mY + mZ * mZ;

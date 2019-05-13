@@ -20,17 +20,15 @@ public class CubeNetwork : MonoBehaviour {
             var last_position = transform.position;
             transform.position = new Vector3(actor.GetLocation().mX, actor.GetLocation().mZ, actor.GetLocation().mY);
 
-            if(last_position != transform.position)
-            {
-                animator.SetFloat("Speed", 1);
-            }
-            else
+
+            animator.SetFloat("Speed", actor.GetVelocity().magnitude);
+
+            if (actor.GetVelocity().IsZero() == true)
             {
                 animator.Play("Locomotion");
             }
 
-            //if(actor.IsLocalPlayer() == false)
-            //Debug.Log("Draw Remote Client Location : " + actor.GetLocation() + ", player_id : " + actor.GetPlayerId());
+            Debug.Log("Client speed : " + actor.GetVelocity().magnitude + ", player_id : " + actor.GetPlayerId());
 
             if (actor.mDirection.mX == 0.0f && actor.mDirection.mY == 0.0f)
             {

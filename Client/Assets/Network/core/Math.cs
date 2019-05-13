@@ -26,6 +26,10 @@ namespace core
             return (inA.mX == inB.mX && inA.mY == inB.mY);
         }
 
+        public static bool Is3DVectorEqual(Vector3 inA, Vector3 inB)
+        {
+            return (inA.mX == inB.mX && inA.mY == inB.mY && inA.mZ == inB.mZ);
+        }
         public static float ToDegrees(float inRadians)
         {
             return inRadians * 180.0f / PI;
