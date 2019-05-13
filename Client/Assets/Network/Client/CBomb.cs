@@ -4,6 +4,7 @@ using UnityEngine;
 class CBomb : core.Bomb
 {
     public GameObject mTarget = null;
+    public BombBehaviour mBombBehaviour = null;
 
     public static new core.NetGameObject StaticCreate() { return new CBomb(); }
     public override void Read(NetIncomingMessage inInputStream)
@@ -61,6 +62,7 @@ class CBomb : core.Bomb
 
         GameObject bomb =GameObject.Instantiate(go, location, go.transform.rotation);
         mTarget = bomb;
+        mBombBehaviour = bomb.GetComponent<BombBehaviour>();
 
         var parent = NetworkManagerClient.sInstance.GetGameObject(mParentNetworkId);
         if(parent != null)
@@ -75,5 +77,8 @@ class CBomb : core.Bomb
         base.HandleDying();
         if (mTarget != null)
             GameObject.Destroy(mTarget, 0.3f);
+
+        if (mBombBehaviour != null)
+            mBombBehaviour.Explode();
     }
 }
