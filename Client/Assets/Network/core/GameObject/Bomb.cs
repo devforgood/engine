@@ -113,14 +113,13 @@ namespace core
 
         public void InitFrom(Actor inShooter)
         {
-            SetColor(inShooter.GetColor());
+            SetColor(inShooter.GetColor().Clone());
             SetPlayerId((int)inShooter.GetPlayerId());
             mParentNetworkId = inShooter.GetNetworkId();
 
-            Vector3 forward = inShooter.GetForwardVector();
-            SetLocation(inShooter.GetLocation() /* + forward * 0.55f */ );
+            SetLocation(inShooter.GetLocation().Round());
 
-            mDirection = inShooter.GetRotation();
+            mDirection = inShooter.GetRotation().Clone();
         }
 
         public override void NetUpdate()

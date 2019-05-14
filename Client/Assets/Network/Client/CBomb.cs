@@ -58,7 +58,7 @@ class CBomb : core.Bomb
         if (go == null)
             return;
 
-        var location = new Vector3((short)Mathf.RoundToInt(GetLocation().mX), (short)Mathf.RoundToInt(GetLocation().mZ), (short)Mathf.RoundToInt(GetLocation().mY));
+        var location = new Vector3(GetLocation().mX, GetLocation().mZ, GetLocation().mY);
 
         GameObject bomb =GameObject.Instantiate(go, location, go.transform.rotation);
         mTarget = bomb;

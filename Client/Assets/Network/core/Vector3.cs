@@ -193,5 +193,15 @@ namespace core
             };
         }
 
+        public Vector3 Round()
+        {
+            return new Vector3()
+            {
+                mX = (short)Math.Round(this.mX),
+                mY = (short)Math.Round(this.mY),
+                mZ = (short)Math.Round(this.mZ),
+            };
+        }
+
     }
 }

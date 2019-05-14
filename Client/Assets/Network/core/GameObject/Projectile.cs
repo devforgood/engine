@@ -121,14 +121,14 @@ namespace core
 
         public void InitFromShooter(Actor inShooter)
         {
-            SetColor(inShooter.GetColor());
+            SetColor(inShooter.GetColor().Clone());
             SetPlayerId((int)inShooter.GetPlayerId());
 
             Vector3 forward = inShooter.GetForwardVector();
             SetVelocity(inShooter.GetVelocity() + forward * mMuzzleSpeed);
-            SetLocation(inShooter.GetLocation() /* + forward * 0.55f */ );
+            SetLocation(inShooter.GetLocation().Clone() );
 
-            mDirection = inShooter.GetRotation();
+            mDirection = inShooter.GetRotation().Clone();
         }
 
         public override void NetUpdate()
