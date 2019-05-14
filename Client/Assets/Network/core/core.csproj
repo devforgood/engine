@@ -106,7 +106,7 @@
     <Compile Include="World\Tile.cs" />
     <Compile Include="World\World.cs" />
     <Compile Include="GameObject\Projectile.cs" />
-    <Compile Include="World\World.Map.cs" />
+    <Compile Include="World\WorldMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">

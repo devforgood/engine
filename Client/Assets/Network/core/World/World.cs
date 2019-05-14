@@ -5,9 +5,10 @@ using System.Text;
 
 namespace core
 {
-    public partial class World
+    public class World
     {
         List<NetGameObject> mGameObjects = new List<NetGameObject>();
+        WorldMap mWorldMap = new WorldMap();
 
 
         /// <summary>
@@ -54,7 +55,13 @@ namespace core
 
                 if (!go.DoesWantToDie())
                 {
+                    var last_location = go.GetLocation().Clone();
                     go.NetUpdate();
+                    if (RoboMath.Is2DVectorEqual(last_location, go.GetLocation()) == false)
+                    {
+                        mWorldMap.ChangeLocation(go.NetworkId, last_location, go.GetLocation());
+                    }
+
                 }
                 //you might suddenly want to die after your update, so check again
                 if (go.DoesWantToDie())
@@ -72,7 +79,7 @@ namespace core
 
         World()
         {
-            InitMap();
+            
         }
 
 
