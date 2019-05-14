@@ -57,19 +57,14 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                Vector3 location = GetLocation();
-                inOutputStream.Write(location.mX);
-                inOutputStream.Write(location.mY);
+                inOutputStream.Write(GetLocation());
 
-                Vector3 velocity = GetVelocity();
-                inOutputStream.Write(velocity.mX);
-                inOutputStream.Write(velocity.mY);
+                inOutputStream.Write(GetVelocity());
 
 #if USE_INPUT_STATE_OLD
                 inOutputStream.Write(GetRotation());
 #else
-                inOutputStream.Write(mDirection.mX);
-                inOutputStream.Write(mDirection.mY);
+                inOutputStream.Write(mDirection);
 #endif 
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Pose;

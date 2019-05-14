@@ -31,10 +31,10 @@ namespace core
         public static readonly Vector3 UnitY = new Vector3(0.0f, 1.0f, 0.0f);
         public static readonly Vector3 UnitZ = new Vector3(0.0f, 0.0f, 1.0f);
 
-        public static readonly Vector3 forward = new Vector3(0, 1, 0); 
-        public static readonly Vector3 back = new Vector3(0, -1, 0); 
-        public static readonly Vector3 right = new Vector3(1, 0, 0); 
-        public static readonly Vector3 left = new Vector3(-1, 0, 0); 
+        public static readonly Vector3 forward  =    new Vector3( 0,  0,  1); 
+        public static readonly Vector3 back     =    new Vector3( 0,  0, -1); 
+        public static readonly Vector3 right    =    new Vector3( 1,  0,  0); 
+        public static readonly Vector3 left     =    new Vector3(-1,  0,  0); 
 
         public float mX;
         public float mY;

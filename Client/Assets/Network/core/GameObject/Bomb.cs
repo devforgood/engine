@@ -48,8 +48,7 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetLocation().mX);
-                inOutputStream.Write(GetLocation().mY);
+                inOutputStream.Write(GetLocation());
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Pose;
             }

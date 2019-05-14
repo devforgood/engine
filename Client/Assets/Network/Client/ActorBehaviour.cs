@@ -24,7 +24,7 @@ public class ActorBehaviour : MonoBehaviour
         if (actor != null)
         {
             var last_position = transform.position;
-            transform.position = new Vector3(actor.GetLocation().mX, actor.GetLocation().mZ, actor.GetLocation().mY);
+            transform.position = new Vector3(actor.GetLocation().mX, actor.GetLocation().mY, actor.GetLocation().mZ);
 
 
             animator.SetFloat("Speed", actor.GetVelocity().magnitude);
@@ -50,13 +50,13 @@ public class ActorBehaviour : MonoBehaviour
 
             //Debug.Log("Client speed : " + actor.GetVelocity().magnitude + ", player_id : " + actor.GetPlayerId());
 
-            if (actor.mDirection.mX == 0.0f && actor.mDirection.mY == 0.0f)
+            if (actor.mDirection.IsZero())
             {
 
             }
             else
             {
-                transform.rotation = Quaternion.LookRotation(new Vector3(actor.mDirection.mX, 0, actor.mDirection.mY));
+                transform.rotation = Quaternion.LookRotation(new Vector3(actor.mDirection.mX, actor.mDirection.mY, actor.mDirection.mZ));
             }
 
             if (actor.IsLocalPlayer())

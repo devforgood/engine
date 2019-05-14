@@ -84,6 +84,7 @@ namespace core
             direction.Normalize();
             mDirection = direction;
 
+            //LogHelper.LogInfo("direction " + mDirection);
             //turning...
 
 
@@ -106,6 +107,9 @@ namespace core
             //simulating acceleration makes the client prediction a bit more complex
             Vector3 forwardVector = GetForwardVector();
             mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
+
+            //LogHelper.LogInfo("mVelocity " + mVelocity);
+
         }
 
         public void SimulateMovement(float inDeltaTime)
@@ -172,6 +176,8 @@ namespace core
 
         public void ProcessCollisions()
         {
+            return;
+
             //right now just bounce off the sides..
             ProcessCollisionsWithScreenWalls();
 
@@ -268,19 +274,14 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                Vector3 velocity = mVelocity;
-                inOutputStream.Write(velocity.mX);
-                inOutputStream.Write(velocity.mY);
+                inOutputStream.Write(mVelocity);
 
-                Vector3 location = GetLocation();
-                inOutputStream.Write(location.mX);
-                inOutputStream.Write(location.mY);
+                inOutputStream.Write(GetLocation());
 
 #if USE_INPUT_STATE_OLD
                 inOutputStream.Write(GetRotation());
 #else
-                inOutputStream.Write(mDirection.mX);
-                inOutputStream.Write(mDirection.mY);
+                inOutputStream.Write(mDirection);
 #endif
                 writtenState |= (uint32_t)EActorReplicationState.ECRS_Pose;
             }

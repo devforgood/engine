@@ -57,7 +57,7 @@ namespace core
                 {
                     var last_location = go.GetLocation().Clone();
                     go.NetUpdate();
-                    if (RoboMath.Is2DVectorEqual(last_location, go.GetLocation()) == false)
+                    if (RoboMath.Is3DVectorEqual(last_location, go.GetLocation()) == false)
                     {
                         mWorldMap.ChangeLocation(go.NetworkId, last_location, go.GetLocation());
                     }

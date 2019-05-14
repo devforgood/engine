@@ -16,13 +16,11 @@ class CProjectile : core.Projectile
         if (stateBit)
         {
             core.Vector3 location = new core.Vector3();
-            location.mX = inInputStream.ReadFloat();
-            location.mY = inInputStream.ReadFloat();
+            inInputStream.Read(location);
 
 
             core.Vector3 velocity = new core.Vector3();
-            velocity.mX = inInputStream.ReadFloat();
-            velocity.mY = inInputStream.ReadFloat();
+            inInputStream.Read(velocity);
             SetVelocity(velocity);
 
             //dead reckon ahead by rtt, since this was spawned a while ago!
@@ -33,8 +31,7 @@ class CProjectile : core.Projectile
             float rotation = inInputStream.ReadFloat();
             SetRotation(rotation);
 #else
-            mDirection.mX = inInputStream.ReadFloat();
-            mDirection.mY = inInputStream.ReadFloat();
+            inInputStream.Read(mDirection);
 #endif
         }
 

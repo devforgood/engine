@@ -44,15 +44,12 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                Vector3 location = GetLocation();
-                inOutputStream.Write(location.mX);
-                inOutputStream.Write(location.mY);
+                inOutputStream.Write(GetLocation());
 
 #if USE_INPUT_STATE_OLD
                 inOutputStream.Write(GetRotation());
 #else
-                inOutputStream.Write(mDirection.mX);
-                inOutputStream.Write(mDirection.mY);
+                inOutputStream.Write(mDirection);
 #endif 
 
                 writtenState |= (uint32_t)EMouseReplicationState.EMRS_Pose;
@@ -85,16 +82,14 @@ namespace core
             if (stateBit)
             {
                 Vector3 location = new Vector3();
-                location.mX = inInputStream.ReadFloat();
-                location.mY = inInputStream.ReadFloat();
+                inInputStream.Read(location);
                 SetLocation(location);
 
 #if USE_INPUT_STATE_OLD
                 float rotation = inInputStream.ReadFloat();
                 SetRotation(rotation);
 #else
-                mDirection.mX = inInputStream.ReadFloat();
-                mDirection.mY = inInputStream.ReadFloat();
+                inInputStream.Read(mDirection);
 #endif
             }
 

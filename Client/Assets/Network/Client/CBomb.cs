@@ -15,8 +15,7 @@ class CBomb : core.Bomb
         if (stateBit)
         {
             core.Vector3 location = new core.Vector3();
-            location.mX = inInputStream.ReadFloat();
-            location.mY = inInputStream.ReadFloat();
+            inInputStream.Read(location);
 
             //dead reckon ahead by rtt, since this was spawned a while ago!
             SetLocation(location);
@@ -58,7 +57,7 @@ class CBomb : core.Bomb
         if (go == null)
             return;
 
-        var location = new Vector3(GetLocation().mX, GetLocation().mZ, GetLocation().mY);
+        var location = new Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
 
         GameObject bomb =GameObject.Instantiate(go, location, go.transform.rotation);
         mTarget = bomb;

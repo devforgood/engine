@@ -47,7 +47,7 @@ public class CActor : core.Actor
         {
             SimulateMovement(core.Timing.sInstance.GetDeltaTime());
 
-            if (core.RoboMath.Is2DVectorEqual(GetVelocity(), core.Vector3.Zero.Clone()))
+            if (core.RoboMath.Is3DVectorEqual(GetVelocity(), core.Vector3.Zero))
             {
                 //we're in sync if our velocity is 0
                 mTimeLocationBecameOutOfSync = 0.0f;
@@ -98,25 +98,18 @@ public class CActor : core.Actor
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            replicatedVelocity.mX = inInputStream.ReadFloat();
-            replicatedVelocity.mY = inInputStream.ReadFloat();
-
+            inInputStream.Read(replicatedVelocity);
             SetVelocity(replicatedVelocity);
 
-            replicatedLocation.mX = inInputStream.ReadFloat();
-            replicatedLocation.mY = inInputStream.ReadFloat();
-
-            //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
-
-
+            inInputStream.Read(replicatedLocation);
             SetLocation(replicatedLocation);
+            //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
 #if USE_INPUT_STATE_OLD
             replicatedRotation = inInputStream.ReadFloat();
             SetRotation(replicatedRotation);
 #else
-            mDirection.mX = inInputStream.ReadFloat();
-            mDirection.mY = inInputStream.ReadFloat();
+            inInputStream.Read(mDirection);
             mThrustDir = 1.0f;
 #endif
             readState |= (uint32_t)EActorReplicationState.ECRS_Pose;
@@ -261,7 +254,7 @@ public class CActor : core.Actor
 
         float roundTripTime = NetworkManagerClient.sInstance.GetRoundTripTime();
 
-        if (!core.RoboMath.Is2DVectorEqual(inOldLocation, GetLocation()))
+        if (!core.RoboMath.Is3DVectorEqual(inOldLocation, GetLocation()))
         {
             //LOG( "ERROR! Move replay ended with incorrect location!", 0 );
 
@@ -296,7 +289,7 @@ public class CActor : core.Actor
         }
 
 
-        if (!core.RoboMath.Is2DVectorEqual(inOldVelocity, GetVelocity()))
+        if (!core.RoboMath.Is3DVectorEqual(inOldVelocity, GetVelocity()))
         {
             //LOG( "ERROR! Move replay ended with incorrect velocity!", 0 );
 

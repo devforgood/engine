@@ -108,9 +108,9 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
-            if (!RoboMath.Is2DVectorEqual(oldLocation, GetLocation()) ||
-                !RoboMath.Is2DVectorEqual(oldVelocity, GetVelocity()) ||
-                !RoboMath.Is2DVectorEqual(oldRotation, GetRotation())
+            if (!RoboMath.Is3DVectorEqual(oldLocation, GetLocation()) ||
+                !RoboMath.Is3DVectorEqual(oldVelocity, GetVelocity()) ||
+                !RoboMath.Is3DVectorEqual(oldRotation, GetRotation())
                 )
             {
                 log.InfoFormat("ol {0} cl {1} ov {2} cv {3} or{4} cr{5}", oldLocation, GetLocation(), oldVelocity, GetVelocity(), oldRotation, GetRotation());
