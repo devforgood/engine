@@ -48,7 +48,7 @@ public class ActorBehaviour : MonoBehaviour
                 is_run = true;
             }
 
-            Debug.Log("Client speed : " + actor.GetVelocity().magnitude + ", player_id : " + actor.GetPlayerId());
+            //Debug.Log("Client speed : " + actor.GetVelocity().magnitude + ", player_id : " + actor.GetPlayerId());
 
             if (actor.mDirection.mX == 0.0f && actor.mDirection.mY == 0.0f)
             {

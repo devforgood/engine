@@ -87,10 +87,10 @@ public class CActor : core.Actor
         float oldRotation = GetRotation();
         float replicatedRotation;
 #else
-        core.Vector3 oldRotation = GetRotation();
+        core.Vector3 oldRotation = GetRotation().Clone();
 #endif
-        core.Vector3 oldLocation = GetLocation();
-        core.Vector3 oldVelocity = GetVelocity();
+        core.Vector3 oldLocation = GetLocation().Clone();
+        core.Vector3 oldVelocity = GetVelocity().Clone();
 
         core.Vector3 replicatedLocation = new core.Vector3();
         core.Vector3 replicatedVelocity = new core.Vector3();
@@ -251,9 +251,9 @@ public class CActor : core.Actor
 #else
         core.Vector3 inOldRotation,
 #endif 
-        core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteCat)
+        core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteActor)
     {
-        if (inOldRotation != GetRotation() && !inIsForRemoteCat)
+        if (inOldRotation != GetRotation() && !inIsForRemoteActor)
         {
 
             //LOG( "ERROR! Move replay ended with incorrect rotation!", 0 );
@@ -275,8 +275,18 @@ public class CActor : core.Actor
             float durationOutOfSync = time - mTimeLocationBecameOutOfSync;
             if (durationOutOfSync < roundTripTime)
             {
+                if(inIsForRemoteActor)
+                {
+                    SetLocation(core.Vector3.Lerp(inOldLocation, GetLocation(), (durationOutOfSync / roundTripTime)));
+                    //Debug.Log("location " + GetLocation().ToString());
 
-                SetLocation(core.Vector3.Lerp(inOldLocation, GetLocation(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+                }
+                else
+                {
+                    SetLocation(core.Vector3.Lerp(inOldLocation, GetLocation(), 0.1f));
+
+                }
+
             }
         }
         else
@@ -302,7 +312,7 @@ public class CActor : core.Actor
             if (durationOutOfSync < roundTripTime)
             {
 
-                SetVelocity(core.Vector3.Lerp(inOldVelocity, GetVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+                SetVelocity(core.Vector3.Lerp(inOldVelocity, GetVelocity(), inIsForRemoteActor ? (durationOutOfSync / roundTripTime) : 0.1f));
             }
             //otherwise, fine...
 
