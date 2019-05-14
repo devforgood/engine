@@ -5,7 +5,7 @@ using System.Text;
 
 namespace core
 {
-    public class World
+    public partial class World
     {
         List<NetGameObject> mGameObjects = new List<NetGameObject>();
 
@@ -72,7 +72,7 @@ namespace core
 
         World()
         {
-
+            InitMap();
         }
 
 
