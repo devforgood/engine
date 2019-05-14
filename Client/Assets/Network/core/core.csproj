@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AckRange.cs" />
     <Compile Include="AttributeMessageMode.cs" />
+    <Compile Include="EventQueue.cs" />
     <Compile Include="GameObject\Bomb.cs" />
     <Compile Include="HashCode.cs" />
     <Compile Include="LogHelper.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="GameObject\GameObject.cs" />
     <Compile Include="GameObject\GameObject.Rpc.cs" />
     <Compile Include="GameObject\GameObject.RpcOverloads.cs" />
-    <Compile Include="GameObjectClassId.cs" />
     <Compile Include="GameObjectRegistry.cs" />
     <Compile Include="InFlightPacket.cs" />
     <Compile Include="InputAction.cs" />

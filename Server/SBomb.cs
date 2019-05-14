@@ -17,20 +17,6 @@ namespace Server
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
         }
 
-        public override bool HandleCollisionWithActor(Actor inActor)
-        {
-            if (inActor.GetPlayerId() != GetPlayerId())
-            {
-                //kill yourself!
-                SetDoesWantToDie(true);
-
-                ((SActor)(inActor)).TakeDamage(GetPlayerId());
-
-            }
-
-            return false;
-        }
-
         public override void NetUpdate()
         {
             base.NetUpdate();
