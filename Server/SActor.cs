@@ -92,7 +92,7 @@ namespace Server
 
                         SimulateMovement(deltaTime);
 
-                        log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, old_location{3}, player_id{4}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), oldLocation, GetPlayerId() );
+                        //log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, old_location{3}, player_id{4}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), oldLocation, GetPlayerId() );
 
                     }
 
@@ -176,6 +176,15 @@ namespace Server
         public override void PingServer(int number)
         {
             InvokeClientRpcOnClient(PingClient, (int)GetPlayerId(), number);
+        }
+
+        [ServerRPC(RequireOwnership = false)]
+        public override void JumpServer(int power)
+        {
+            var location = GetLocation();
+            location.mY += power;
+            location += mDirection * power;
+            SetLocation(location);
         }
     }
 }

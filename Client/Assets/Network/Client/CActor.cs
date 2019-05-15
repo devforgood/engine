@@ -1,5 +1,4 @@
-﻿using core;
-using Lidgren.Network;
+﻿using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ public class CActor : core.Actor
     {
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {
-            Move pendingMove = InputManager.sInstance.GetAndClearPendingMove();
+            core.Move pendingMove = InputManager.sInstance.GetAndClearPendingMove();
             //in theory, only do this if we want to sample input this frame / if there's a new move ( since we have to keep in sync with server )
             if (pendingMove != null) //is it time to sample a new move...
             {
@@ -227,15 +226,6 @@ public class CActor : core.Actor
     {
         mTimeLocationBecameOutOfSync = 0.0f;
         mTimeVelocityBecameOutOfSync = 0.0f;
-
-        GameObject prefab = Resources.Load("Ralph") as GameObject;
-        GameObject actor = MonoBehaviour.Instantiate(prefab) as GameObject;
-        mTarget = actor;
-
-        //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
-        mActorBehaviour = actor.GetComponent<ActorBehaviour>();
-
-        mActorBehaviour.actor = this;
     }
 
     void InterpolateClientSidePrediction(
@@ -319,13 +309,31 @@ public class CActor : core.Actor
 
     }
 
+    public override void CompleteCreate()
+    {
+
+        GameObject prefab = Resources.Load("Ralph") as GameObject;
+
+        var location = new Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+        var rotation = new Vector3(mDirection.mX, mDirection.mY, mDirection.mZ);
+
+        GameObject actor = MonoBehaviour.Instantiate(prefab, location, Quaternion.Euler(rotation)) as GameObject;
+        mTarget = actor;
+
+        //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;
+        mActorBehaviour = actor.GetComponent<ActorBehaviour>();
+
+        mActorBehaviour.actor = this;
+    }
+
+
     public override NetBuffer CreateRpcPacket(int clientId)
     {
         //build state packet
         NetOutgoingMessage rpcPacket = NetworkManagerClient.sInstance.GetClient().CreateMessage();
 
         //it's rpc!
-        rpcPacket.Write((UInt32)PacketType.kRPC);
+        rpcPacket.Write((UInt32)core.PacketType.kRPC);
 
         return rpcPacket;
     }
@@ -335,7 +343,7 @@ public class CActor : core.Actor
         NetworkManagerClient.sInstance.GetClient().SendMessage((NetOutgoingMessage)inOutputStream, NetDeliveryMethod.ReliableSequenced);
     }
 
-    [ClientRPC]
+    [core.ClientRPC]
     public override void PingClient(int number)
     {
         Debug.Log("Ping " + number);

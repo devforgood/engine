@@ -66,6 +66,11 @@ public class ActorBehaviour : MonoBehaviour
                     actor.InvokeServerRpc(actor.PingServer, 19);
                 }
 
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    actor.InvokeServerRpc(actor.JumpServer, 1);
+                }
+
                 //if (Input.GetKeyUp(KeyCode.F))
                 //{
                 //    animator.Play("Bomb");

@@ -372,5 +372,10 @@ namespace core
         {
         }
 
+
+        [ServerRPC(RequireOwnership = false)]
+        public virtual void JumpServer(int power)
+        {
+        }
     }
 }
