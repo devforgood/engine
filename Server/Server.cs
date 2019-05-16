@@ -30,6 +30,10 @@ namespace Server
 
             base.DoFrame();
 
+            world.Step(Timing.sInstance.GetDeltaTime(), false);
+
+            World.sInstance.LateUpdate();
+
             NetworkManagerServer.sInstance.SendOutgoingPackets();
         }
 

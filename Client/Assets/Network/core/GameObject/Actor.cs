@@ -1,4 +1,7 @@
-﻿using Lidgren.Network;
+﻿using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+using Jitter.LinearMath;
+using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +50,15 @@ namespace core
             SetCollisionRadius(0.5f);
 
             CacheAttributes();
+
+            BoxShape shape = new BoxShape(JVector.One);
+            RigidBody body = new RigidBody(shape);
+            Engine.sInstance.world.AddBody(body);
+            body.Position = JVector.Zero;
+            body.Material.Restitution = 0.0f;
+            body.LinearVelocity = JVector.Zero;
+            body.IsActive = false;
+
         }
 
 #if USE_INPUT_STATE_OLD
@@ -131,6 +143,15 @@ namespace core
         public override void NetUpdate()
         {
 
+        }
+
+        public virtual void LateUpdate()
+        {
+            Vector3 v = new Vector3(body.Position.X, body.Position.Y, body.Position.Z);
+            if(RoboMath.Is3DVectorEqual(GetLocation(), v) == false)
+            {
+                SetLocation(v);
+            }
         }
 
         void ProcessCollisionsWithScreenWalls()
@@ -360,6 +381,8 @@ namespace core
 
         protected bool mIsShooting;
         protected bool mIsBomb;
+
+        public RigidBody body = null;
 
 
         [ServerRPC(RequireOwnership = false)]

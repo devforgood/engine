@@ -74,6 +74,20 @@ namespace core
             }
         }
 
+        public void LateUpdate()
+        {
+            //update all game objects- sometimes they want to die, so we need to tread carefully...
+
+            for (int i = 0, c = mGameObjects.Count; i < c; ++i)
+            {
+                NetGameObject go = mGameObjects[i];
+                if (!go.DoesWantToDie())
+                {
+                    go.LateUpdate();
+                }
+            }
+        }
+
         public List<NetGameObject> GetGameObjects() { return mGameObjects; }
 
 

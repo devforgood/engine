@@ -108,6 +108,8 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
+            body.Position.Set(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+
             if (!RoboMath.Is3DVectorEqual(oldLocation, GetLocation()) ||
                 !RoboMath.Is3DVectorEqual(oldVelocity, GetVelocity()) ||
                 !RoboMath.Is3DVectorEqual(oldRotation, GetRotation())
@@ -153,6 +155,8 @@ namespace Server
             mTimeBetweenBomb = 0.2f;
 
             //CacheAttributes();
+
+            
 
         }
 

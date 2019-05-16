@@ -8,6 +8,7 @@ namespace core
 {
     public class Engine
     {
+        public Jitter.World world;
         public int ServerClientId { get; set; }
         public bool IsServer { get; set; }
         public bool IsClient { get; set; }
@@ -27,7 +28,8 @@ namespace core
         protected Engine()
         {
             mShouldKeepRunning = true;
-
+            world = new Jitter.World(new Jitter.Collision.CollisionSystemSAP());
+            world.Clear();
 
         }
         public void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
