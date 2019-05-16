@@ -52,12 +52,12 @@ namespace core
             CacheAttributes();
 
             BoxShape shape = new BoxShape(JVector.One);
-            RigidBody body = new RigidBody(shape);
+            body = new RigidBody(shape);
             Engine.sInstance.world.AddBody(body);
             body.Position = JVector.Zero;
             body.Material.Restitution = 0.0f;
             body.LinearVelocity = JVector.Zero;
-            body.IsActive = false;
+            body.IsActive = true;
 
         }
 
@@ -145,11 +145,12 @@ namespace core
 
         }
 
-        public virtual void LateUpdate()
+        public override void LateUpdate()
         {
             Vector3 v = new Vector3(body.Position.X, body.Position.Y, body.Position.Z);
             if(RoboMath.Is3DVectorEqual(GetLocation(), v) == false)
             {
+                LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
                 SetLocation(v);
             }
         }
