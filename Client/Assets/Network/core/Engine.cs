@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+using Jitter.LinearMath;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +32,18 @@ namespace core
         {
             mShouldKeepRunning = true;
             world = new Jitter.World(new Jitter.Collision.CollisionSystemSAP());
+            //world.Gravity 
             world.Clear();
+
+            BoxShape shape = new BoxShape(new JVector(30, 1, 30));
+            var body = new RigidBody(shape);
+            world.AddBody(body);
+            body.Position = new JVector(0, -1.0f, 0);
+            body.Material.Restitution = 0.0f;
+            body.LinearVelocity = JVector.Zero;
+            body.IsActive = false;
+            body.IsStatic = true;
+            body.Tag = false;
 
         }
         public void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
