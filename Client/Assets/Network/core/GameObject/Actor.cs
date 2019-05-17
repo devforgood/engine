@@ -1,7 +1,4 @@
-﻿using Jitter.Collision.Shapes;
-using Jitter.Dynamics;
-using Jitter.LinearMath;
-using Lidgren.Network;
+﻿using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,14 +48,8 @@ namespace core
 
             CacheAttributes();
 
-            BoxShape shape = new BoxShape(JVector.One);
-            body = new RigidBody(shape);
-            Engine.sInstance.world.AddBody(body);
-            body.Position = JVector.Zero;
-            body.Material.Restitution = 0.0f;
-            body.LinearVelocity = JVector.Zero;
-            body.IsActive = true;
-
+            body = new BEPUphysics.Entities.Prefabs.Cylinder(new BEPUutilities.Vector3(0, 0, 0), 1.0f, 0.5f, 10f);
+            Engine.sInstance.world.Add(body);
         }
 
 #if USE_INPUT_STATE_OLD
@@ -383,7 +374,7 @@ namespace core
         protected bool mIsShooting;
         protected bool mIsBomb;
 
-        public RigidBody body = null;
+        public BEPUphysics.Entities.Prefabs.Cylinder body = null;
 
 
         [ServerRPC(RequireOwnership = false)]

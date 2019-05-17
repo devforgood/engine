@@ -51,6 +51,8 @@ public class Client : MonoBehaviour {
         core.Timing.sInstance.Update();
         InputManager.sInstance.Update();
         core.Engine.sInstance.DoFrame();
+        core.Engine.sInstance.world.Update();
+        core.World.sInstance.LateUpdate();
 
         NetworkManagerClient.sInstance.ProcessIncomingPackets();
 

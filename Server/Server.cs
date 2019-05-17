@@ -30,7 +30,7 @@ namespace Server
 
             base.DoFrame();
 
-            world.Step(Timing.sInstance.GetDeltaTime(), false);
+            world.Update();
 
             World.sInstance.LateUpdate();
 

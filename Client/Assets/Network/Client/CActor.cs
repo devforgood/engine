@@ -55,6 +55,9 @@ public class CActor : core.Actor
             //Debug.Log("Remote Client Location : " + GetLocation() + ", player_id : " + GetPlayerId());
 
         }
+
+        body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+
     }
     public override void HandleDying()
     {

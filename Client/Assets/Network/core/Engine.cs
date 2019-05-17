@@ -1,6 +1,4 @@
-﻿using Jitter.Collision.Shapes;
-using Jitter.Dynamics;
-using Jitter.LinearMath;
+﻿using BEPUphysics.Entities.Prefabs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +9,7 @@ namespace core
 {
     public class Engine
     {
-        public Jitter.World world;
+        public BEPUphysics.Space world;
         public int ServerClientId { get; set; }
         public bool IsServer { get; set; }
         public bool IsClient { get; set; }
@@ -31,19 +29,14 @@ namespace core
         protected Engine()
         {
             mShouldKeepRunning = true;
-            world = new Jitter.World(new Jitter.Collision.CollisionSystemSAP());
-            //world.Gravity 
-            world.Clear();
+            world = new BEPUphysics.Space();
 
-            BoxShape shape = new BoxShape(new JVector(30, 1, 30));
-            var body = new RigidBody(shape);
-            world.AddBody(body);
-            body.Position = new JVector(0, -1.0f, 0);
-            body.Material.Restitution = 0.0f;
-            body.LinearVelocity = JVector.Zero;
-            body.IsActive = false;
-            body.IsStatic = true;
-            body.Tag = false;
+
+            var box = new Box(new BEPUutilities.Vector3(0, -0.5f, 0), 30, 1, 30);
+            world.Add(box);
+
+
+            world.ForceUpdater.Gravity = new BEPUutilities.Vector3(0, -9.81f, 0);
 
         }
         public void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }

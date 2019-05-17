@@ -68,7 +68,7 @@ public class ActorBehaviour : MonoBehaviour
 
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    actor.InvokeServerRpc(actor.JumpServer, 1);
+                    actor.InvokeServerRpc(actor.JumpServer, 2);
                 }
 
                 //if (Input.GetKeyUp(KeyCode.F))

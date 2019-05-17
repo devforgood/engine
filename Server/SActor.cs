@@ -108,8 +108,7 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
-            body.IsActive = true;
-            body.Position = new Jitter.LinearMath.JVector(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+            body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
             //body.LinearVelocity = new Jitter.LinearMath.JVector(GetVelocity().mX, GetLocation().mY, GetVelocity().mZ);
 
             if (!RoboMath.Is3DVectorEqual(oldLocation, GetLocation()) ||
@@ -190,7 +189,6 @@ namespace Server
             var location = GetLocation();
             location.mY += power;
             location += mDirection * power;
-            body.IsActive = true;
             SetLocation(location);
         }
     }
