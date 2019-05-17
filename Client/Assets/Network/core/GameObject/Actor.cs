@@ -49,6 +49,16 @@ namespace core
             CacheAttributes();
 
             body = new BEPUphysics.Entities.Prefabs.Cylinder(new BEPUutilities.Vector3(0, 0, 0), 1.0f, 0.5f, 10f);
+            body.IgnoreShapeChanges = true;
+            body.CollisionInformation.Shape.CollisionMargin = 0.1f;
+            //Making the character a continuous object prevents it from flying through walls which would be pretty jarring from a player's perspective.
+            body.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
+            body.LocalInertiaTensorInverse = new BEPUutilities.Matrix3x3();
+            //TODO: In v0.16.2, compound bodies would override the material properties that get set in the CreatingPair event handler.
+            //In a future version where this is changed, change this to conceptually minimally required CreatingPair.
+            //body.CollisionInformation.Events.DetectingInitialCollision += RemoveFriction;
+            body.LinearDamping = 0;
+
             Engine.sInstance.world.Add(body);
         }
 
