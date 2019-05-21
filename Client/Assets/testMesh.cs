@@ -41,12 +41,36 @@ public class testMesh : MonoBehaviour
         foreach (var v in verts)
         {
             str2 += GetRound(v.x) + "f, " + GetRound(v.y) + "f, " + GetRound(v.z) + "f\n";
+
+            Debug.DrawLine(v, v);
         }
-        var Indices = mesh.GetIndices(0);
-        string str = "";
-        foreach (var i in Indices)
+
+        //for(int i=0;i<verts.Length;++i)
+        //{
+        //    for(int j=1;j<verts.Length;++j)
+        //    {
+        //        if (i != j)
+        //        {
+        //            Debug.DrawLine(verts[i], verts[j]);
+        //        }
+        //    }
+        //}
+
+
+        for (int k = 0; k < mesh.subMeshCount; ++k)
         {
-            str += i + ", ";
+            var Indices = mesh.GetIndices(k);
+            string str = "";
+            foreach (var i in Indices)
+            {
+                str += i + ", ";
+            }
+
+            int i1, i2;
+            for(i1=0, i2=1;i2< Indices.Length;++i1, ++i2)
+            {
+                Debug.DrawLine(verts[Indices[i1]], verts[Indices[i2]]);
+            }
         }
         //foreach (Vector3 vert in verts)
         //{
