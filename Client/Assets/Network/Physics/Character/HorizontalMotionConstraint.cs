@@ -129,6 +129,9 @@ namespace BEPUphysics.Character
             get { return movementDirection3d; }
         }
 
+        public Vector3 LastDirection;
+
+
         Vector3 strafeDirection;
         /// <summary>
         /// Gets the strafe direction as updated in the previous call to UpdateMovementBasis.

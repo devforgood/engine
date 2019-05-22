@@ -312,6 +312,9 @@ namespace BEPUphysics.Character
                 //Further, we must test to see if the character has a side contact which is suitable for climbing.
                 stepContacts.Clear();
                 FindUpStepCandidates(stepContacts, ref down);
+#if UNITY
+                UnityEngine.Debug.Log("Client direction : " + HorizontalMotionConstraint.MovementDirection3d);
+#endif
                 //We must test every such contact until we find a step up or we run out of candidates.
                 for (int i = 0; i < stepContacts.Count; i++)
                 {
@@ -329,7 +332,7 @@ namespace BEPUphysics.Character
         float upStepMargin = .1f;  //There's a little extra space above the maximum step height to start the obstruction and downcast test rays.  Helps when a step is very close to the max step height.
         void FindUpStepCandidates(RawList<ContactData> outputStepCandidates, ref Vector3 down)
         {
-            Vector3 movementDirection = HorizontalMotionConstraint.MovementDirection3d;
+            Vector3 movementDirection = HorizontalMotionConstraint.LastDirection;
             foreach (var c in SupportFinder.SideContacts)
             {
                 //Check to see if the contact is sufficiently aligned with the movement direction to be considered for stepping.

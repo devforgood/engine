@@ -23,6 +23,9 @@ public class CActor : core.Actor
 
     public override void NetUpdate()
     {
+        core.Vector3 oldLocation = GetLocation().Clone();
+        core.Vector3 oldVelocity = GetVelocity().Clone();
+
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {
             core.Move pendingMove = InputManager.sInstance.GetAndClearPendingMove();
@@ -56,7 +59,17 @@ public class CActor : core.Actor
 
         }
 
-        body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+        mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+        mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.mX, mDirection.mY, mDirection.mZ);
+
+        if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
+        {
+            if (GetVelocity().IsZero() == false)
+                mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().mX, GetVelocity().mY, GetVelocity().mZ);
+        }
+
+
+        //body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
 
     }
     public override void HandleDying()

@@ -116,7 +116,10 @@ namespace core
 
         }
 
+        public virtual void CompleteRemove()
+        {
 
+        }
 
     }
 }

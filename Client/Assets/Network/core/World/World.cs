@@ -41,6 +41,8 @@ namespace core
             inGameObject.SetIndexInWorld(-1);
 
             mGameObjects.RemoveAt(lastIndex);
+
+            inGameObject.CompleteRemove();
         }
 
 

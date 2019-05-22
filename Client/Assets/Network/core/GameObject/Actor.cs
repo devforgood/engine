@@ -30,7 +30,7 @@ namespace core
         public Actor()
         {
             mMaxRotationSpeed = 5.0f;
-            mMaxLinearSpeed = 50.0f;
+            mMaxLinearSpeed = 60.0f;
             mVelocity = Vector3.Zero.Clone();
             mWallRestitution = 0.1f;
 
@@ -48,6 +48,7 @@ namespace core
 
             CacheAttributes();
 
+            /*
             body = new BEPUphysics.Entities.Prefabs.Cylinder(new BEPUutilities.Vector3(0, 0, 0), 1.0f, 0.5f, 10f);
             body.IgnoreShapeChanges = true;
             body.CollisionInformation.Shape.CollisionMargin = 0.1f;
@@ -60,6 +61,13 @@ namespace core
             body.LinearDamping = 0;
 
             Engine.sInstance.world.Add(body);
+            */
+
+            mCharacterController = new BEPUphysics.Character.CharacterController(new BEPUutilities.Vector3(0, 3, 0), 1.0f, 1.0f * 0.7f, 1.0f * 0.3f, 0.5f, 0.001f, 10f, 0.8f, 1.3f, 8.0f
+                , 3f, 1.5f, 1000, 0f, 0f, 0f, 0f
+                );
+            Engine.sInstance.world.Add(mCharacterController);
+
         }
 
 #if USE_INPUT_STATE_OLD
@@ -81,7 +89,7 @@ namespace core
 
         }
 #else
-    public void ProcessInput(float inDeltaTime, InputState inInputState)
+        public void ProcessInput(float inDeltaTime, InputState inInputState)
         {
             //process our input....
             Vector3 direction = new Vector3();
@@ -146,14 +154,27 @@ namespace core
 
         }
 
+        public override void CompleteRemove()
+        {
+            mCharacterController.OnRemovalFromSpace(Engine.sInstance.world);
+        }
+
         public override void LateUpdate()
         {
-            Vector3 v = new Vector3(body.Position.X, body.Position.Y, body.Position.Z);
+            Vector3 v = new Vector3(mCharacterController.Body.Position.X, mCharacterController.Body.Position.Y, mCharacterController.Body.Position.Z);
             if(RoboMath.Is3DVectorEqual(GetLocation(), v) == false)
             {
                 LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
                 SetLocation(v);
             }
+
+            //Vector3 v2 = new Vector3(mCharacterController.Body.LinearVelocity.X, mCharacterController.Body.LinearVelocity.Y, mCharacterController.Body.LinearVelocity.Z);
+            //if (RoboMath.Is3DVectorEqual(GetVelocity(), v2) == false)
+            //{
+            //    SetVelocity(v2);
+            //}
+
+            //mCharacterController.HorizontalMotionConstraint.MovementDirection = BEPUutilities.Vector2.Zero;
         }
 
         void ProcessCollisionsWithScreenWalls()
@@ -384,7 +405,7 @@ namespace core
         protected bool mIsShooting;
         protected bool mIsBomb;
 
-        public BEPUphysics.Entities.Prefabs.Cylinder body = null;
+        public BEPUphysics.Character.CharacterController mCharacterController = null;
 
 
         [ServerRPC(RequireOwnership = false)]

@@ -18,7 +18,7 @@ public class testGameManager : MonoBehaviour
         GameObject prefab = Resources.Load("elsa") as GameObject;
         GameObject actor = MonoBehaviour.Instantiate(prefab, new Vector3(0, 3, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
         var ac = actor.AddComponent<testActor>();
-        ac.cc = new BEPUphysics.Character.CharacterController(new BEPUutilities.Vector3(0, 3, 0), 1.0f, 1.0f*0.7f, 1.0f*0.3f, 0.5f, 0.001f);
+        ac.cc = new BEPUphysics.Character.CharacterController(new BEPUutilities.Vector3(0, 3, 0), 1.0f, 1.0f*0.7f, 1.0f*0.3f, 0.5f, 0.001f, 10f, 0.8f, 1.3f, 8f, 3f, 1.5f, 1000f, 0, 0, 0, 0, 0, 0);
         world.Add(ac.cc);
 
 

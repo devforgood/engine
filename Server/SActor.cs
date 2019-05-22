@@ -108,7 +108,16 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
-            body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+            mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+            mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.mX, mDirection.mY, mDirection.mZ);
+            if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
+            {
+                if (GetVelocity().IsZero() == false)
+                    mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().mX, GetVelocity().mY, GetVelocity().mZ);
+            }
+
+
+            //body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
             //body.LinearVelocity = new Jitter.LinearMath.JVector(GetVelocity().mX, GetLocation().mY, GetVelocity().mZ);
 
             if (!RoboMath.Is3DVectorEqual(oldLocation, GetLocation()) ||
