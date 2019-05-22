@@ -49,7 +49,7 @@ public class CActor : core.Actor
         {
             SimulateMovement(core.Timing.sInstance.GetDeltaTime());
 
-            if (core.RoboMath.Is3DVectorEqual(GetVelocity(), core.Vector3.Zero))
+            if (GetVelocity().IsZero())
             {
                 //we're in sync if our velocity is 0
                 mTimeLocationBecameOutOfSync = 0.0f;
@@ -260,7 +260,7 @@ public class CActor : core.Actor
 
         float roundTripTime = NetworkManagerClient.sInstance.GetRoundTripTime();
 
-        if (!core.RoboMath.Is3DVectorEqual(inOldLocation, GetLocation()))
+        if (!inOldLocation.Equals(GetLocation()))
         {
             //LOG( "ERROR! Move replay ended with incorrect location!", 0 );
 
@@ -295,7 +295,7 @@ public class CActor : core.Actor
         }
 
 
-        if (!core.RoboMath.Is3DVectorEqual(inOldVelocity, GetVelocity()))
+        if (!inOldVelocity.Equals(GetVelocity()))
         {
             //LOG( "ERROR! Move replay ended with incorrect velocity!", 0 );
 

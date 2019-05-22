@@ -162,14 +162,14 @@ namespace core
         public override void LateUpdate()
         {
             Vector3 v = new Vector3(mCharacterController.Body.Position.X, mCharacterController.Body.Position.Y, mCharacterController.Body.Position.Z);
-            if(RoboMath.Is3DVectorEqual(GetLocation(), v) == false)
+            if(v.Equals(GetLocation()) == false)
             {
                 LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
                 SetLocation(v);
             }
 
             //Vector3 v2 = new Vector3(mCharacterController.Body.LinearVelocity.X, mCharacterController.Body.LinearVelocity.Y, mCharacterController.Body.LinearVelocity.Z);
-            //if (RoboMath.Is3DVectorEqual(GetVelocity(), v2) == false)
+            //if (v2.Equals(GetVelocity()) == false)
             //{
             //    SetVelocity(v2);
             //}

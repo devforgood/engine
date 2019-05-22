@@ -120,9 +120,9 @@ namespace Server
             //body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
             //body.LinearVelocity = new Jitter.LinearMath.JVector(GetVelocity().mX, GetLocation().mY, GetVelocity().mZ);
 
-            if (!RoboMath.Is3DVectorEqual(oldLocation, GetLocation()) ||
-                !RoboMath.Is3DVectorEqual(oldVelocity, GetVelocity()) ||
-                !RoboMath.Is3DVectorEqual(oldRotation, GetRotation())
+            if (!oldLocation.Equals(GetLocation()) ||
+                !oldVelocity.Equals(GetVelocity()) ||
+                !oldRotation.Equals(GetRotation())
                 )
             {
                 log.InfoFormat("ol {0} cl {1} ov {2} cv {3} or{4} cr{5}", oldLocation, GetLocation(), oldVelocity, GetVelocity(), oldRotation, GetRotation());

@@ -185,5 +185,22 @@ namespace core
             };
         }
 
+        //
+        // 요약:
+        //     이 인스턴스와 다른 벡터가 같은지 여부를 나타내는 값을 반환합니다.
+        //
+        // 매개 변수:
+        //   other:
+        //     다른 벡터입니다.
+        //
+        // 반환 값:
+        //     두 벡터가 같으면 true이고, 그렇지 않으면 false입니다.
+        public bool Equals(Vector3 other)
+        {
+            return (this.mX == other.mX && this.mY == other.mY && this.mZ == other.mZ);
+        }
+
+
+
     }
 }
