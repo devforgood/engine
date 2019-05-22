@@ -4,24 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
-public static partial class NetBufferExtensions
-{
-    public static void Write(this NetBuffer buff, core.Vector3 vec)
-    {
-        buff.Write(vec.mX);
-        buff.Write(vec.mY);
-        buff.Write(vec.mZ);
-    }
-
-    public static void Read(this NetBuffer buff, core.Vector3 vec)
-    {
-        vec.mX = buff.ReadFloat();
-        vec.mY = buff.ReadFloat();
-        vec.mZ = buff.ReadFloat();
-    }
-}
-
 namespace core
 {
     public class Vector3
