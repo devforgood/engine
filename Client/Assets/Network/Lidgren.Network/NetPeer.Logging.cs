@@ -26,7 +26,7 @@ namespace Lidgren.Network
 		internal void LogVerbose(string message)
 		{
 #if __ANDROID__
-			Android.Util.Log.WriteLine(Android.Util.LogPriority.Verbose, "", message);
+			//Android.Util.Log.WriteLine(Android.Util.LogPriority.Verbose, "", message);
 #endif
 			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.VerboseDebugMessage))
 				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.VerboseDebugMessage, message));
@@ -36,7 +36,7 @@ namespace Lidgren.Network
 		internal void LogDebug(string message)
 		{
 #if __ANDROID__
-			Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "", message);
+			//Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "", message);
 #endif
 			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.DebugMessage))
 				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.DebugMessage, message));
@@ -45,7 +45,7 @@ namespace Lidgren.Network
 		internal void LogWarning(string message)
 		{
 #if __ANDROID__
-			Android.Util.Log.WriteLine(Android.Util.LogPriority.Warn, "", message);
+			//Android.Util.Log.WriteLine(Android.Util.LogPriority.Warn, "", message);
 #endif
 			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.WarningMessage))
 				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.WarningMessage, message));
@@ -54,7 +54,7 @@ namespace Lidgren.Network
 		internal void LogError(string message)
 		{
 #if __ANDROID__
-			Android.Util.Log.WriteLine(Android.Util.LogPriority.Error, "", message);
+			//Android.Util.Log.WriteLine(Android.Util.LogPriority.Error, "", message);
 #endif
 			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.ErrorMessage))
 				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.ErrorMessage, message));

@@ -26,24 +26,26 @@ namespace Lidgren.Network
 		/// </summary>
 		public static IPAddress GetMyAddress(out IPAddress mask)
 		{
-			mask = null;
-			try
-			{
-				Android.Net.Wifi.WifiManager wifi = (Android.Net.Wifi.WifiManager)Android.App.Application.Context.GetSystemService(Android.App.Activity.WifiService);
-				if (!wifi.IsWifiEnabled)
-					return null;
+            mask = null;
+            return null;
 
-				var dhcp = wifi.DhcpInfo;
-				int addr = dhcp.IpAddress;
-				byte[] quads = new byte[4];
-				for (int k = 0; k < 4; k++)
-					quads[k] = (byte)((addr >> k * 8) & 0xFF);
-				return new IPAddress(quads);
-			}
-			catch // Catch Access Denied errors
-			{
-				return null;
-			}
+			//try
+			//{
+			//	Android.Net.Wifi.WifiManager wifi = (Android.Net.Wifi.WifiManager)Android.App.Application.Context.GetSystemService(Android.App.Activity.WifiService);
+			//	if (!wifi.IsWifiEnabled)
+			//		return null;
+
+			//	var dhcp = wifi.DhcpInfo;
+			//	int addr = dhcp.IpAddress;
+			//	byte[] quads = new byte[4];
+			//	for (int k = 0; k < 4; k++)
+			//		quads[k] = (byte)((addr >> k * 8) & 0xFF);
+			//	return new IPAddress(quads);
+			//}
+			//catch // Catch Access Denied errors
+			//{
+			//	return null;
+			//}
 		}
 
 		public static byte[] GetMacAddressBytes()
