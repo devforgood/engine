@@ -30,7 +30,7 @@ namespace Server
 
             base.DoFrame();
 
-            world.Update();
+            space.Update();
 
             World.sInstance.LateUpdate();
 

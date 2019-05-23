@@ -9,7 +9,7 @@ namespace core
 {
     public class Engine
     {
-        public BEPUphysics.Space world;
+        public BEPUphysics.Space space { get; set; }
         public int ServerClientId { get; set; }
         public bool IsServer { get; set; }
         public bool IsClient { get; set; }
@@ -29,13 +29,13 @@ namespace core
         protected Engine()
         {
             mShouldKeepRunning = true;
-            world = new BEPUphysics.Space();
+            space = new BEPUphysics.Space();
 
 
             // floor
-            world.Add(new Box(new BEPUutilities.Vector3(0, -1.0f, 0), 30, 1, 30));
+            space.Add(new Box(new BEPUutilities.Vector3(0, -1.0f, 0), 30, 1, 30));
             // temp box
-            world.Add(new Box(new BEPUutilities.Vector3(0, 0, -1.0f), 1, 1, 1));
+            space.Add(new Box(new BEPUutilities.Vector3(0, 0, -1.0f), 1, 1, 1));
 
             var vertices = new BEPUutilities.Vector3[]
             {
@@ -145,10 +145,10 @@ namespace core
             };
 
             var stair = new BEPUphysics.BroadPhaseEntries.StaticMesh(vertices, indices, new BEPUutilities.AffineTransform(new BEPUutilities.Vector3(0.5f, 0.5f, 0.5f), BEPUutilities.Quaternion.Identity, new BEPUutilities.Vector3(0, 0, 0)));
-            world.Add(stair);
+            space.Add(stair);
 
 
-            world.ForceUpdater.Gravity = new BEPUutilities.Vector3(0, -9.81f, 0);
+            space.ForceUpdater.Gravity = new BEPUutilities.Vector3(0, -9.81f, 0);
 
         }
         public void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }

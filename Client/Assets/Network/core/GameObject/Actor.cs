@@ -66,7 +66,7 @@ namespace core
             mCharacterController = new BEPUphysics.Character.CharacterController(new BEPUutilities.Vector3(0, 3, 0), 1.0f, 1.0f * 0.7f, 1.0f * 0.3f, 0.5f, 0.001f, 10f, 0.8f, 1.3f, 8.0f
                 , 3f, 1.5f, 1000, 0f, 0f, 0f, 0f
                 );
-            Engine.sInstance.world.Add(mCharacterController);
+            Engine.sInstance.space.Add(mCharacterController);
 
         }
 
@@ -156,7 +156,7 @@ namespace core
 
         public override void CompleteRemove()
         {
-            mCharacterController.OnRemovalFromSpace(Engine.sInstance.world);
+            mCharacterController.OnRemovalFromSpace(Engine.sInstance.space);
         }
 
         public override void LateUpdate()
