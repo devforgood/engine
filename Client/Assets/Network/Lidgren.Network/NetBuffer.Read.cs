@@ -579,7 +579,7 @@ namespace Lidgren.Network
 		/// </summary>
 		public string ReadString()
 		{
-			int byteLen = (int)ReadUInt32();
+			int byteLen = (int)ReadVariableUInt32();
 
 			if (byteLen <= 0)
 				return String.Empty;
@@ -622,7 +622,7 @@ namespace Lidgren.Network
 		public bool ReadString(out string result)
 		{
 			uint byteLen;
-			if (ReadUInt32(out byteLen) == false)
+			if (ReadVariableUInt32(out byteLen) == false)
 			{
 				result = String.Empty;
 				return false;
