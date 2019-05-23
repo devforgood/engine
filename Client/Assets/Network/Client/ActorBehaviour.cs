@@ -7,6 +7,8 @@ public class ActorBehaviour : MonoBehaviour
 
     private bool is_run = false;
 
+    private Vector3 velocity;
+
     // Use this for initialization
     void Start()
     {
@@ -23,19 +25,26 @@ public class ActorBehaviour : MonoBehaviour
     {
         if (actor != null)
         {
-            var last_position = transform.position;
-            transform.position = new Vector3(actor.GetLocation().mX, actor.GetLocation().mY, actor.GetLocation().mZ);
+            var remoteLocation = new Vector3(actor.GetLocation().mX, actor.GetLocation().mY, actor.GetLocation().mZ);
+            var remoteVelocity = new Vector3(actor.GetVelocity().mX, actor.GetVelocity().mY, actor.GetVelocity().mZ);
 
-
-            animator.SetFloat("Speed", actor.GetVelocity().magnitude);
-
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.nameHash == Animator.StringToHash("Base Layer.Locomotion"))
+            if (actor.IsLocalPlayer() == false)
             {
-
+                transform.position = Vector3.Lerp(transform.position, remoteLocation, Time.deltaTime * 10f);
+                velocity = Vector3.Lerp(velocity, remoteVelocity, Time.deltaTime * 10f);
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, remoteLocation, Time.deltaTime * 10f);
+                velocity = Vector3.Lerp(velocity, remoteVelocity, Time.deltaTime * 10f);
             }
 
-            if (actor.GetVelocity().IsZero() == true)
+
+            var speed = velocity.magnitude;
+            animator.SetFloat("Speed", speed);
+
+
+            if (speed == 0.0f)
             {
                 if (is_run)
                 {
