@@ -5,7 +5,7 @@ using System.Text;
 
 namespace core
 {
-    public static class RoboMath
+    public static class Utility
     {
         public static float PI = 3.1415926535f;
 
@@ -20,6 +20,12 @@ namespace core
             Vector3 r = new Vector3(GetRandomFloat(), GetRandomFloat(), GetRandomFloat());
             return inMin + (inMax - inMin) * r;
         }
+
+        public static Vector3 GetRandomVector(int minValue, int maxValue)
+        {
+            return new Vector3(rand.Next(minValue, maxValue), 1, rand.Next(minValue, maxValue));
+        }
+
 
         public static float ToDegrees(float inRadians)
         {

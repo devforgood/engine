@@ -90,7 +90,7 @@ namespace Server
             actor.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
             actor.SetPlayerId((uint32_t)inPlayerId);
             //gotta pick a better spawn location than this...
-            actor.SetLocation(new Vector3(1.0f - (float)(inPlayerId), 0.0f, 0.0f));
+            actor.SetLocation(core.Utility.GetRandomVector(-10, 10));
         }
 
 
@@ -133,7 +133,7 @@ namespace Server
             for (int i = 0; i < inMouseCount; ++i)
             {
                 go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp);
-                Vector3 mouseLocation = RoboMath.GetRandomVector(mouseMin, mouseMax);
+                Vector3 mouseLocation = core.Utility.GetRandomVector(mouseMin, mouseMax);
                 go.SetLocation(mouseLocation);
             }
         }
