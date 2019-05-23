@@ -8,7 +8,7 @@ namespace core
     public class World
     {
         List<NetGameObject> mGameObjects = new List<NetGameObject>();
-        WorldMap mWorldMap = new WorldMap();
+        public WorldMap mWorldMap = new WorldMap();
 
 
         /// <summary>
@@ -57,13 +57,7 @@ namespace core
 
                 if (!go.DoesWantToDie())
                 {
-                    var last_location = go.GetLocation().Clone();
-                    go.NetUpdate();
-                    if (last_location.Equals(go.GetLocation()) == false)
-                    {
-                        mWorldMap.ChangeLocation(go.NetworkId, last_location, go.GetLocation());
-                    }
-
+                     go.NetUpdate();
                 }
                 //you might suddenly want to die after your update, so check again
                 if (go.DoesWantToDie())

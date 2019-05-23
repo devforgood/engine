@@ -143,9 +143,10 @@ namespace core
             Vector3 v = new Vector3(mCharacterController.Body.Position.X, mCharacterController.Body.Position.Y, mCharacterController.Body.Position.Z);
             if(v.Equals(GetLocation()) == false)
             {
-                LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
+                //LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
                 SetLocation(v);
             }
+
 
             //Vector3 v2 = new Vector3(mCharacterController.Body.LinearVelocity.X, mCharacterController.Body.LinearVelocity.Y, mCharacterController.Body.LinearVelocity.Z);
             //if (v2.Equals(GetVelocity()) == false)
@@ -154,6 +155,14 @@ namespace core
             //}
 
             //mCharacterController.HorizontalMotionConstraint.MovementDirection = BEPUutilities.Vector2.Zero;
+
+
+            if (mLastLocation.Equals(GetLocation()) == false)
+            {
+                World.sInstance.mWorldMap.ChangeLocation(this, mLastLocation, GetLocation());
+                BackupLocation();
+            }
+
         }
 
         void ProcessCollisionsWithScreenWalls()

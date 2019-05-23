@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace core
 {
-    class WorldMap
+    public class WorldMap
     {
         [StructLayout(LayoutKind.Explicit)]
         public struct WorldMapKey
@@ -69,26 +69,51 @@ namespace core
             return t;
         }
 
-        public void ChangeLocation(int network_id, Vector3 old_pos, Vector3 new_pos)
+        Tile CreateTile(short x, short y, short z)
         {
-            var x = (short)Math.Round(new_pos.mX);
-            var y = (short)Math.Round(new_pos.mY);
-            var z = (short)Math.Round(new_pos.mZ);
+            WorldMapKey key;
+            key.pos = 0;
+            key.x = x;
+            key.y = y;
+            key.z = z;
 
-            var old_x = (short)Math.Round(old_pos.mX);
-            var old_y = (short)Math.Round(old_pos.mY);
-            var old_z = (short)Math.Round(old_pos.mZ);
+            Tile t = new Tile();
+            map.Add(key.pos, t);
+            return t;
+        }
+
+        public void ChangeLocation(NetGameObject target, Vector3 src_pos, Vector3 dest_pos)
+        {
+            var x = (short)Math.Round(dest_pos.mX);
+            var y = (short)Math.Round(dest_pos.mY);
+            var z = (short)Math.Round(dest_pos.mZ);
+
+
+            var old_x = (short)Math.Round(src_pos.mX);
+            var old_y = (short)Math.Round(src_pos.mY);
+            var old_z = (short)Math.Round(src_pos.mZ);
 
             if ( old_x == x && old_y == y && old_z == z )
             {
                 return;
             }
 
-            var tile = GetTile(old_x, old_y, old_z);
-            if(tile == null)
+            var src_tile = GetTile(old_x, old_y, old_z);
+            if(src_tile != null)
             {
-                return;
+                src_tile.del(target);
             }
+
+            var dest_tile = GetTile(x, y, z);
+            if(dest_tile == null)
+            {
+                dest_tile = CreateTile(x, y, z);
+            }
+
+            dest_tile.add(target);
+
+            LogHelper.LogInfo("game object " + target.GetNetworkId() + ", from(" + old_x + "," + old_y + "," + old_z + ") to(" + x + "," + y + "," + z + ")");
+
         }
     }
 }

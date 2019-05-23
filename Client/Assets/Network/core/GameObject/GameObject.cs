@@ -27,6 +27,7 @@ namespace core
 
         float mCollisionRadius;
 
+        protected Vector3 mLastLocation = new Vector3();
 
         float mScale;
         int mIndexInWorld;
@@ -34,6 +35,11 @@ namespace core
         bool mDoesWantToDie;
 
         int mNetworkId;
+
+        public void BackupLocation()
+        {
+            mLastLocation = mLocation.Clone();
+        }
 
         public int NetworkId { get { return mNetworkId; } }
 

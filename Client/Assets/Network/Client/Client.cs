@@ -54,6 +54,8 @@ public class Client : MonoBehaviour {
         core.Engine.sInstance.space.Update();
         core.World.sInstance.LateUpdate();
 
+        // 클라이언트는 패킷 처리를 가장 나중에 한다 
+        // 가장 마지막에 처리되는 것이 우선순위가 높음
         NetworkManagerClient.sInstance.ProcessIncomingPackets();
 
         KeyEvent(KeyCode.A);
