@@ -46,11 +46,7 @@ namespace core
 
                 inOutputStream.Write(GetLocation());
 
-#if USE_INPUT_STATE_OLD
-                inOutputStream.Write(GetRotation());
-#else
                 inOutputStream.Write(mDirection);
-#endif 
 
                 writtenState |= (uint32_t)EMouseReplicationState.EMRS_Pose;
             }
@@ -85,12 +81,7 @@ namespace core
                 inInputStream.Read(location);
                 SetLocation(location);
 
-#if USE_INPUT_STATE_OLD
-                float rotation = inInputStream.ReadFloat();
-                SetRotation(rotation);
-#else
                 inInputStream.Read(mDirection);
-#endif
             }
 
 

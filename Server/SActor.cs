@@ -68,11 +68,7 @@ namespace Server
 
             Vector3 oldLocation = GetLocation().Clone();
             Vector3 oldVelocity = GetVelocity().Clone();
-#if USE_INPUT_STATE_OLD
-            float oldRotation = GetRotation();
-#else
             Vector3 oldRotation = GetRotation().Clone();
-#endif 
 
             //are you controlled by a player?
             //if so, is there a move we haven't processed yet?

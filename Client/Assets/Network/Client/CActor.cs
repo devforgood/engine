@@ -98,12 +98,7 @@ public class CActor : core.Actor
             readState |= (uint32_t)EActorReplicationState.ECRS_PlayerId;
         }
 
-#if USE_INPUT_STATE_OLD
-        float oldRotation = GetRotation();
-        float replicatedRotation;
-#else
         core.Vector3 oldRotation = GetRotation().Clone();
-#endif
         core.Vector3 oldLocation = GetLocation().Clone();
         core.Vector3 oldVelocity = GetVelocity().Clone();
 
@@ -120,29 +115,11 @@ public class CActor : core.Actor
             SetLocation(replicatedLocation);
             //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
-#if USE_INPUT_STATE_OLD
-            replicatedRotation = inInputStream.ReadFloat();
-            SetRotation(replicatedRotation);
-#else
             inInputStream.Read(mDirection);
             mThrustDir = 1.0f;
-#endif
             readState |= (uint32_t)EActorReplicationState.ECRS_Pose;
         }
 
-
-#if USE_INPUT_STATE_OLD
-        stateBit = inInputStream.ReadBoolean();
-        if (stateBit)
-        {
-            stateBit = inInputStream.ReadBoolean();
-            mThrustDir = stateBit ? 1.0f : -1.0f;
-        }
-        else
-        {
-            mThrustDir = 0.0f;
-        }
-#endif
 
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
@@ -245,11 +222,7 @@ public class CActor : core.Actor
     }
 
     void InterpolateClientSidePrediction(
-#if USE_INPUT_STATE_OLD
-        float inOldRotation, 
-#else
         core.Vector3 inOldRotation,
-#endif 
         core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteActor)
     {
         if (inOldRotation != GetRotation() && !inIsForRemoteActor)

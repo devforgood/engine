@@ -70,25 +70,6 @@ namespace core
 
         }
 
-#if USE_INPUT_STATE_OLD
-        public void ProcessInput(float inDeltaTime, InputStateOld inInputState )
-        {
-            //process our input....
-
-            //turning...
-            float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
-
-            SetRotation(newRotation);
-
-            //moving...
-            float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
-            mThrustDir = inputForwardDelta;
-
-
-            mIsShooting = inInputState.IsShooting();
-
-        }
-#else
         public void ProcessInput(float inDeltaTime, InputState inInputState)
         {
             //process our input....
@@ -118,8 +99,6 @@ namespace core
             mIsBomb = inInputState.mIsBomb;
 
         }
-#endif
-
 
 
         public void AdjustVelocityByThrust(float inDeltaTime)
@@ -322,30 +301,14 @@ namespace core
 
                 inOutputStream.Write(GetLocation());
 
-#if USE_INPUT_STATE_OLD
-                inOutputStream.Write(GetRotation());
-#else
                 inOutputStream.Write(mDirection);
-#endif
+
                 writtenState |= (uint32_t)EActorReplicationState.ECRS_Pose;
             }
             else
             {
                 inOutputStream.Write((bool)false);
             }
-
-#if USE_INPUT_STATE_OLD
-            //always write mThrustDir- it's just two bits
-            if (mThrustDir != 0.0f)
-            {
-                inOutputStream.Write(true);
-                inOutputStream.Write(mThrustDir > 0.0f);
-            }
-            else
-            {
-                inOutputStream.Write(false);
-            }
-#endif
 
             if ((inDirtyState & (uint32_t)EActorReplicationState.ECRS_Color) != 0)
             {

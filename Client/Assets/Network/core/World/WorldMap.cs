@@ -23,6 +23,9 @@ namespace core
 
             [FieldOffset(2)]
             public short z;
+
+            [FieldOffset(3)]
+            public short group_id;
         }
 
 

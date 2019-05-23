@@ -44,26 +44,6 @@ public class InputManager
 
     public void HandleInput(core.EInputAction inInputAction, KeyCode inKeyCode)
     {
-#if USE_INPUT_STATE_OLD
-        switch (inKeyCode)
-        {
-            case KeyCode.A:
-                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredLeftAmount);
-                break;
-            case KeyCode.D:
-                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredRightAmount);
-                break;
-            case KeyCode.W:
-                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredForwardAmount);
-                break;
-            case KeyCode.S:
-                UpdateDesireFloatFromKey(inInputAction, out mCurrentState.mDesiredBackAmount);
-                break;
-            case KeyCode.K:
-                UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsShooting);
-                break;
-        }
-#else
         switch (inKeyCode)
         {
             case KeyCode.A:
@@ -85,7 +65,6 @@ public class InputManager
                 UpdateDesireVariableFromKey(inInputAction, out mCurrentState.mIsBomb);
                 break;
         }
-#endif
     }
 
     public core.InputState GetState() { return mCurrentState; }

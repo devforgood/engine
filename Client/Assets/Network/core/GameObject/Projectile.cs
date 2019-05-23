@@ -61,11 +61,7 @@ namespace core
 
                 inOutputStream.Write(GetVelocity());
 
-#if USE_INPUT_STATE_OLD
-                inOutputStream.Write(GetRotation());
-#else
                 inOutputStream.Write(mDirection);
-#endif 
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Pose;
             }
