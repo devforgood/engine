@@ -312,9 +312,9 @@ namespace BEPUphysics.Character
                 //Further, we must test to see if the character has a side contact which is suitable for climbing.
                 stepContacts.Clear();
                 FindUpStepCandidates(stepContacts, ref down);
-#if UNITY
-                UnityEngine.Debug.Log("Client direction : " + HorizontalMotionConstraint.MovementDirection3d);
-#endif
+//#if UNITY
+//                UnityEngine.Debug.Log("Client direction : " + HorizontalMotionConstraint.MovementDirection3d);
+//#endif
                 //We must test every such contact until we find a step up or we run out of candidates.
                 for (int i = 0; i < stepContacts.Count; i++)
                 {

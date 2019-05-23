@@ -93,6 +93,7 @@ namespace Server
                         SimulateMovement(deltaTime);
 
                         //log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, old_location{3}, player_id{4}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), oldLocation, GetPlayerId() );
+                        log.Info("Location:" + GetLocation() + ", Velocity:" + GetVelocity() + ", player_id:" + GetPlayerId());
 
                     }
 
@@ -125,7 +126,7 @@ namespace Server
                 !oldRotation.Equals(GetRotation())
                 )
             {
-                log.InfoFormat("ol {0} cl {1} ov {2} cv {3} or{4} cr{5}", oldLocation, GetLocation(), oldVelocity, GetVelocity(), oldRotation, GetRotation());
+                //log.InfoFormat("ol {0} cl {1} ov {2} cv {3} or{4} cr{5}", oldLocation, GetLocation(), oldVelocity, GetVelocity(), oldRotation, GetRotation());
                 NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)EActorReplicationState.ECRS_Pose);
             }
         }

@@ -44,7 +44,7 @@ namespace core
 
         public override string ToString()
         {
-            return "x : " + mX  + ", y : " + mY + ", z : " + mZ;
+            return "(" + mX + "," + mY + "," + mZ + ")";
         }
 
         public static Vector3 operator +(Vector3 inLeft, Vector3 inRight)
