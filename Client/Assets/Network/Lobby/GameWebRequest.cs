@@ -7,12 +7,14 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Network.Lobby
 {
     class GameWebRequest
     {
-        private const string ServiceUrl = "https://localhost:44326/Match/Index";
+        //private const string ServiceUrl = "https://localhost:44326/Match/Index";
+        public const string ServiceUrl = "http://172.25.51.101/Match/Index";
 
         private Action<GameWebRequest> registrationCallback;    // optional (when using async reg)
 
@@ -121,6 +123,7 @@ namespace Assets.Network.Lobby
                     // no error. use the result
                     StreamReader reader = new StreamReader(response.GetResponseStream());
                     string result = reader.ReadToEnd();
+                    Debug.Log("result : " + result);
 
                 }
                 else

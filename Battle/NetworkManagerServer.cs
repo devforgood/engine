@@ -1,5 +1,6 @@
 ﻿using core;
 using Lidgren.Network;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,6 @@ namespace Server
 {
     public class NetworkManagerServer : NetworkManager
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Global instance of NetworkManagerServer
         /// </summary>
@@ -225,7 +224,7 @@ namespace Server
                 mPlayerIdToClientMap[newClientProxy.GetPlayerId()] = newClientProxy;
 
 
-                log.Info(string.Format("HandlePacketFromNewClient new client {0} as player {1}, addr_map{2}, id_map{3}", newClientProxy.GetName(), newClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
+                Log.Information(string.Format("HandlePacketFromNewClient new client {0} as player {1}, addr_map{2}, id_map{3}", newClientProxy.GetName(), newClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
 
 
                 //tell the server about this client, spawn a cat, etc...
@@ -256,7 +255,7 @@ namespace Server
             welcomePacket.Write((uint32_t)PacketType.kWelcomeCC);
             welcomePacket.Write(inClientProxy.GetPlayerId());
 
-            log.Info(string.Format("Server Welcoming, new client {0} as player {1}", inClientProxy.GetName(), inClientProxy.GetPlayerId()));
+            Log.Information(string.Format("Server Welcoming, new client {0} as player {1}", inClientProxy.GetName(), inClientProxy.GetPlayerId()));
 
             GetServer().SendMessage(welcomePacket, inClientProxy.mConnection, NetDeliveryMethod.Unreliable);
 
@@ -365,7 +364,7 @@ namespace Server
             mAddressToClientMap.Remove(inClientProxy.GetSocketAddress());
             ((Server)(Engine.sInstance)).HandleLostClient(inClientProxy);
 
-            log.Info(string.Format("HandleClientDisconnected client {0} as player {1}, addr_map{2}, id_map{3}", inClientProxy.GetName(), inClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
+            Log.Information(string.Format("HandleClientDisconnected client {0} as player {1}, addr_map{2}, id_map{3}", inClientProxy.GetName(), inClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
 
 
             //was that the last client? if so, bye!

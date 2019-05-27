@@ -1,35 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 
 namespace Server
 {
     class Program
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILogger<Program> logger;
 
         static void Main(string[] args)
         {
-            var log4net_config_dir = string.Format("{0}\\{1}", System.IO.Directory.GetCurrentDirectory(), "LogConfig");
-            if ('\\' != log4net_config_dir.Last())
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("logs\\lobby.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            try
             {
-                log4net_config_dir = string.Format("{0}\\log4net.xml", log4net_config_dir);
+                Log.Information("Starting Battle Server host");
+                if (Server.StaticInit(65000))
+                {
+                    Server.sInstance.Run();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                log4net_config_dir = string.Format("{0}log4net.xml", log4net_config_dir);
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
 
-            var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
-            log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo(log4net_config_dir));
-
-            log.Info("server start");
-            if (Server.StaticInit(65000))
-            {
-                Server.sInstance.Run();
-            }
         }
     }
 }

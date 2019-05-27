@@ -34,7 +34,7 @@ namespace Lobby.Filter
             public void OnActionExecuted(ActionExecutedContext context)
             {
                 // perform some business logic work
-                string str = "good";
+                string str = "good2";
                 byte[] buff = Encoding.UTF8.GetBytes(str);
                 context.HttpContext.Response.Body.Write(buff);
             }

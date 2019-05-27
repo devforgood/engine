@@ -47,7 +47,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Server\bin\x64\Release\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\Server\obj\x64\Release\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\x64\Release\</BaseIntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

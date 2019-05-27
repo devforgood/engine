@@ -54,17 +54,12 @@ namespace core
 
 
 
-#if UNITY
-#else
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-#endif 
-
         public static void LogInfo(string msg)
         {
 #if UNITY
             Debug.Log(msg);
 #else
-            log.Debug(msg);
+            
 #endif
         }
 
@@ -73,7 +68,7 @@ namespace core
 #if UNITY
             Debug.LogWarning(msg);
 #else
-            log.Warn(msg);
+            
 #endif
         }
         public static void LogError(string msg)
@@ -81,7 +76,7 @@ namespace core
 #if UNITY
             Debug.LogError(msg);
 #else
-            log.Error(msg);
+            
 #endif
         }
 
