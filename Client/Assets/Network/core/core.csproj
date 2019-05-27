@@ -18,6 +18,15 @@
   <ItemGroup>
     <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj" />
     <ProjectReference Include="..\Physics\Physics.csproj" />
+    <None Remove="hidden.file" />
+    <None Remove="*.meta" />
+    <None Remove="GameObject\*.meta" />
+    <None Remove="World\*.meta" />
+    <None Remove="obj\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
   </ItemGroup>
 
 </Project>

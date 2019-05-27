@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 #if UNITY
 using UnityEngine;
 #else
-
+using Serilog;
 #endif
 
 namespace core
@@ -59,7 +59,7 @@ namespace core
 #if UNITY
             Debug.Log(msg);
 #else
-            
+            Log.Information(msg);
 #endif
         }
 
@@ -68,7 +68,7 @@ namespace core
 #if UNITY
             Debug.LogWarning(msg);
 #else
-            
+            Log.Warning(msg);
 #endif
         }
         public static void LogError(string msg)
@@ -76,7 +76,7 @@ namespace core
 #if UNITY
             Debug.LogError(msg);
 #else
-            
+            Log.Error(msg);
 #endif
         }
 
