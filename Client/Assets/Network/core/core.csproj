@@ -1,134 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5147C8B0-90C4-46F5-B533-886584B2D7BE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>core</RootNamespace>
-    <AssemblyName>core</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Server\bin\Debug\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\Server\obj\Debug\</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\Debug\</BaseIntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>..\..\..\..\bin\core</OutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\obj\core</BaseIntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>..\..\..\..\bin\core</OutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\obj\core</BaseIntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\Server\bin\x64\Debug\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\Server\obj\x64\Debug\</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\x64\Debug\</BaseIntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\..\..\Server\bin\x64\Release\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\Server\obj\x64\Release\</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\x64\Release\</BaseIntermediateOutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj" />
+    <ProjectReference Include="..\Physics\Physics.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AckRange.cs" />
-    <Compile Include="AttributeMessageMode.cs" />
-    <Compile Include="EventQueue.cs" />
-    <Compile Include="GameObject\Bomb.cs" />
-    <Compile Include="HashCode.cs" />
-    <Compile Include="LogHelper.cs" />
-    <Compile Include="DeliveryNotificationManager.cs" />
-    <Compile Include="Engine.cs" />
-    <Compile Include="GameObject\GameObject.cs" />
-    <Compile Include="GameObject\GameObject.Rpc.cs" />
-    <Compile Include="GameObject\GameObject.RpcOverloads.cs" />
-    <Compile Include="GameObjectRegistry.cs" />
-    <Compile Include="InFlightPacket.cs" />
-    <Compile Include="InputAction.cs" />
-    <Compile Include="InputState.cs" />
-    <Compile Include="LinkingContext.cs" />
-    <Compile Include="Math.cs" />
-    <Compile Include="NetBufferExtensions.cs" />
-    <Compile Include="GameObject\Prop.cs" />
-    <Compile Include="Move.cs" />
-    <Compile Include="MoveList.cs" />
-    <Compile Include="NetworkManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quaternion.cs" />
-    <Compile Include="ReplicationCommand.cs" />
-    <Compile Include="GameObject\Actor.cs" />
-    <Compile Include="RpcResponse.cs" />
-    <Compile Include="ScoreBoardManager.cs" />
-    <Compile Include="SecuritySendFlags.cs" />
-    <Compile Include="Timing.cs" />
-    <Compile Include="TransmissionData.cs" />
-    <Compile Include="TypeExtensions.cs" />
-    <Compile Include="Vector3.cs" />
-    <Compile Include="WeightedTimedMovingAverage.cs" />
-    <Compile Include="World\Tile.cs" />
-    <Compile Include="World\World.cs" />
-    <Compile Include="GameObject\Projectile.cs" />
-    <Compile Include="World\WorldMap.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">
-      <Project>{49ba1c69-6104-41ac-a5d8-b54fa9f696e8}</Project>
-      <Name>Lidgren.Network</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Physics\Physics.csproj">
-      <Project>{909e0cfd-53d6-4f84-81c5-aa4bb8f0784a}</Project>
-      <Name>Physics</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
