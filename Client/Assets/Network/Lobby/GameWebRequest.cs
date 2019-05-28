@@ -13,8 +13,8 @@ namespace Assets.Network.Lobby
 {
     class GameWebRequest
     {
-        //private const string ServiceUrl = "https://localhost:44326/Match/Index";
-        public const string ServiceUrl = "http://172.25.51.101/Match/Index";
+        private const string ServiceUrl = "https://localhost:44326/Match/Index";
+        //public const string ServiceUrl = "http://172.25.51.101/Match/Index";
 
         private Action<GameWebRequest> registrationCallback;    // optional (when using async reg)
 

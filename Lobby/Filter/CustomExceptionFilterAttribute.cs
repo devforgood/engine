@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,7 @@ namespace Lobby.Filter
 
         public override void OnException(ExceptionContext context)
         {
-
-
+            Log.Error(context.ToString());
         }
     }
 }

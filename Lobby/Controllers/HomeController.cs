@@ -26,7 +26,6 @@ namespace Lobby.Controllers
             string value2 = db.StringGet("mykey");
 
 
-
             ViewData["Message"] = value2;
 
             return View();

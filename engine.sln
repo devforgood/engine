@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battle", "Battle\Battle.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "core", "Client\Assets\Network\core\core.csproj", "{0116627E-B2C5-4708-9983-705ECDD1F167}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerCommon", "ServerCommon\ServerCommon.csproj", "{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{0116627E-B2C5-4708-9983-705ECDD1F167}.Release|x64.Build.0 = Release|x64
 		{0116627E-B2C5-4708-9983-705ECDD1F167}.Release|x86.ActiveCfg = Release|Any CPU
 		{0116627E-B2C5-4708-9983-705ECDD1F167}.Release|x86.Build.0 = Release|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Debug|x64.ActiveCfg = Debug|x64
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Debug|x64.Build.0 = Debug|x64
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Debug|x86.Build.0 = Debug|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Release|x64.ActiveCfg = Release|x64
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Release|x64.Build.0 = Release|x64
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Release|x86.ActiveCfg = Release|Any CPU
+		{DEFF7297-5E11-455F-AB98-DA3AAAAA7BDC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

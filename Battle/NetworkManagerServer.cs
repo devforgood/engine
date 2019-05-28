@@ -48,6 +48,8 @@ namespace Server
             mClientDisconnectTimeout = 3.0f;
         }
 
+        public int GetPlayerCount() { return mAddressToClientMap.Count; }
+
         public NetGameObject RegisterAndReturn(NetGameObject inGameObject)
         {
             RegisterGameObject(inGameObject);

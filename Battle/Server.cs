@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 using uint32_t = System.UInt32;
 using uint16_t = System.UInt16;
-
+using StackExchange.Redis;
 
 namespace Server
 {
     public class Server : Engine
     {
+        public ServerCommon.ServerInfo server_info = new ServerCommon.ServerInfo();
+        public ConnectionMultiplexer redis = null;
+        public float set_server_info_time = 0.0f;
+        public TimeSpan server_info_expire = new TimeSpan(0, 1, 0);
 
         public static bool StaticInit(uint16_t port)
         {
@@ -35,6 +39,19 @@ namespace Server
             World.sInstance.LateUpdate();
 
             NetworkManagerServer.sInstance.SendOutgoingPackets();
+
+            set_server_info_time += Timing.sInstance.GetDeltaTime();
+            if (set_server_info_time > 3.0f)
+            {
+                Task.Run(()=> 
+                {
+                    var db = redis.GetDatabase();
+                    db.StringSet(server_info.server_id, NetworkManagerServer.sInstance.GetPlayerCount(), server_info_expire);
+                });
+
+                set_server_info_time = 0.0f;
+            }
+
         }
 
         public override int Run()
