@@ -13,14 +13,17 @@ public class Lobby : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameWebRequest gwr = new GameWebRequest();
+        GameWebRequest web = new GameWebRequest();
 
-        string str = "good";
-        byte[] buff = Encoding.UTF8.GetBytes(str);
-        gwr.SendMessageAsync(buff);
+        
 
+        web.SendMessageAsync("Auth/Index", null, (string msg) => 
+        {
+            var ret = JsonUtility.FromJson<core.Session>(msg);
 
+        });
     }
+
 
 
     // Update is called once per frame

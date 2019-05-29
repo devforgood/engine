@@ -8,4 +8,11 @@ namespace core
     {
 
     }
+
+    public class Session
+    {
+        public string session_id;
+        public string remote_endpoint;
+        public long user_no;
+    }
 }

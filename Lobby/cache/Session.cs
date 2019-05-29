@@ -7,16 +7,13 @@ using System.Threading.Tasks;
 
 namespace Lobby
 {
-    public class Session
+    public class Session : core.Session
     {
-        Guid session_id;
-        string remote_endpoint;
-        long user_no;
-        public static TimeSpan session_expire = new TimeSpan(0, 5, 0);
+        private static TimeSpan session_expire = new TimeSpan(0, 5, 0);
 
         public Session()
         {
-            session_id = Guid.NewGuid();
+            session_id = Guid.NewGuid().ToString();
         }
 
         public static Session CreateSession(string endpoint)

@@ -50,13 +50,13 @@ namespace Lobby.Filter
 
             public void OnActionExecuted(ActionExecutedContext context)
             {
-                using (StreamWriter writer = new StreamWriter(context.HttpContext.Response.Body))
-                using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
-                {
-                    JsonSerializer ser = new JsonSerializer();
-                    ser.Serialize(jsonWriter, context.RouteData.Values["response"]);
-                    jsonWriter.Flush();
-                }
+                //using (StreamWriter writer = new StreamWriter(context.HttpContext.Response.Body))
+                //using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
+                //{
+                //    JsonSerializer ser = new JsonSerializer();
+                //    ser.Serialize(jsonWriter, context.RouteData.Values["response"]);
+                //    jsonWriter.Flush();
+                //}
 
                 // perform some business logic work
                 //string str = "good2";

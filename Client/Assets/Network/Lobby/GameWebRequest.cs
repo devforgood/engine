@@ -13,10 +13,12 @@ namespace Assets.Network.Lobby
 {
     class GameWebRequest
     {
-        private const string ServiceUrl = "https://localhost:44326/Match/Index";
-        //public const string ServiceUrl = "http://172.25.51.101/Match/Index";
+        private const string ServiceUrl = "https://localhost:44326/";
+        //public const string ServiceUrl = "http://172.25.51.101/";
 
-        private Action<GameWebRequest> registrationCallback;    // optional (when using async reg)
+
+        public delegate void CallbackResponse(string msg);
+
 
         public string Message { get; private set; } // msg from server (in case of success, this is the appid)
 
@@ -39,112 +41,75 @@ namespace Assets.Network.Lobby
         }
 
         /// <summary>
-        /// Check ReturnCode, Message and AppId to get the result of this attempt.
+        /// 비동기 메시지 전송
         /// </summary>
-        public void SendMessage(byte[] msg)
+        /// <param name="callback">요청에 대한 응답을 콜백 함수(주의사항 : 다른 스레드에서 호출됨)</param>
+        public void SendMessageAsync(string page, object msg, CallbackResponse callback = null)
         {
-            this.registrationCallback = null;
-            this.Message = string.Empty;
-            this.ReturnCode = -1;
-
-            string result;
-            try
-            {
-                string str = "good";
-                byte[] buff = Encoding.UTF8.GetBytes(str);
-
-
-                WebRequest req = HttpWebRequest.Create(ServiceUrl);
-                req.Method = "POST";
-                req.ContentType = "text/html";
-                req.ContentLength = msg.Length;
-                req.GetRequestStream().Write(msg, 0, msg.Length);
-                HttpWebResponse resp = req.GetResponse() as HttpWebResponse;
-
-                // now read result
-                StreamReader reader = new StreamReader(resp.GetResponseStream());
-                result = reader.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
-                this.Exception = ex;
-                return;
-            }
-
-        }
-
-        /// <summary>
-        /// Attempts to create a Photon Cloud Account asynchronously.
-        /// Once your callback is called, check ReturnCode, Message and AppId to get the result of this attempt.
-        /// </summary>
-        /// <param name="callback">Called when the result is available.</param>
-        public void SendMessageAsync(byte[] msg, Action<GameWebRequest> callback = null)
-        {
-            this.registrationCallback = callback;
             this.Message = string.Empty;
             this.ReturnCode = -1;
 
             try
             {
-                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(ServiceUrl);
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(string.Format("{0}{1}", ServiceUrl, page));
                 req.Method = "POST";
-                req.ContentType = "text/html";
-                req.ContentLength = msg.Length;
-                req.GetRequestStream().Write(msg, 0, msg.Length);
+                req.ContentType = "Application/json";
 
-                req.Timeout = 5000; // TODO: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse
-                req.BeginGetResponse(this.OnSendMessageCompleted, req);
-            }
-            catch (Exception ex)
-            {
-                this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
-                this.Exception = ex;
-                if (this.registrationCallback != null)
+
+                string str;
+                if (msg != null)
                 {
-                    this.registrationCallback(this);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Internal callback with result of async HttpWebRequest
-        /// </summary>
-        /// <param name="ar"></param>
-        private void OnSendMessageCompleted(IAsyncResult ar)
-        {
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)ar.AsyncState;
-                HttpWebResponse response = request.EndGetResponse(ar) as HttpWebResponse;
-
-                if (response != null && response.StatusCode == HttpStatusCode.OK)
-                {
-                    // no error. use the result
-                    StreamReader reader = new StreamReader(response.GetResponseStream());
-                    string result = reader.ReadToEnd();
-                    Debug.Log("result : " + result);
-
+                    str = JsonUtility.ToJson(msg);
                 }
                 else
+                    str = "{}";
+
+                byte[] buff = Encoding.UTF8.GetBytes(str);
+                req.ContentLength = buff.Length;
+                req.GetRequestStream().Write(buff, 0, buff.Length);
+
+
+                req.Timeout = 5000; // TODO: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse
+                req.BeginGetResponse((IAsyncResult ar) =>
                 {
-                    // a response but some error on server. show message
-                    this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
-                }
+                    try
+                    {
+                        HttpWebRequest request = (HttpWebRequest)ar.AsyncState;
+                        HttpWebResponse response = request.EndGetResponse(ar) as HttpWebResponse;
+
+                        if (response != null && response.StatusCode == HttpStatusCode.OK)
+                        {
+                            // no error. use the result
+                            StreamReader reader = new StreamReader(response.GetResponseStream());
+                            string result = reader.ReadToEnd();
+                            Debug.Log("result : " + result);
+
+
+
+                            callback?.Invoke(result);
+
+                        }
+                        else
+                        {
+                            // a response but some error on server. show message
+                            this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // not even a response. show message
+                        this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
+                        this.Exception = ex;
+                    }
+
+                }, req);
             }
             catch (Exception ex)
             {
-                // not even a response. show message
                 this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
                 this.Exception = ex;
             }
-
-            if (this.registrationCallback != null)
-            {
-                this.registrationCallback(this);
-            }
         }
-
 
     }
 }
