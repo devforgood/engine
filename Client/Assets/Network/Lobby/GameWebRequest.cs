@@ -18,11 +18,7 @@ namespace Assets.Network.Lobby
         //public const string ServiceUrl = "http://172.25.51.101/";
 
 
-        public delegate void CallbackResponse(string msg);
-        public delegate void CallbackExecute();
-
-
-        private readonly NetQueue<CallbackExecute> m_releasedIncomingMessages;
+        private readonly NetQueue<Action> m_releasedIncomingMessages;
 
 
         public string Message { get; private set; } // msg from server (in case of success, this is the appid)
@@ -38,7 +34,7 @@ namespace Assets.Network.Lobby
         {
             WebRequest.DefaultWebProxy = null;
             ServicePointManager.ServerCertificateValidationCallback = Validator;
-            m_releasedIncomingMessages = new NetQueue<CallbackExecute>(4);
+            m_releasedIncomingMessages = new NetQueue<Action>(4);
         }
 
         public static bool Validator(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
@@ -48,7 +44,7 @@ namespace Assets.Network.Lobby
 
         public void Update()
         {
-            if (m_releasedIncomingMessages.TryDequeue(out CallbackExecute retval))
+            if (m_releasedIncomingMessages.TryDequeue(out Action retval))
             {
                 retval.Invoke();
 
@@ -59,7 +55,7 @@ namespace Assets.Network.Lobby
         /// 비동기 메시지 전송
         /// </summary>
         /// <param name="callback"></param>
-        public void SendMessageAsync(string page, object msg, CallbackResponse callback = null)
+        public void SendMessageAsync(string page, object msg, Action<string> callback = null)
         {
             this.Message = string.Empty;
             this.ReturnCode = -1;
