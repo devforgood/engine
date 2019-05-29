@@ -9,17 +9,21 @@ using UnityEngine.Networking;
 
 public class Lobby : MonoBehaviour
 {
+    GameWebRequest web = new GameWebRequest();
 
     // Start is called before the first frame update
     void Start()
     {
-        GameWebRequest web = new GameWebRequest();
-
-        
 
         web.SendMessageAsync("Auth/Index", null, (string msg) => 
         {
             var ret = JsonUtility.FromJson<core.Session>(msg);
+
+            var msg2 = new core.RequestMessage();
+            msg2.session_id = ret.session_id;
+
+
+            web.SendMessageAsync("Match/StartPlay", msg2);
 
         });
     }
@@ -29,6 +33,7 @@ public class Lobby : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        web.Update();
         
     }
 }

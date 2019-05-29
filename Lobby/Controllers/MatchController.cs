@@ -6,6 +6,7 @@ using Lobby.Filter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using Serilog;
 using StackExchange.Redis;
 
 namespace Lobby.Controllers
@@ -39,6 +40,12 @@ namespace Lobby.Controllers
 
         public IActionResult StartPlay()
         {
+            var session = this.GetSession();
+            if(session == null)
+            {
+                Log.Warning("lost session");
+                return null;
+            }
 
             var db = Cache.Instance.GetDatabase();
 

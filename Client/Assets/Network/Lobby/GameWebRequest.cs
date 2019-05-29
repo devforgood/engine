@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lidgren.Network;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace Assets.Network.Lobby
 
 
         public delegate void CallbackResponse(string msg);
+        public delegate void CallbackExecute();
+
+
+        private readonly NetQueue<CallbackExecute> m_releasedIncomingMessages;
 
 
         public string Message { get; private set; } // msg from server (in case of success, this is the appid)
@@ -33,6 +38,7 @@ namespace Assets.Network.Lobby
         {
             WebRequest.DefaultWebProxy = null;
             ServicePointManager.ServerCertificateValidationCallback = Validator;
+            m_releasedIncomingMessages = new NetQueue<CallbackExecute>(4);
         }
 
         public static bool Validator(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
@@ -40,10 +46,19 @@ namespace Assets.Network.Lobby
             return true;    // any certificate is ok in this case
         }
 
+        public void Update()
+        {
+            if (m_releasedIncomingMessages.TryDequeue(out CallbackExecute retval))
+            {
+                retval.Invoke();
+
+            }
+        }
+
         /// <summary>
         /// 비동기 메시지 전송
         /// </summary>
-        /// <param name="callback">요청에 대한 응답을 콜백 함수(주의사항 : 다른 스레드에서 호출됨)</param>
+        /// <param name="callback"></param>
         public void SendMessageAsync(string page, object msg, CallbackResponse callback = null)
         {
             this.Message = string.Empty;
@@ -84,10 +99,10 @@ namespace Assets.Network.Lobby
                             string result = reader.ReadToEnd();
                             Debug.Log("result : " + result);
 
-
-
-                            callback?.Invoke(result);
-
+                            m_releasedIncomingMessages.Enqueue(() => 
+                            {
+                                callback?.Invoke(result);
+                            });
                         }
                         else
                         {
@@ -100,6 +115,8 @@ namespace Assets.Network.Lobby
                         // not even a response. show message
                         this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
                         this.Exception = ex;
+
+                        Debug.Log(ex);
                     }
 
                 }, req);
@@ -108,6 +125,8 @@ namespace Assets.Network.Lobby
             {
                 this.Message = "Failed to connect to Cloud Account Service. Please register via account website.";
                 this.Exception = ex;
+
+                Debug.Log(ex);
             }
         }
 
