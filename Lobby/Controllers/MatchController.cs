@@ -114,16 +114,24 @@ namespace Lobby.Controllers
             if (waiting_list.Length > MAX_START_PLAYER_COUNT - 1)
             {
                 match_id = db.StringIncrement("match_instance_id");
-                for (int i = 0; i < waiting_list.Length - 1; ++i)
+                for (int i = waiting_list.Length-1; i >= 0; --i)
                 {
                     long user_no = (long)waiting_list[i];
-                    // 매칭에 필요한 유저를 선점한다
-                    if (db.StringSet(string.Format("match_user:{0}", user_no), match_id, match_user_expire, When.NotExists) == true)
+                    if (Session.IsAvailableSesssion(user_no))
                     {
-                        player_list.Add(user_no);
+                        // 매칭에 필요한 유저를 선점한다
+                        if (db.StringSet(string.Format("match_user:{0}", user_no), match_id, match_user_expire, When.NotExists) == true)
+                        {
+                            player_list.Add(user_no);
 
-                        if (player_list.Count == MAX_START_PLAYER_COUNT - 1)
-                            break;
+                            if (player_list.Count == MAX_START_PLAYER_COUNT - 1)
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // 유효하지 않는 유저는 대기자 목록에서 삭제한다.
+                        RemoveMatchUser(user_no);
                     }
                 }
             }
@@ -133,7 +141,7 @@ namespace Lobby.Controllers
                 // 매칭에 필요한 인원을 모두 찾았을때
                 // 전투 가능한 서버를 찾아 세팅
                 string server_addr = GetAvailableServer();
-                if (server_addr == null)
+                if (server_addr != null)
                 {
                     db.StringSet(string.Format("match:{0}", match_id), server_addr, match_expire);
 

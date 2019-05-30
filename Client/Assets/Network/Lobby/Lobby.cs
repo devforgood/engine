@@ -11,22 +11,47 @@ public class Lobby : MonoBehaviour
 {
     GameWebRequest web = new GameWebRequest();
 
+    string session_id;
+
+    bool is_try_startplay = false;
+    int wait_time_sec = 0;
+
+    float current_wait_time = 0.0f;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-
         web.SendMessageAsync("Auth/Index", null, (string msg) => 
         {
             var ret = JsonUtility.FromJson<core.Session>(msg);
-
-            var msg2 = new core.RequestMessage();
-            msg2.session_id = ret.session_id;
-
-
-            web.SendMessageAsync("Match/StartPlay", msg2);
-
+            session_id = ret.session_id;
+            StartPlay();
         });
     }
+
+    public void StartPlay()
+    {
+
+        var req_msg = new core.RequestMessage();
+        req_msg.session_id = session_id;
+        web.SendMessageAsync("Match/StartPlay", req_msg, (string msg) =>
+        {
+            var ret = JsonUtility.FromJson<core.StartPlay>(msg);
+            if(ret.is_start)
+            {
+                is_try_startplay = false;
+                Debug.Log("StartPlay success");
+            }
+            else
+            {
+                is_try_startplay = true;
+                wait_time_sec = ret.wait_time_sec;
+            }
+        });
+    }
+
 
 
 
@@ -35,5 +60,14 @@ public class Lobby : MonoBehaviour
     {
         web.Update();
         
+        if(is_try_startplay)
+        {
+            current_wait_time += Time.deltaTime;
+            if((int)current_wait_time >= wait_time_sec)
+            {
+                current_wait_time = 0.0f;
+                StartPlay();
+            }
+        }
     }
 }
