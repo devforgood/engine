@@ -14,9 +14,7 @@ namespace Assets.Network.Lobby
 {
     class GameWebRequest
     {
-        private const string ServiceUrl = "https://localhost:44326/";
-        //public const string ServiceUrl = "http://172.25.51.101/";
-
+        private readonly string ServiceUrl;
 
         private readonly NetQueue<Action> m_releasedIncomingMessages;
 
@@ -30,8 +28,9 @@ namespace Assets.Network.Lobby
          /// <summary>
         /// Creates a instance of the Account Service to register Photon Cloud accounts.
         /// </summary>
-        public GameWebRequest()
+        public GameWebRequest(string url)
         {
+            ServiceUrl = url;
             WebRequest.DefaultWebProxy = null;
             ServicePointManager.ServerCertificateValidationCallback = Validator;
             m_releasedIncomingMessages = new NetQueue<Action>(4);

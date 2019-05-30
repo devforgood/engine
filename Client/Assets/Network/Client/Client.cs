@@ -10,6 +10,8 @@ public class Client : MonoBehaviour {
     public int server_port = 65000;
     public string user_id = "test";
 
+    public static string server_addr = null;
+
 
     Dictionary<KeyCode, bool> key_event = new Dictionary<KeyCode, bool>()
     {
@@ -22,10 +24,36 @@ public class Client : MonoBehaviour {
         { KeyCode.B , false },
     };
 
+    // Handles IPv4 and IPv6 notation.
+    public static System.Net.IPEndPoint CreateIPEndPoint(string endPoint)
+    {
+        string[] ep = endPoint.Split(':');
+        if (ep.Length < 2) throw new FormatException("Invalid endpoint format");
+        System.Net.IPAddress ip;
+        if (ep.Length > 2)
+        {
+            if (!System.Net.IPAddress.TryParse(string.Join(":", ep, 0, ep.Length - 1), out ip))
+            {
+                throw new FormatException("Invalid ip-adress");
+            }
+        }
+        else
+        {
+            if (!System.Net.IPAddress.TryParse(ep[0], out ip))
+            {
+                throw new FormatException("Invalid ip-adress");
+            }
+        }
+        int port;
+        if (!int.TryParse(ep[ep.Length - 1], System.Globalization.NumberStyles.None, System.Globalization.NumberFormatInfo.CurrentInfo, out port))
+        {
+            throw new FormatException("Invalid port");
+        }
+        return new System.Net.IPEndPoint(ip, port);
+    }
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kActor, CActor.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProp, CProp.StaticCreate);
         core.GameObjectRegistry.sInstance.RegisterCreationFunction((uint)core.GameObjectClassId.kProjectile, CProjectile.StaticCreate);
@@ -34,7 +62,11 @@ public class Client : MonoBehaviour {
         core.Engine.sInstance.IsClient = true;
         core.Engine.sInstance.IsServer = false;
 
-        var addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(server_ip_address), server_port);
+        System.Net.IPEndPoint addr = null;
+        if (server_addr != null)
+            addr = CreateIPEndPoint(server_addr);
+        else
+            addr = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(server_ip_address), server_port);
 
         NetworkManagerClient.StaticInit(addr, user_id);
     }

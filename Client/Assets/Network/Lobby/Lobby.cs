@@ -6,10 +6,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class Lobby : MonoBehaviour
 {
-    GameWebRequest web = new GameWebRequest();
+    //public string ServiceUrl  = "https://localhost:44326/";
+    public string ServiceUrl = "http://172.25.51.101/";
+
+    GameWebRequest web;
 
     string session_id;
 
@@ -23,6 +27,8 @@ public class Lobby : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        web = new GameWebRequest(ServiceUrl);
+
         web.SendMessageAsync("Auth/Index", null, (string msg) => 
         {
             var ret = JsonUtility.FromJson<core.Session>(msg);
@@ -43,6 +49,8 @@ public class Lobby : MonoBehaviour
             {
                 is_try_startplay = false;
                 Debug.Log("StartPlay success");
+                SceneManager.LoadScene("test");
+                Client.server_addr = ret.battle_server_addr;
             }
             else
             {

@@ -18,6 +18,7 @@ namespace Lobby.Controllers
         private static TimeSpan match_user_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_expire = new TimeSpan(0, 5, 0);
         private static int MAX_START_PLAYER_COUNT = 4;
+        private static int startplay_polling_period = 5;
 
         public IActionResult Index()
         {
@@ -61,7 +62,7 @@ namespace Lobby.Controllers
         public void RemoveMatchUser(long user_no)
         {
             var db = Cache.Instance.GetDatabase();
-            db.SortedSetRemove("waiting_list", string.Format("waiting_list:{0}", user_no));
+            db.SortedSetRemove("waiting_list",  user_no);
             // match_user 는 삭제 하지 않는다. 만약 삭제하게되면 
             // waiting_list를 얻은 상태에서 match_user를 선점하게되어 이미 게임 시작 중인 유저가 다시 매칭될수 있다.
             
@@ -95,6 +96,8 @@ namespace Lobby.Controllers
                     response.is_start = true;
                     response.battle_server_addr = (string)value2;
                     response.wait_time_sec = 0;
+
+                    Log.Information(string.Format("StartPlay {0}", session.user_no));
                     return new JsonResult(response);
                 }
                 else
@@ -114,15 +117,20 @@ namespace Lobby.Controllers
             if (waiting_list.Length > MAX_START_PLAYER_COUNT - 1)
             {
                 match_id = db.StringIncrement("match_instance_id");
-                for (int i = waiting_list.Length-1; i >= 0; --i)
+                for (int i = 0; i < waiting_list.Length; ++i)
                 {
                     long user_no = (long)waiting_list[i];
+                    // 자신은 스킵
+                    if (user_no == session.user_no)
+                        continue;
+
                     if (Session.IsAvailableSesssion(user_no))
                     {
                         // 매칭에 필요한 유저를 선점한다
                         if (db.StringSet(string.Format("match_user:{0}", user_no), match_id, match_user_expire, When.NotExists) == true)
                         {
                             player_list.Add(user_no);
+                            Log.Information(string.Format("Candidate User {0}", user_no));
 
                             if (player_list.Count == MAX_START_PLAYER_COUNT - 1)
                                 break;
@@ -150,6 +158,8 @@ namespace Lobby.Controllers
                     response.is_start = true;
                     response.battle_server_addr = server_addr;
                     response.wait_time_sec = 0;
+
+                    Log.Information(string.Format("StartPlay {0}", session.user_no));
                     return new JsonResult(response);
                 }
                 else
@@ -168,7 +178,7 @@ namespace Lobby.Controllers
 
             response.is_start = false;
             response.battle_server_addr = "";
-            response.wait_time_sec = 10;
+            response.wait_time_sec = startplay_polling_period;
             return new JsonResult(response);
         }
 
