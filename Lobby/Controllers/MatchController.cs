@@ -17,8 +17,10 @@ namespace Lobby.Controllers
         private static TimeSpan user_state_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_user_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_expire = new TimeSpan(0, 5, 0);
+        private static TimeSpan startplay_polling_period = new TimeSpan(0, 0, 5);
+
+
         private static int MAX_START_PLAYER_COUNT = 4;
-        private static int startplay_polling_period = 5;
 
         public IActionResult Index()
         {
@@ -124,7 +126,7 @@ namespace Lobby.Controllers
                     if (user_no == session.user_no)
                         continue;
 
-                    if (Session.IsAvailableSesssion(user_no))
+                    if (db.StringGet(string.Format("waiting:{0}", user_no)).HasValue)
                     {
                         // 매칭에 필요한 유저를 선점한다
                         if (db.StringSet(string.Format("match_user:{0}", user_no), match_id, match_user_expire, When.NotExists) == true)
@@ -175,10 +177,11 @@ namespace Lobby.Controllers
 
             // 대기자로 등록
             db.SortedSetAdd("waiting_list", session.user_no, session.rating);
+            db.StringSet(string.Format("waiting:{0}", session.user_no), 0, startplay_polling_period);
 
             response.is_start = false;
             response.battle_server_addr = "";
-            response.wait_time_sec = startplay_polling_period;
+            response.wait_time_sec = (int)startplay_polling_period.TotalSeconds;
             return new JsonResult(response);
         }
 
