@@ -31,7 +31,10 @@ namespace Lobby
             redis.Dispose();
         }
 
-
+        public ConnectionMultiplexer GetConnection()
+        {
+            return redis;
+        }
         public IDatabase GetDatabase()
         {
             return redis.GetDatabase();
