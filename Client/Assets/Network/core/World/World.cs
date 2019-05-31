@@ -16,11 +16,17 @@ namespace core
         /// <summary>
         /// Global instance of GameObjectRegistry
         /// </summary>
-        public static World sInstance = new World();
+        private static World[] sInstance = new World [] { new World() };
 
-        public static void StaticInit()
+        public static World Instance(byte worldId)
         {
-            sInstance = new World();
+            return sInstance[worldId];
+        }
+
+        public static void StaticInit(byte world_count)
+        {
+            sInstance = new World [world_count];
+            for (int i = 0; i < sInstance.Length; i++) { sInstance[i] = new World(); }
         }
 
         private World()
@@ -172,41 +178,50 @@ namespace core
         }
 
 
-        public void Update()
+        public static void Update()
         {
-            //update all game objects- sometimes they want to die, so we need to tread carefully...
-
-            for (int i = 0, c = mGameObjects.Count; i < c; ++i)
+            for (byte worldId = 0; worldId < sInstance.Length; ++worldId)
             {
-                NetGameObject go = mGameObjects[i];
+                World world = sInstance[worldId];
+                //update all game objects- sometimes they want to die, so we need to tread carefully...
+
+                for (int i = 0, c = world.mGameObjects.Count; i < c; ++i)
+                {
+                    NetGameObject go = world.mGameObjects[i];
 
 
-                if (!go.DoesWantToDie())
-                {
-                     go.NetUpdate();
-                }
-                //you might suddenly want to die after your update, so check again
-                if (go.DoesWantToDie())
-                {
-                    RemoveGameObject(go);
-                    go.HandleDying();
-                    --i;
-                    --c;
+                    if (!go.DoesWantToDie())
+                    {
+                        go.NetUpdate();
+                    }
+                    //you might suddenly want to die after your update, so check again
+                    if (go.DoesWantToDie())
+                    {
+                        world.RemoveGameObject(go);
+                        go.HandleDying();
+                        --i;
+                        --c;
+                    }
                 }
             }
         }
 
-        public void LateUpdate()
+        public static void LateUpdate()
         {
-            space.Update();
-
-
-            for (int i = 0, c = mGameObjects.Count; i < c; ++i)
+            for (byte worldId = 0; worldId < sInstance.Length; ++worldId)
             {
-                NetGameObject go = mGameObjects[i];
-                if (!go.DoesWantToDie())
+                World world = sInstance[worldId];
+
+                world.space.Update();
+
+
+                for (int i = 0, c = world.mGameObjects.Count; i < c; ++i)
                 {
-                    go.LateUpdate();
+                    NetGameObject go = world.mGameObjects[i];
+                    if (!go.DoesWantToDie())
+                    {
+                        go.LateUpdate();
+                    }
                 }
             }
         }

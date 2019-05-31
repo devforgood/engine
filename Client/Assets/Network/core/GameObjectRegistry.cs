@@ -39,7 +39,7 @@ namespace core
 
             //should the registry depend on the world? this might be a little weird
             //perhaps you should ask the world to spawn things? for now it will be like this
-            World.sInstance.AddGameObject(gameObject);
+            World.Instance(worldId).AddGameObject(gameObject);
 
             return gameObject;
 

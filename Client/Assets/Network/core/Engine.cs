@@ -33,7 +33,7 @@ namespace core
 
         public virtual void DoFrame()
         {
-            World.sInstance.Update();
+            World.Update();
         }
         public virtual int Run()
         {

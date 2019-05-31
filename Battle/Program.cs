@@ -29,6 +29,7 @@ namespace Server
             var server_name = config["name"];
             var ip = config["ip"];
             var port = Convert.ToUInt16(config["port"]);
+            var world_count = Convert.ToByte(config["world_count"]);
 
 
 
@@ -47,7 +48,7 @@ namespace Server
             try
             {
                 Log.Information("Starting Battle Server host");
-                if (Server.StaticInit(port))
+                if (Server.StaticInit(port, world_count))
                 {
                     Server svr = (Server)(Server.sInstance);
                     svr.server_info.server_name = server_name;

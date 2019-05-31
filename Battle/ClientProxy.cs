@@ -31,7 +31,7 @@ namespace Server
         MoveList mUnprocessedMoveList = new MoveList();
         bool mIsLastMoveTimestampDirty;
 
-        public ClientProxy(System.Net.IPEndPoint inSocketAddress, string inName, int inPlayerId)
+        public ClientProxy(System.Net.IPEndPoint inSocketAddress, string inName, int inPlayerId, byte worldId)
         {
             mSocketAddress = inSocketAddress;
             mName = inName;
@@ -39,6 +39,7 @@ namespace Server
             mDeliveryNotificationManager = new DeliveryNotificationManager(false, true);
             mIsLastMoveTimestampDirty = false;
             mTimeToRespawn = 0.0f;
+            mWorldId = worldId;
 
             UpdateLastPacketTime();
         }

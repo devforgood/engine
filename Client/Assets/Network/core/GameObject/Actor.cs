@@ -68,7 +68,7 @@ namespace core
                 , 3f, 1.5f, 1000, 0f, 0f, 0f, 0f
                 );
 
-            World.sInstance.space.Add(mCharacterController);
+            World.Instance(worldId).space.Add(mCharacterController);
 
         }
 
@@ -137,7 +137,7 @@ namespace core
 
         public override void CompleteRemove()
         {
-            mCharacterController.OnRemovalFromSpace(World.sInstance.space);
+            mCharacterController.OnRemovalFromSpace(World.Instance(WorldId).space);
         }
 
         public override void LateUpdate()
@@ -161,7 +161,7 @@ namespace core
 
             if (mLastLocation.Equals(GetLocation()) == false)
             {
-                World.sInstance.mWorldMap.ChangeLocation(this, mLastLocation, GetLocation());
+                World.Instance(WorldId).mWorldMap.ChangeLocation(this, mLastLocation, GetLocation());
                 BackupLocation();
             }
 

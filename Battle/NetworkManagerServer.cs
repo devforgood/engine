@@ -230,7 +230,7 @@ namespace Server
             {
                 //read the name
                 string name = inInputStream.ReadString();
-                ClientProxy newClientProxy = new ClientProxy(inFromAddress, name, mNewPlayerId++);
+                ClientProxy newClientProxy = new ClientProxy(inFromAddress, name, mNewPlayerId++, 0);
                 newClientProxy.mConnection = inInputStream.SenderConnection;
                 mAddressToClientMap[inFromAddress] = newClientProxy;
                 mPlayerIdToClientMap[newClientProxy.GetPlayerId()] = newClientProxy;
@@ -284,9 +284,9 @@ namespace Server
             }
         }
 
-        void AddWorldStateToPacket(NetOutgoingMessage inOutputStream)
+        void AddWorldStateToPacket(byte worldId, NetOutgoingMessage inOutputStream)
         {
-            var gameObjects = World.sInstance.GetGameObjects();
+            var gameObjects = World.Instance(worldId).GetGameObjects();
 
             //now start writing objects- do we need to remember how many there are? we can check first...
             inOutputStream.Write(gameObjects.Count);

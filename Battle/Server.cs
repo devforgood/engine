@@ -18,9 +18,10 @@ namespace Server
         public float set_server_info_time = 0.0f;
         public TimeSpan server_info_expire = new TimeSpan(0, 1, 0);
 
-        public static bool StaticInit(uint16_t port)
+        public static bool StaticInit(uint16_t port, byte world_count)
         {
             sInstance = new Server(port);
+            World.StaticInit(world_count);
             return true;
         }
 
@@ -35,7 +36,7 @@ namespace Server
             base.DoFrame();
 
  
-            World.sInstance.LateUpdate();
+            World.LateUpdate();
 
             NetworkManagerServer.sInstance.SendOutgoingPackets();
 
@@ -75,20 +76,20 @@ namespace Server
             int playerId = inClientProxy.GetPlayerId();
 
             ScoreBoardManager.sInstance.RemoveEntry((uint32_t)playerId);
-            Actor actor = GetActorForPlayer(playerId);
+            Actor actor = GetActorForPlayer(playerId, inClientProxy.GetWorldId());
             if (actor != null)
             {
                 actor.SetDoesWantToDie(true);
             }
         }
 
-        public Actor GetActorForPlayer(int inPlayerId)
+        public Actor GetActorForPlayer(int inPlayerId, byte worldId)
         {
             //run through the objects till we find the actor...
             //it would be nice if we kept a pointer to the actor on the clientproxy
             //but then we'd have to clean it up when the actor died, etc.
             //this will work for now until it's a perf issue
-            var gameObjects = World.sInstance.GetGameObjects();
+            var gameObjects = World.Instance(worldId).GetGameObjects();
             foreach (var go in gameObjects)
             {
                 Actor actor = go.GetAsActor();
