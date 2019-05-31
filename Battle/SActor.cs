@@ -55,7 +55,7 @@ namespace Server
             }
         }
 
-        public static new NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SActor(), worldId); }
+        public static new NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SActor(worldId), worldId); }
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
@@ -151,7 +151,7 @@ namespace Server
             //tell the world our health dropped
             NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EActorReplicationState.ECRS_Health);
         }
-        protected SActor()
+        protected SActor(byte worldId) : base(worldId)
         {
 
             mActorControlType = EActorControlType.ESCT_Human;

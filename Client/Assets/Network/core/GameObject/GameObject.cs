@@ -48,7 +48,6 @@ namespace core
 
         public virtual uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kGameObject; }
 
-        public static NetGameObject CreateInstance() { return new NetGameObject(); }
 
         public virtual Actor GetAsActor() { return null; }
         public virtual uint32_t GetAllStateMask() { return 0; }

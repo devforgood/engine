@@ -13,7 +13,6 @@ namespace core
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kProp; }
 
-        public static new NetGameObject CreateInstance() { return new Prop(); }
 
         enum EMouseReplicationState
         {

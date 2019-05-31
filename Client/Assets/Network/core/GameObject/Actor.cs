@@ -15,7 +15,6 @@ namespace core
 
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kActor; }
 
-        public static new NetGameObject CreateInstance() { return new Actor(); }
 
         public enum EActorReplicationState
         {
@@ -27,8 +26,10 @@ namespace core
             ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
         };
 
-        public Actor()
+        public Actor(byte worldId)
         {
+            WorldId = worldId;
+
             mMaxRotationSpeed = 5.0f;
             mMaxLinearSpeed = 60.0f;
             mVelocity = Vector3.Zero.Clone();
@@ -121,10 +122,10 @@ namespace core
 
             SetLocation(GetLocation() + mVelocity * inDeltaTime);
 
-            ProcessCollisions();
+            //ProcessCollisions();
         }
 
-        public static NetGameObject StaticCreate(byte worldId) { return new Actor(); }
+        public static NetGameObject StaticCreate(byte worldId) { return new Actor(worldId); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EActorReplicationState.ECRS_AllState; }
 
@@ -165,125 +166,6 @@ namespace core
             }
 
         }
-
-        void ProcessCollisionsWithScreenWalls()
-        {
-            return;
-
-            Vector3 location = GetLocation();
-            float x = location.mX;
-            float y = location.mY;
-
-            float vx = mVelocity.mX;
-            float vy = mVelocity.mY;
-
-            float radius = GetCollisionRadius();
-
-            //if the cat collides against a wall, the quick solution is to push it off
-            if ((y + radius) >= HALF_WORLD_HEIGHT && vy > 0)
-            {
-                mVelocity.mY = -vy * mWallRestitution;
-                location.mY = HALF_WORLD_HEIGHT - radius;
-                SetLocation(location);
-            }
-            else if (y <= (-HALF_WORLD_HEIGHT - radius) && vy < 0)
-            {
-                mVelocity.mY = -vy * mWallRestitution;
-                location.mY = -HALF_WORLD_HEIGHT - radius;
-                SetLocation(location);
-            }
-
-            if ((x + radius) >= HALF_WORLD_WIDTH && vx > 0)
-            {
-                mVelocity.mX = -vx * mWallRestitution;
-                location.mX = HALF_WORLD_WIDTH - radius;
-                SetLocation(location);
-            }
-            else if (x <= (-HALF_WORLD_WIDTH - radius) && vx < 0)
-            {
-                mVelocity.mX = -vx * mWallRestitution;
-                location.mX = -HALF_WORLD_WIDTH - radius;
-                SetLocation(location);
-            }
-        }
-
-        public void ProcessCollisions()
-        {
-            return;
-
-            //right now just bounce off the sides..
-            ProcessCollisionsWithScreenWalls();
-
-            float sourceRadius = GetCollisionRadius();
-            Vector3 sourceLocation = GetLocation();
-
-            //now let's iterate through the world and see what we hit...
-            //note: since there's a small number of objects in our game, this is fine.
-            //but in a real game, brute-force checking collisions against every other object is not efficient.
-            //it would be preferable to use a quad tree or some other structure to minimize the
-            //number of collisions that need to be tested.
-            foreach (var target in World.sInstance.GetGameObjects())
-            {
-                if (target.GetNetworkId() != this.GetNetworkId() && !target.DoesWantToDie())
-                {
-                    //simple collision test for spheres- are the radii summed less than the distance?
-                    Vector3 targetLocation = target.GetLocation();
-                    float targetRadius = target.GetCollisionRadius();
-
-                    Vector3 delta = targetLocation - sourceLocation;
-                    float distSq = delta.LengthSq2D();
-                    float collisionDist = (sourceRadius + targetRadius);
-                    if (distSq < (collisionDist * collisionDist))
-                    {
-                        //first, tell the other guy there was a collision with a cat, so it can do something...
-
-                        if (target.HandleCollisionWithActor(this))
-                        {
-                            //okay, you hit something!
-                            //so, project your location far enough that you're not colliding
-                            Vector3 dirToTarget = delta;
-                            dirToTarget.Normalize2D();
-                            Vector3 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
-                            //important note- we only move this cat. the other cat can take care of moving itself
-                            SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
-
-
-                            Vector3 relVel = mVelocity;
-
-                            //if other object is a cat, it might have velocity, so there might be relative velocity...
-                            Actor targetActor = target.GetAsActor();
-                            if (targetActor != null)
-                            {
-                                relVel -= targetActor.mVelocity;
-                            }
-
-                            //got vel with dir between objects to figure out if they're moving towards each other
-                            //and if so, the magnitude of the impulse ( since they're both just balls )
-                            float relVelDotDir = Vector3.Dot2D(relVel, dirToTarget);
-
-                            if (relVelDotDir > 0.0f)
-                            {
-                                Vector3 impulse = relVelDotDir * dirToTarget;
-
-                                if (targetActor != null)
-                                {
-                                    mVelocity -= impulse;
-                                    mVelocity *= mActorRestitution;
-                                }
-                                else
-                                {
-                                    mVelocity -= impulse * 2.0f;
-                                    mVelocity *= mWallRestitution;
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-
 
         public override uint32_t Write(NetOutgoingMessage inOutputStream, uint32_t inDirtyState)
         {

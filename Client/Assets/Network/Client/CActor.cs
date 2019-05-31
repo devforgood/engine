@@ -9,7 +9,7 @@ using uint32_t = System.UInt32;
 
 public class CActor : core.Actor
 {
-    public static new core.NetGameObject StaticCreate(byte worldId) { return new CActor(); }
+    public static new core.NetGameObject StaticCreate(byte worldId) { return new CActor(worldId); }
     public GameObject mTarget = null;
     public ActorBehaviour mActorBehaviour = null;
 
@@ -215,7 +215,7 @@ public class CActor : core.Actor
         }
     }
 
-    protected CActor()
+    protected CActor(byte worldId): base(worldId)
     {
         mTimeLocationBecameOutOfSync = 0.0f;
         mTimeVelocityBecameOutOfSync = 0.0f;

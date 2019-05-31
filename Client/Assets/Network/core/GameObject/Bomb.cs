@@ -7,7 +7,6 @@ namespace core
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kBomb; }
 
-        public static new NetGameObject CreateInstance() { return new Bomb(); }
 
         enum EYarnReplicationState
         {

@@ -12,7 +12,6 @@ namespace core
     {
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kProjectile; }
 
-        public static new NetGameObject CreateInstance() { return new Projectile(); }
 
         enum EYarnReplicationState
         {
