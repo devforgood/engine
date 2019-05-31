@@ -36,12 +36,15 @@ namespace core
 
         int mNetworkId;
 
+
         public void BackupLocation()
         {
             mLastLocation = mLocation.Clone();
         }
 
         public int NetworkId { get { return mNetworkId; } }
+
+        public byte WorldId { get; set; }
 
         public virtual uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kGameObject; }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 public class CProp : core.Prop
 { 
-    public static new core.NetGameObject StaticCreate() { return new CProp(); }
+    public static new core.NetGameObject StaticCreate(byte worldId) { return new CProp(); }
 
     protected CProp()
     {

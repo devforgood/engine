@@ -19,7 +19,7 @@ namespace core
             EYRS_AllState = EYRS_Pose | EYRS_Color | EYRS_PlayerId | EYRS_Parent
         };
 
-        public static NetGameObject StaticCreate() { return new Bomb(); }
+        public static NetGameObject StaticCreate(byte worldId) { return new Bomb(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EYarnReplicationState.EYRS_AllState; }
 

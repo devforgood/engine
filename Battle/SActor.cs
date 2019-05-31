@@ -36,7 +36,7 @@ namespace Server
                 mTimeOfNextShot = time + mTimeBetweenShots;
 
                 //fire!
-                Projectile bullet = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kProjectile);
+                Projectile bullet = (Projectile)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kProjectile, WorldId);
                 bullet.InitFromShooter(this);
             }
         }
@@ -50,12 +50,12 @@ namespace Server
                 mTimeOfNextBomb = time + mTimeBetweenBomb;
 
                 //install bomb
-                Bomb bomb = (Bomb)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kBomb);
+                Bomb bomb = (Bomb)GameObjectRegistry.sInstance.CreateGameObject((uint)GameObjectClassId.kBomb, WorldId);
                 bomb.InitFrom(this);
             }
         }
 
-        public static new NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SActor()); }
+        public static new NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SActor(), worldId); }
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
@@ -123,7 +123,7 @@ namespace Server
                 )
             {
                 //log.InfoFormat("ol {0} cl {1} ov {2} cv {3} or{4} cr{5}", oldLocation, GetLocation(), oldVelocity, GetVelocity(), oldRotation, GetRotation());
-                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)EActorReplicationState.ECRS_Pose);
+                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EActorReplicationState.ECRS_Pose);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Server
             }
 
             //tell the world our health dropped
-            NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), (uint)EActorReplicationState.ECRS_Health);
+            NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EActorReplicationState.ECRS_Health);
         }
         protected SActor()
         {

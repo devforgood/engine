@@ -34,8 +34,7 @@ namespace Server
 
             base.DoFrame();
 
-            space.Update();
-
+ 
             World.sInstance.LateUpdate();
 
             NetworkManagerServer.sInstance.SendOutgoingPackets();
@@ -64,9 +63,10 @@ namespace Server
         {
 
             int playerId = inClientProxy.GetPlayerId();
+            byte worldId = inClientProxy.GetWorldId();
 
             ScoreBoardManager.sInstance.AddEntry((uint32_t)playerId, inClientProxy.GetName());
-            SpawnActorForPlayer(playerId);
+            SpawnActorForPlayer(playerId, worldId);
         }
         public void HandleLostClient(ClientProxy inClientProxy)
         {
@@ -101,11 +101,12 @@ namespace Server
             return null;
         }
 
-        public void SpawnActorForPlayer(int inPlayerId)
+        public void SpawnActorForPlayer(int inPlayerId, byte worldId)
         {
-            Actor actor = (Actor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kActor);
+            Actor actor = (Actor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kActor, worldId);
             actor.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
             actor.SetPlayerId((uint32_t)inPlayerId);
+            actor.SetWorldId(worldId);
             //gotta pick a better spawn location than this...
             actor.SetLocation(core.Utility.GetRandomVector(-10, 10));
         }
@@ -149,7 +150,7 @@ namespace Server
             //make a mouse somewhere- where will these come from?
             for (int i = 0; i < inMouseCount; ++i)
             {
-                go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp);
+                go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp, 0);
                 Vector3 mouseLocation = core.Utility.GetRandomVector(mouseMin, mouseMax);
                 go.SetLocation(mouseLocation);
             }

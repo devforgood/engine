@@ -50,9 +50,9 @@ namespace Server
 
         public int GetPlayerCount() { return mAddressToClientMap.Count; }
 
-        public NetGameObject RegisterAndReturn(NetGameObject inGameObject)
+        public NetGameObject RegisterAndReturn(NetGameObject inGameObject, byte worldId)
         {
-            RegisterGameObject(inGameObject);
+            RegisterGameObject(inGameObject, worldId);
             return inGameObject;
         }
         public override void HandleConnectionReset(System.Net.IPEndPoint inFromAddress)
@@ -118,11 +118,12 @@ namespace Server
             }
         }
 
-        public void RegisterGameObject(NetGameObject inGameObject)
+        public void RegisterGameObject(NetGameObject inGameObject, byte worldId)
         {
             //assign network id
             int newNetworkId = GetNewNetworkId();
             inGameObject.SetNetworkId(newNetworkId);
+            inGameObject.WorldId = worldId;
 
             //add mapping from network id to game object
             mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
@@ -130,7 +131,10 @@ namespace Server
             //tell all client proxies this is new...
             foreach (var pair in mAddressToClientMap)
             {
-                pair.Value.GetReplicationManagerServer().ReplicateCreate(newNetworkId, inGameObject.GetAllStateMask());
+                if (pair.Value.GetWorldId() == worldId)
+                {
+                    pair.Value.GetReplicationManagerServer().ReplicateCreate(newNetworkId, inGameObject.GetAllStateMask());
+                }
             }
         }
         public void UnregisterGameObject(NetGameObject inGameObject)
@@ -142,15 +146,21 @@ namespace Server
             //tell all client proxies this is new...
             foreach (var pair in mAddressToClientMap)
             {
-                pair.Value.GetReplicationManagerServer().ReplicateDestroy(networkId);
+                if (inGameObject.WorldId == pair.Value.GetWorldId())
+                {
+                    pair.Value.GetReplicationManagerServer().ReplicateDestroy(networkId);
+                }
             }
         }
-        public void SetStateDirty(int inNetworkId, uint32_t inDirtyState)
+        public void SetStateDirty(int inNetworkId, byte worldId, uint32_t inDirtyState)
         {
             //tell everybody this is dirty
             foreach (var pair in mAddressToClientMap)
             {
-                pair.Value.GetReplicationManagerServer().SetStateDirty(inNetworkId, inDirtyState);
+                if (worldId == pair.Value.GetWorldId())
+                {
+                    pair.Value.GetReplicationManagerServer().SetStateDirty(inNetworkId, inDirtyState);
+                }
             }
         }
 

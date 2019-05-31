@@ -32,7 +32,7 @@ namespace core
         }
 
 
-        public static NetGameObject StaticCreate() { return new Prop(); }
+        public static NetGameObject StaticCreate(byte worldId) { return new Prop(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EMouseReplicationState.EMRS_AllState; }
 

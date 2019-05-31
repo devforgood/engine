@@ -7,7 +7,7 @@ using System.Text;
 
 class CProjectile : core.Projectile
 {
-    public static new core.NetGameObject StaticCreate() { return new CProjectile(); }
+    public static new core.NetGameObject StaticCreate(byte worldId) { return new CProjectile(); }
     public override void Read(NetIncomingMessage inInputStream )
     {
         bool stateBit;

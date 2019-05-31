@@ -83,7 +83,6 @@ public class Client : MonoBehaviour {
         core.Timing.sInstance.Update();
         InputManager.sInstance.Update();
         core.Engine.sInstance.DoFrame();
-        core.Engine.sInstance.space.Update();
         core.World.sInstance.LateUpdate();
 
         // 클라이언트는 패킷 처리를 가장 나중에 한다 

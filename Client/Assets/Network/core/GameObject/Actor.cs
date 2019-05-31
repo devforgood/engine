@@ -66,7 +66,8 @@ namespace core
             mCharacterController = new BEPUphysics.Character.CharacterController(new BEPUutilities.Vector3(0, 3, 0), 1.0f, 1.0f * 0.7f, 1.0f * 0.3f, 0.5f, 0.001f, 10f, 0.8f, 1.3f, 8.0f
                 , 3f, 1.5f, 1000, 0f, 0f, 0f, 0f
                 );
-            Engine.sInstance.space.Add(mCharacterController);
+
+            World.sInstance.space.Add(mCharacterController);
 
         }
 
@@ -123,7 +124,7 @@ namespace core
             ProcessCollisions();
         }
 
-        public static NetGameObject StaticCreate() { return new Actor(); }
+        public static NetGameObject StaticCreate(byte worldId) { return new Actor(); }
 
         public override uint32_t GetAllStateMask() { return (uint32_t)EActorReplicationState.ECRS_AllState; }
 
@@ -135,7 +136,7 @@ namespace core
 
         public override void CompleteRemove()
         {
-            mCharacterController.OnRemovalFromSpace(Engine.sInstance.space);
+            mCharacterController.OnRemovalFromSpace(World.sInstance.space);
         }
 
         public override void LateUpdate()
@@ -346,6 +347,7 @@ namespace core
         }
 
         public void SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
+        public void SetWorldId(byte worldId) {  WorldId = worldId; }
         public uint32_t GetPlayerId() { return mPlayerId; }
 
         public void SetVelocity(Vector3 inVelocity) { mVelocity = inVelocity; }

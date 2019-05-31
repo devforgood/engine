@@ -20,6 +20,7 @@ namespace Server
         System.Net.IPEndPoint mSocketAddress;
         string mName;
         int mPlayerId;
+        byte mWorldId;
 
         //going away!
         InputState mInputState;
@@ -57,12 +58,13 @@ namespace Server
         {
             if (mTimeToRespawn != 0.0f && Timing.sInstance.GetFrameStartTime() > mTimeToRespawn)
             {
-                ((Server)(Engine.sInstance)).SpawnActorForPlayer(mPlayerId);
+                ((Server)(Engine.sInstance)).SpawnActorForPlayer(mPlayerId, mWorldId);
                 mTimeToRespawn = 0.0f;
             }
         }
         public System.Net.IPEndPoint GetSocketAddress() { return mSocketAddress; }
         public int GetPlayerId() { return mPlayerId; }
+        public byte GetWorldId() { return mWorldId; }
         public string GetName() { return mName; }
 
         public void SetInputState(InputState inInputState) { mInputState = inInputState; }

@@ -14,7 +14,7 @@ namespace Server
 
         }
 
-        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProp()); }
+        public new static NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProp(), worldId); }
 
         public override void HandleDying()
         {

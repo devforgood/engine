@@ -214,7 +214,7 @@ public class NetworkManagerClient : core.NetworkManager
                 //didn't find it, better create it!
                 if (mNetworkIdToGameObjectMap.TryGetValue(networkId, out go) == false)
                 {
-                    go = core.GameObjectRegistry.sInstance.CreateGameObject(fourCC);
+                    go = core.GameObjectRegistry.sInstance.CreateGameObject(fourCC, 0);
                     go.SetNetworkId(networkId);
                     AddToNetworkIdToGameObjectMap(go);
                     is_create = true;

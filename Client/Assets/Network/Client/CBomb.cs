@@ -6,7 +6,7 @@ class CBomb : core.Bomb
     public GameObject mTarget = null;
     public BombBehaviour mBombBehaviour = null;
 
-    public static new core.NetGameObject StaticCreate() { return new CBomb(); }
+    public static new core.NetGameObject StaticCreate(byte worldId) { return new CBomb(); }
     public override void Read(NetIncomingMessage inInputStream)
     {
         bool stateBit;

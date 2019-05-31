@@ -9,7 +9,7 @@ namespace core
 {
     public class GameObjectRegistry
     {
-        public delegate NetGameObject GameObjectCreationFunc();
+        public delegate NetGameObject GameObjectCreationFunc(byte worldId);
 
         Dictionary<uint32_t, GameObjectCreationFunc> mNameToGameObjectCreationFunctionMap = new Dictionary<uint32_t, GameObjectCreationFunc>();
 
@@ -30,12 +30,12 @@ namespace core
             mNameToGameObjectCreationFunctionMap[inFourCCName] = inCreationFunction;
         }
 
-        public NetGameObject CreateGameObject(uint32_t inFourCCName)
+        public NetGameObject CreateGameObject(uint32_t inFourCCName, byte worldId)
         {
             //no error checking- if the name isn't there, exception!
             GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
 
-            var gameObject = creationFunc();
+            var gameObject = creationFunc(worldId);
 
             //should the registry depend on the world? this might be a little weird
             //perhaps you should ask the world to spawn things? for now it will be like this

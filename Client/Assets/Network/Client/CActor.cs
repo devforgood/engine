@@ -9,7 +9,7 @@ using uint32_t = System.UInt32;
 
 public class CActor : core.Actor
 {
-    public static new core.NetGameObject StaticCreate() { return new CActor(); }
+    public static new core.NetGameObject StaticCreate(byte worldId) { return new CActor(); }
     public GameObject mTarget = null;
     public ActorBehaviour mActorBehaviour = null;
 

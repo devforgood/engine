@@ -9,7 +9,7 @@ namespace Server
 {
     public class SProjectile : Projectile
     {
-        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProjectile()); }
+        public new static NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProjectile(), worldId); }
 
         public override void HandleDying()
         {

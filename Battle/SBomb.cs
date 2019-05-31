@@ -9,7 +9,7 @@ namespace Server
 {
     class SBomb : Bomb
     {
-        public new static NetGameObject StaticCreate() { return NetworkManagerServer.sInstance.RegisterAndReturn(new SBomb()); }
+        public new static NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SBomb(), worldId); }
 
         public override void HandleDying()
         {
