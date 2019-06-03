@@ -10,6 +10,8 @@ public class BombBehaviour : MonoBehaviour
 
     public void Explode()
     {
+        GetComponent<Renderer>().enabled = false;
+
         //Create a first explosion at the bomb position
         GameObject go = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         //For every direction, start a chain of explosions

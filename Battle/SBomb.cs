@@ -11,6 +11,17 @@ namespace Server
     {
         public new static NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SBomb(), worldId); }
 
+
+        public static readonly float BombPeriod = 3.0f;
+        public static readonly int MaxExplodeCount = 5;
+        public static readonly float NextExplodePeriod = 0.05f;
+
+        private float mTimeToBomb;
+        private int mExplodeCount = 0;
+
+
+
+
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
@@ -44,10 +55,10 @@ namespace Server
         {
             base.NetUpdate();
 
-            if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb && mExplodeCount <= 5 )
+            if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb && mExplodeCount <= MaxExplodeCount)
             {
                 // 해당 시간 뒤에 추가 폭발이 일어난다.
-                mTimeToBomb += 0.05f;
+                mTimeToBomb += NextExplodePeriod;
 
                 // 첫 폭발만 클라와 동기화를 맞춘다.
                 if (mExplodeCount == 0)
@@ -66,7 +77,7 @@ namespace Server
             }
 
 
-            if (Timing.sInstance.GetFrameStartTime() > mTimeToDie)
+            if (mExplodeCount == MaxExplodeCount+1)
             {
                 SetDoesWantToDie(true);
             }
@@ -74,14 +85,11 @@ namespace Server
 
         protected SBomb()
         {
-            mTimeToDie = Timing.sInstance.GetFrameStartTime() + 4.0f;
-            mTimeToBomb = Timing.sInstance.GetFrameStartTime() + 3.0f;
+            mTimeToBomb = Timing.sInstance.GetFrameStartTime() + BombPeriod;
 
         }
 
-        private float mTimeToDie;
-        private float mTimeToBomb;
-        private int mExplodeCount = 0;
+
 
     }
 }
