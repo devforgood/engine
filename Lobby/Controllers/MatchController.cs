@@ -18,6 +18,7 @@ namespace Lobby.Controllers
         private static TimeSpan match_user_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan startplay_polling_period = new TimeSpan(0, 0, 5);
+        private static TimeSpan channel_reserve_expire = new TimeSpan(0, 1, 0);
 
 
         private static int MAX_START_PLAYER_COUNT = 4;
@@ -56,12 +57,16 @@ namespace Lobby.Controllers
                 var channel_state = db.StringGet(ch.channel_id);
                 if (channel_state.HasValue == true && ((ServerCommon.ChannelState)((int)channel_state)) == ServerCommon.ChannelState.CHL_READY )
                 {
-                    Log.Information(string.Format("GetAvailableServer {0}, {1}, {2}", ch.channel_id, channel_state, entry[i].Name));
+                    // 해당 체널에 예약이 성공했을 경우만 처리
+                    if (db.StringSet(string.Format("{0}:reserve", ch.channel_id), 0, channel_reserve_expire, When.NotExists) == true)
+                    {
+                        Log.Information(string.Format("GetAvailableServer {0}, {1}, {2}", ch.channel_id, channel_state, entry[i].Name));
 
-                    server_addr = ch.server_addr;
-                    world_id = ch.world_id;
-                    channel_key = entry[i].Name;
-                    return true;
+                        server_addr = ch.server_addr;
+                        world_id = ch.world_id;
+                        channel_key = entry[i].Name;
+                        return true;
+                    }
                 }
             }
 
