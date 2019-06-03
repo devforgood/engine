@@ -82,6 +82,12 @@ namespace core
             return t;
         }
 
+        public Tile GetTile(Vector3 pos)
+        {
+            LogHelper.LogInfo("GetTile " + pos);
+            return GetTile((short)pos.mX, (short)pos.mY, (short)pos.mZ);
+        }
+
         public void ChangeLocation(NetGameObject target, Vector3 src_pos, Vector3 dest_pos)
         {
             var x = (short)Math.Round(dest_pos.mX);
@@ -112,7 +118,7 @@ namespace core
 
             dest_tile.add(target);
 
-            LogHelper.LogInfo("game object " + target.GetNetworkId() + ", from(" + old_x + "," + old_y + "," + old_z + ") to(" + x + "," + y + "," + z + ")");
+            LogHelper.LogInfo(string.Format("game object {0}, from({1},{2},{3}) to({4},{5},{6})", target.GetNetworkId(), old_x, old_y, old_z, x, y, z));
 
         }
 

@@ -235,6 +235,8 @@ namespace core
         public void SetVelocity(Vector3 inVelocity) { mVelocity = inVelocity; }
         public Vector3 GetVelocity() { return mVelocity; }
 
+        public int GetHealth() { return mHealth; }
+
 
         Vector3 mVelocity = new Vector3();
 

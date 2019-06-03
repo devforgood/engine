@@ -129,9 +129,9 @@ namespace Server
 
         public void SetActorControlType(EActorControlType inActorControlType) { mActorControlType = inActorControlType; }
 
-        public void TakeDamage(int inDamagingPlayerId)
+        public void TakeDamage(int inDamagingPlayerId, int damage = 1)
         {
-            mHealth--;
+            mHealth -= damage;
             if (mHealth <= 0.0f)
             {
                 //score one for damaging player...
