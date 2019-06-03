@@ -166,6 +166,7 @@ namespace core
             mGameObjects.Add(inGameObject);
             inGameObject.SetIndexInWorld(mGameObjects.Count - 1);
 
+            mWorldMap.InsertObject(inGameObject);
         }
         public void RemoveGameObject(NetGameObject inGameObject)
         {
@@ -183,6 +184,8 @@ namespace core
             mGameObjects.RemoveAt(lastIndex);
 
             inGameObject.CompleteRemove();
+
+            mWorldMap.RemoveObject(inGameObject);
         }
 
 

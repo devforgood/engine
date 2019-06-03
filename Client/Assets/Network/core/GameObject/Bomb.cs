@@ -147,5 +147,15 @@ namespace core
 
             //we'll let the cats handle the collisions
         }
+
+        public override void LateUpdate()
+        {
+            if (mLastLocation.Equals(GetLocation()) == false)
+            {
+                World.Instance(WorldId).mWorldMap.ChangeLocation(this, mLastLocation, GetLocation());
+                BackupLocation();
+            }
+
+        }
     }
 }

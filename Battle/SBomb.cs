@@ -13,18 +13,31 @@ namespace Server
 
         public override void HandleDying()
         {
-
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
+        }
+
+        private void Explode()
+        {
+            //World.Instance(WorldId).
         }
 
         public override void NetUpdate()
         {
             base.NetUpdate();
 
-            if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb)
+            if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb )
             {
-                mIsExplode = true;
-                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EYarnReplicationState.EYRS_Explode);
+                // 첫 폭발만 클라와 동기화를 맞춘다.
+                if (mExplodeCount == 0)
+                {
+                    mIsExplode = true;
+                    NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EYarnReplicationState.EYRS_Explode);
+                }
+
+                // 해당 시간 뒤에 추가 폭발이 일어난다.
+                mTimeToBomb += 0.05f;
+                ++mExplodeCount;
+                Explode();
             }
 
 
@@ -43,6 +56,7 @@ namespace Server
 
         private float mTimeToDie;
         private float mTimeToBomb;
+        private int mExplodeCount = 0;
 
     }
 }

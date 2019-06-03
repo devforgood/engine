@@ -115,5 +115,37 @@ namespace core
             LogHelper.LogInfo("game object " + target.GetNetworkId() + ", from(" + old_x + "," + old_y + "," + old_z + ") to(" + x + "," + y + "," + z + ")");
 
         }
+
+        public void InsertObject(NetGameObject target)
+        {
+            var x = (short)Math.Round(target.GetLocation().mX);
+            var y = (short)Math.Round(target.GetLocation().mY);
+            var z = (short)Math.Round(target.GetLocation().mZ);
+
+            var dest_tile = GetTile(x, y, z);
+            if (dest_tile == null)
+            {
+                dest_tile = CreateTile(x, y, z);
+            }
+
+            dest_tile.add(target);
+        }
+
+        public void RemoveObject(NetGameObject target)
+        {
+            var x = (short)Math.Round(target.GetLocation().mX);
+            var y = (short)Math.Round(target.GetLocation().mY);
+            var z = (short)Math.Round(target.GetLocation().mZ);
+
+            var src_tile = GetTile(x, y, z);
+            if (src_tile != null)
+            {
+                src_tile.del(target);
+            }
+            else
+            {
+                LogHelper.LogWarning(string.Format("cannot find object {0}", target.NetworkId));
+            }
+        }
     }
 }
