@@ -41,6 +41,13 @@ class CBomb : core.Bomb
             mParentNetworkId = inInputStream.ReadInt32();
         }
 
+        stateBit = inInputStream.ReadBoolean();
+        if (stateBit)
+        {
+            mIsExplode = inInputStream.ReadBoolean();
+        }
+
+
     }
     public override bool HandleCollisionWithActor(core.Actor inActor)
     {
@@ -59,12 +66,12 @@ class CBomb : core.Bomb
 
         var location = new Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
 
-        GameObject bomb =GameObject.Instantiate(go, location, go.transform.rotation);
+        GameObject bomb = GameObject.Instantiate(go, location, go.transform.rotation);
         mTarget = bomb;
         mBombBehaviour = bomb.GetComponent<BombBehaviour>();
 
         var parent = NetworkManagerClient.sInstance.GetGameObject(mParentNetworkId);
-        if(parent != null)
+        if (parent != null)
         {
             ((CActor)parent)?.mActorBehaviour?.PlayAnimation("Bomb");
         }
@@ -76,8 +83,16 @@ class CBomb : core.Bomb
         base.HandleDying();
         if (mTarget != null)
             GameObject.Destroy(mTarget, 0.3f);
+    }
 
-        if (mBombBehaviour != null)
-            mBombBehaviour.Explode();
+    public override void NetUpdate()
+    {
+        if(mIsExplode)
+        {
+            if (mBombBehaviour != null)
+                mBombBehaviour.Explode();
+
+            mIsExplode = false;
+        }
     }
 }

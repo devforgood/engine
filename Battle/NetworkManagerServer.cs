@@ -152,7 +152,7 @@ namespace Server
             int networkId = inGameObject.GetNetworkId();
             mNetworkIdToGameObjectMap.Remove(networkId);
 
-            Log.Information("remove game object {0}", networkId);
+            Log.Information(string.Format("remove game object {0}", networkId));
 
             //tell all client proxies to STOP replicating!
             //tell all client proxies this is new...

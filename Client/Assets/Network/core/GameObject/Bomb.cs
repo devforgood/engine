@@ -8,14 +8,16 @@ namespace core
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kBomb; }
 
 
-        enum EYarnReplicationState
+        public enum EYarnReplicationState
         {
             EYRS_Pose = 1 << 0,
             EYRS_Color = 1 << 1,
             EYRS_PlayerId = 1 << 2,
             EYRS_Parent = 1 << 3,
+            EYRS_Explode = 1 << 4,
 
-            EYRS_AllState = EYRS_Pose | EYRS_Color | EYRS_PlayerId | EYRS_Parent
+
+            EYRS_AllState = EYRS_Pose | EYRS_Color | EYRS_PlayerId | EYRS_Parent | EYRS_Explode
         };
 
         public static NetGameObject StaticCreate(byte worldId) { return new Bomb(); }
@@ -25,13 +27,15 @@ namespace core
 
         protected int mPlayerId;
         public int mParentNetworkId;
+        public bool mIsExplode;
 
         protected Bomb()
         {
             mPlayerId = 0;
             mParentNetworkId = 0;
-            SetScale(GetScale() * 0.25f);
-            SetCollisionRadius(0.125f);
+            mIsExplode = false;
+
+
         }
 
 
@@ -89,6 +93,19 @@ namespace core
                 inOutputStream.Write(mParentNetworkId);
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Parent;
+            }
+            else
+            {
+                inOutputStream.Write((bool)false);
+            }
+
+            if ((inDirtyState & (uint32_t)EYarnReplicationState.EYRS_Explode) != 0)
+            {
+                inOutputStream.Write((bool)true);
+
+                inOutputStream.Write(mIsExplode);
+
+                writtenState |= (uint32_t)EYarnReplicationState.EYRS_Explode;
             }
             else
             {

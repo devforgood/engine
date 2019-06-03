@@ -21,20 +21,28 @@ namespace Server
         {
             base.NetUpdate();
 
+            if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb)
+            {
+                mIsExplode = true;
+                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EYarnReplicationState.EYRS_Explode);
+            }
+
+
             if (Timing.sInstance.GetFrameStartTime() > mTimeToDie)
             {
-
                 SetDoesWantToDie(true);
             }
         }
 
         protected SBomb()
         {
-            mTimeToDie = Timing.sInstance.GetFrameStartTime() + 3.0f;
+            mTimeToDie = Timing.sInstance.GetFrameStartTime() + 4.0f;
+            mTimeToBomb = Timing.sInstance.GetFrameStartTime() + 3.0f;
 
         }
 
         private float mTimeToDie;
+        private float mTimeToBomb;
 
     }
 }
