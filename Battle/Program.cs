@@ -30,11 +30,11 @@ namespace Server
             var ip = config["ip"];
             var port = Convert.ToUInt16(config["port"]);
             var world_count = Convert.ToByte(config["world_count"]);
-
-
+            var server_addr = ip + ":" + port;
 
             var redis_ip = config["redis:ip"];
             var redis_port = config["redis:port"];
+            var redis_addr = redis_ip + ":" + redis_port;
 
 
             Log.Logger = new LoggerConfiguration()
@@ -50,20 +50,7 @@ namespace Server
                 Log.Information("Starting Battle Server host");
                 if (Server.StaticInit(port, world_count))
                 {
-                    Server svr = (Server)(Server.sInstance);
-                    svr.server_info.server_name = server_name;
-                    svr.server_info.server_addr = ip + ":" + port;
-
-                    // connect redis
-                    var redis_addr = redis_ip + ":" + redis_port;
-                    svr.redis = ConnectionMultiplexer.Connect(redis_addr);
-
-                    var db = svr.redis.GetDatabase();
-                    svr.server_info.server_id = server_name + ":" + Convert.ToString(db.StringIncrement(ServerCommon.ServerInfoRedisKey.server_instance_id));
-
-                    db.HashSet("server_info", svr.server_info.server_addr, JsonConvert.SerializeObject(svr.server_info));
-
-
+                    ServerMonitor.sInstance.Init(world_count, server_addr, redis_addr, server_name);
                     Server.sInstance.Run();
                 }
             }

@@ -26,7 +26,10 @@ public class NetworkManagerClient : core.NetworkManager
 
     public static void StaticInit(System.Net.IPEndPoint inServerAddress, string inName)
     {
-        sInstance = new NetworkManagerClient();
+        if (sInstance == null)
+        {
+            sInstance = new NetworkManagerClient();
+        }
         sInstance.Init(inServerAddress, inName);
     }
 
@@ -48,11 +51,14 @@ public class NetworkManagerClient : core.NetworkManager
 
     string mName;
     int mPlayerId;
+    byte mWorldId;
 
     float mLastMoveProcessedByServerTimestamp;
 
     core.WeightedTimedMovingAverage mAvgRoundTripTime;
     float mLastRoundTripTime;
+
+    public void SetWorldId(byte worldId) { mWorldId = worldId;}
 
     public void SendOutgoingPackets()
     {
@@ -132,7 +138,9 @@ public class NetworkManagerClient : core.NetworkManager
 
         helloPacket.Write((UInt32)core.PacketType.kHelloCC);
         helloPacket.Write(mName);
+        helloPacket.Write(mWorldId);
 
+        Debug.Log(string.Format("Send hello {0}, {1}", mName, mWorldId));
         GetClient().SendMessage(helloPacket, NetDeliveryMethod.Unreliable);
     }
 

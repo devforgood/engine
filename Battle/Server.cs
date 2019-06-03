@@ -8,16 +8,12 @@ using System.Threading.Tasks;
 using uint32_t = System.UInt32;
 using uint16_t = System.UInt16;
 using StackExchange.Redis;
+using Serilog;
 
 namespace Server
 {
     public class Server : Engine
     {
-        public ServerCommon.ServerInfo server_info = new ServerCommon.ServerInfo();
-        public ConnectionMultiplexer redis = null;
-        public float set_server_info_time = 0.0f;
-        public TimeSpan server_info_expire = new TimeSpan(0, 1, 0);
-
         public static bool StaticInit(uint16_t port, byte world_count)
         {
             sInstance = new Server(port);
@@ -40,18 +36,7 @@ namespace Server
 
             NetworkManagerServer.sInstance.SendOutgoingPackets();
 
-            set_server_info_time += Timing.sInstance.GetDeltaTime();
-            if (set_server_info_time > 3.0f)
-            {
-                Task.Run(()=> 
-                {
-                    var db = redis.GetDatabase();
-                    db.StringSet(server_info.server_id, NetworkManagerServer.sInstance.GetPlayerCount(), server_info_expire);
-                });
-
-                set_server_info_time = 0.0f;
-            }
-
+            ServerMonitor.sInstance.Update();
         }
 
         public override int Run()
@@ -68,6 +53,8 @@ namespace Server
 
             ScoreBoardManager.sInstance.AddEntry((uint32_t)playerId, inClientProxy.GetName());
             SpawnActorForPlayer(playerId, worldId);
+
+            ServerMonitor.sInstance.AddUser(worldId);
         }
         public void HandleLostClient(ClientProxy inClientProxy)
         {
@@ -80,6 +67,13 @@ namespace Server
             if (actor != null)
             {
                 actor.SetDoesWantToDie(true);
+            }
+
+            if(ServerMonitor.sInstance.DelUser(inClientProxy.GetWorldId())== 0)
+            {
+                Log.Information(string.Format("Close World {0}", inClientProxy.GetWorldId()));
+                World.Instance(inClientProxy.GetWorldId()).Clear();
+                NetworkManagerServer.sInstance.Clear(inClientProxy.GetWorldId());
             }
         }
 
@@ -110,6 +104,8 @@ namespace Server
             actor.SetWorldId(worldId);
             //gotta pick a better spawn location than this...
             actor.SetLocation(core.Utility.GetRandomVector(-10, 10));
+
+            Log.Information(string.Format("SpawnActorForPlayer player_id{0}, world{1}", inPlayerId, worldId));
         }
 
 

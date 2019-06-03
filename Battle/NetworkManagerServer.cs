@@ -65,6 +65,16 @@ namespace Server
             }
         }
 
+        public void Clear(byte wroldId)
+        {
+            List<int> remove_list = new List<int>();
+            foreach (var obj in mNetworkIdToGameObjectMap)
+                if (obj.Value.WorldId == wroldId)
+                    remove_list.Add(obj.Key);
+
+            remove_list.ForEach(x => mNetworkIdToGameObjectMap.Remove(x));
+        }
+
         public override void ProcessPacket(NetIncomingMessage inInputStream, System.Net.IPEndPoint inFromAddress)
         {
             //try to get the client proxy for this address
@@ -141,6 +151,8 @@ namespace Server
         {
             int networkId = inGameObject.GetNetworkId();
             mNetworkIdToGameObjectMap.Remove(networkId);
+
+            Log.Information("remove game object {0}", networkId);
 
             //tell all client proxies to STOP replicating!
             //tell all client proxies this is new...
@@ -230,13 +242,17 @@ namespace Server
             {
                 //read the name
                 string name = inInputStream.ReadString();
-                ClientProxy newClientProxy = new ClientProxy(inFromAddress, name, mNewPlayerId++, 0);
+                byte worldId = inInputStream.ReadByte();
+
+                ClientProxy newClientProxy = new ClientProxy(inFromAddress, name, mNewPlayerId++, worldId);
                 newClientProxy.mConnection = inInputStream.SenderConnection;
                 mAddressToClientMap[inFromAddress] = newClientProxy;
                 mPlayerIdToClientMap[newClientProxy.GetPlayerId()] = newClientProxy;
 
 
-                Log.Information(string.Format("HandlePacketFromNewClient new client {0} as player {1}, addr_map{2}, id_map{3}", newClientProxy.GetName(), newClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count));
+                Log.Information(string.Format("HandlePacketFromNewClient new client {0} as player {1}, addr_map{2}, id_map{3}, world_id{4}", 
+                    newClientProxy.GetName(), newClientProxy.GetPlayerId(), mAddressToClientMap.Count, mPlayerIdToClientMap.Count, newClientProxy.GetWorldId()
+                    ));
 
 
                 //tell the server about this client, spawn a cat, etc...
@@ -250,7 +266,10 @@ namespace Server
                 //and now init the replication manager with everything we know about!
                 foreach (var pair in mNetworkIdToGameObjectMap)
                 {
-                    newClientProxy.GetReplicationManagerServer().ReplicateCreate(pair.Key, pair.Value.GetAllStateMask());
+                    if (pair.Value.WorldId == newClientProxy.GetWorldId())
+                    {
+                        newClientProxy.GetReplicationManagerServer().ReplicateCreate(pair.Key, pair.Value.GetAllStateMask());
+                    }
                 }
             }
             else

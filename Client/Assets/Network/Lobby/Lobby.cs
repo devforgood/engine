@@ -48,9 +48,10 @@ public class Lobby : MonoBehaviour
             if(ret.is_start)
             {
                 is_try_startplay = false;
-                Debug.Log("StartPlay success");
+                Debug.Log(string.Format("StartPlay success addr {0}, world_id {1}", ret.battle_server_addr, ret.world_id));
                 SceneManager.LoadScene("test");
                 Client.server_addr = ret.battle_server_addr;
+                NetworkManagerClient.sInstance.SetWorldId(ret.world_id);
             }
             else
             {

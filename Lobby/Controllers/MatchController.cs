@@ -45,20 +45,31 @@ namespace Lobby.Controllers
             //return new EmptyResult();
         }
 
-        public string GetAvailableServer()
+        public bool GetAvailableServer(out string server_addr, out byte world_id, out string channel_key)
         {
             var db = Cache.Instance.GetDatabase();
-            var entry = db.HashGetAll(ServerCommon.ServerInfoRedisKey.server_info);
+            var entry = db.HashGetAll("channel_info");
             for (int i = 0; i < entry.Length; ++i)
             {
-                var server_info = JsonConvert.DeserializeObject<ServerCommon.ServerInfo>(entry[i].Value);
-                if (db.StringGet(server_info.server_id).HasValue == true)
+                var ch = JsonConvert.DeserializeObject<ServerCommon.Channel>(entry[i].Value);
+
+                var channel_state = db.StringGet(ch.channel_id);
+                if (channel_state.HasValue == true && ((ServerCommon.ChannelState)((int)channel_state)) == ServerCommon.ChannelState.CHL_READY )
                 {
-                    return server_info.server_addr;
+                    Log.Information(string.Format("GetAvailableServer {0}, {1}, {2}", ch.channel_id, channel_state, entry[i].Name));
+
+                    server_addr = ch.server_addr;
+                    world_id = ch.world_id;
+                    channel_key = entry[i].Name;
+                    return true;
                 }
             }
 
-            return null;
+            server_addr = "";
+            world_id = 0;
+            channel_key = "";
+
+            return false;
         }
 
         public void RemoveMatchUser(long user_no)
@@ -68,6 +79,29 @@ namespace Lobby.Controllers
             // match_user 는 삭제 하지 않는다. 만약 삭제하게되면 
             // waiting_list를 얻은 상태에서 match_user를 선점하게되어 이미 게임 시작 중인 유저가 다시 매칭될수 있다.
             
+        }
+
+        ServerCommon.Channel GetChannel(long match_id)
+        {
+            var db = Cache.Instance.GetDatabase();
+            var match_value = db.StringGet(string.Format("match:{0}", match_id));
+            if(match_value.HasValue)
+            {
+                var channel_value = db.HashGet("channel_info", match_value);
+                if (channel_value.HasValue)
+                {
+                    return JsonConvert.DeserializeObject<ServerCommon.Channel>(channel_value);
+                }
+                else
+                {
+                    Log.Warning("cannot find channel " + match_value);
+                }
+            }
+            else
+            {
+                Log.Warning("cannot find match " + match_id);
+            }
+            return null;
         }
 
 
@@ -90,14 +124,15 @@ namespace Lobby.Controllers
             if (value.HasValue)
             {
                 // 매칭 시도가 성공했을 경우
-                var value2 = db.StringGet(string.Format("match:{0}", (long)value));
-                if (value2.HasValue)
+                var ch = GetChannel((long)value);
+                if (ch != null)
                 {
                     RemoveMatchUser(session.user_no);
 
                     response.is_start = true;
-                    response.battle_server_addr = (string)value2;
+                    response.battle_server_addr = ch.server_addr;
                     response.wait_time_sec = 0;
+                    response.world_id = ch.world_id;
 
                     Log.Information(string.Format("StartPlay {0}", session.user_no));
                     return new JsonResult(response);
@@ -150,16 +185,19 @@ namespace Lobby.Controllers
             {
                 // 매칭에 필요한 인원을 모두 찾았을때
                 // 전투 가능한 서버를 찾아 세팅
-                string server_addr = GetAvailableServer();
-                if (server_addr != null)
+                string server_addr;
+                byte worldId;
+                string channel_key;
+                if (GetAvailableServer(out server_addr, out worldId, out channel_key))
                 {
-                    db.StringSet(string.Format("match:{0}", match_id), server_addr, match_expire);
+                    db.StringSet(string.Format("match:{0}", match_id), channel_key, match_expire);
 
                     RemoveMatchUser(session.user_no);
 
                     response.is_start = true;
                     response.battle_server_addr = server_addr;
                     response.wait_time_sec = 0;
+                    response.world_id = worldId;
 
                     Log.Information(string.Format("StartPlay {0}", session.user_no));
                     return new JsonResult(response);

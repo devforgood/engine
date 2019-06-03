@@ -16,12 +16,21 @@ namespace Lobby
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.File("logs\\lobby.txt", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+            try
+            {
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Debug()
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                    .Enrich.FromLogContext()
+                    .WriteTo.File(@"d:\tmp\lobby.txt", rollingInterval: RollingInterval.Day)
+                    .CreateLogger();
+
+                Log.Information("Lobby server start!");
+            }
+            catch(Exception ex)
+            {
+                Controllers.HomeController.msg = ex.Message;
+            }
 
             CreateWebHostBuilder(args).Build().Run();
         }

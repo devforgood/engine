@@ -8,8 +8,8 @@ namespace core
 {
     public class World
     {
-        List<NetGameObject> mGameObjects = new List<NetGameObject>();
-        public WorldMap mWorldMap = new WorldMap();
+        List<NetGameObject> mGameObjects;
+        public WorldMap mWorldMap;
         public BEPUphysics.Space space { get; set; }
 
 
@@ -31,6 +31,14 @@ namespace core
 
         private World()
         {
+            InitializeWrold();
+        }
+
+        private void InitializeWrold()
+        {
+            mGameObjects = new List<NetGameObject>();
+            mWorldMap = new WorldMap();
+
             space = new BEPUphysics.Space();
 
 
@@ -228,6 +236,11 @@ namespace core
 
         public List<NetGameObject> GetGameObjects() { return mGameObjects; }
 
+
+        public void Clear()
+        {
+            InitializeWrold();
+        }
 
     }
 }

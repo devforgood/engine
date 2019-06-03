@@ -11,6 +11,7 @@ namespace Lobby.Controllers
 {
     public class HomeController : Controller
     {
+        public static string msg = "test";
         public IActionResult Index()
         {
             return View();
@@ -18,15 +19,10 @@ namespace Lobby.Controllers
 
         public IActionResult About()
         {
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("172.25.51.101:6379");
-            IDatabase db = redis.GetDatabase();
-
-            string value = "abcdefg";
-            db.StringSet("mykey", value);
-            string value2 = db.StringGet("mykey");
 
 
-            ViewData["Message"] = value2;
+
+            ViewData["Message"] = msg;
 
             return View();
         }

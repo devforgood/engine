@@ -22,5 +22,6 @@ namespace core
         public bool is_start;
         public int wait_time_sec;
         public string battle_server_addr;
+        public byte world_id;
     }
 }
