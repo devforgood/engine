@@ -104,6 +104,8 @@ namespace core
         public virtual void ProcessPacket(NetIncomingMessage inInputStream, System.Net.IPEndPoint inFromAddress) { }
         public virtual void HandleConnectionReset(System.Net.IPEndPoint inFromAddress) { }
 
+        public virtual void ProcessInternalMessage(string msg) { }
+
         public void ProcessIncomingPackets()
         {
              ProcessQueuedPackets();
@@ -153,8 +155,9 @@ namespace core
 
                         break;
                     case NetIncomingMessageType.UnconnectedData:
-                        string text2 = im.ReadString();
-                        LogHelper.LogInfo(text2);
+                        string msg = im.ReadString();
+                        LogHelper.LogInfo(msg);
+                        ProcessInternalMessage(msg);
                         break;
                     default:
                         LogHelper.LogInfo("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);

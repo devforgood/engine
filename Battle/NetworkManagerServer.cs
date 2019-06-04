@@ -1,5 +1,6 @@
 ﻿using core;
 using Lidgren.Network;
+using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,14 @@ namespace Server
             {
                 ProcessPacket(c, inInputStream);
             }
+        }
+
+        public override void ProcessInternalMessage(string msg)
+        {
+            var ret = JsonConvert.DeserializeObject<ServerCommon.InternalMessage>(msg);
+
+
+
         }
 
         public void SendOutgoingPackets()
