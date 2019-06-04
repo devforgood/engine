@@ -61,9 +61,10 @@ namespace Server
             int playerId = inClientProxy.GetPlayerId();
 
             ScoreBoardManager.sInstance.RemoveEntry((uint32_t)playerId);
-            Actor actor = GetActorForPlayer(playerId, inClientProxy.GetWorldId());
+            SActor actor = GetActorForPlayer(playerId, inClientProxy.GetWorldId());
             if (actor != null)
             {
+                actor.Unpossess();
                 actor.SetDoesWantToDie(true);
             }
 
@@ -75,7 +76,7 @@ namespace Server
             }
         }
 
-        public Actor GetActorForPlayer(int inPlayerId, byte worldId)
+        public SActor GetActorForPlayer(int inPlayerId, byte worldId)
         {
             //run through the objects till we find the actor...
             //it would be nice if we kept a pointer to the actor on the clientproxy
@@ -84,10 +85,10 @@ namespace Server
             var gameObjects = World.Instance(worldId).GetGameObjects();
             foreach (var go in gameObjects)
             {
-                Actor actor = go.GetAsActor();
+                SActor actor = (SActor)go.GetAsActor();
                 if (actor != null && actor.GetPlayerId() == inPlayerId)
                 {
-                    return (Actor)go;
+                    return (SActor)go;
                 }
             }
 
@@ -96,9 +97,10 @@ namespace Server
 
         public void SpawnActorForPlayer(int inPlayerId, byte worldId)
         {
-            Actor actor = (Actor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kActor, worldId);
+            SActor actor = (SActor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kActor, worldId);
             actor.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
             actor.SetPlayerId((uint32_t)inPlayerId);
+            actor.Possess(inPlayerId);
             actor.SetWorldId(worldId);
             //gotta pick a better spawn location than this...
             actor.SetLocation(core.Utility.GetRandomVector(-10, 10));

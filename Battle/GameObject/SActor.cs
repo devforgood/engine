@@ -27,6 +27,22 @@ namespace Server
         float mTimeOfNextBomb;
         float mTimeBetweenBomb;
 
+        ClientProxy mClient = null;
+
+        public bool Possess(int player_id)
+        {
+            mClient = NetworkManagerServer.sInstance.GetClientProxy(player_id);
+            if (mClient == null)
+                return false;
+
+            return true;
+        }
+
+        public void Unpossess()
+        {
+            mClient = null;
+        }
+
         void HandleShooting()
         {
             float time = Timing.sInstance.GetFrameStartTime();
@@ -74,10 +90,9 @@ namespace Server
             //if so, is there a move we haven't processed yet?
             if (mActorControlType == EActorControlType.ESCT_Human)
             {
-                ClientProxy client = NetworkManagerServer.sInstance.GetClientProxy((int)GetPlayerId());
-                if (client != null)
+                if (mClient != null)
                 {
-                    MoveList moveList = client.GetUnprocessedMoveList();
+                    MoveList moveList = mClient.GetUnprocessedMoveList();
                     foreach (var unprocessedMove in moveList.mMoves)
                     {
                         var currentState = unprocessedMove.GetInputState();
