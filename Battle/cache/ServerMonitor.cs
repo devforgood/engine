@@ -64,6 +64,7 @@ namespace Server
             for (byte i = 0; i < channel_list.Length; ++i)
             {
                 db.StringSet(channel_list[i].channel_id, (int)channel_list[i].channel_state, channel_info_expire);
+                db.HashSet("channel_info", string.Format("{0}:{1}", channel_list[i].server_addr, channel_list[i].world_id), JsonConvert.SerializeObject(channel_list[i]));
             }
 
             // server info update
