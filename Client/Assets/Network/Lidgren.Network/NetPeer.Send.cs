@@ -221,7 +221,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Send a message to this exact same netpeer (loopback)
 		/// </summary>
-		public void SendUnconnectedToSelf(NetOutgoingMessage om)
+		public void SendUnconnectedToSelf(NetOutgoingMessage om, bool ignore_limit_unconnecteddata = false)
 		{
 			if (om == null)
 				throw new ArgumentNullException("msg");
@@ -231,7 +231,7 @@ namespace Lidgren.Network
 			om.m_messageType = NetMessageType.Unconnected;
 			om.m_isSent = true;
 
-			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.UnconnectedData) == false)
+			if (ignore_limit_unconnecteddata == false && m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.UnconnectedData) == false)
 			{
 				Interlocked.Decrement(ref om.m_recyclingCount);
 				return; // dropping unconnected message since it's not enabled for receiving

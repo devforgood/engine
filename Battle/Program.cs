@@ -38,11 +38,13 @@ namespace Server
 
 
             Log.Logger = new LoggerConfiguration()
+                .Enrich.WithThreadId()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.File("logs\\battle.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("logs\\battle.txt", rollingInterval: RollingInterval.Day
+                    , outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} ({ThreadId}) [{Level:u3}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
 
             try
@@ -51,6 +53,7 @@ namespace Server
                 if (Server.StaticInit(port, world_count))
                 {
                     ServerMonitor.sInstance.Init(world_count, server_addr, redis_addr, server_name);
+                    Subscribe.Do();
                     Server.sInstance.Run();
                 }
             }

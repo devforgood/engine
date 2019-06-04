@@ -152,6 +152,10 @@ namespace core
                         ProcessPacket(im, im.SenderEndPoint);
 
                         break;
+                    case NetIncomingMessageType.UnconnectedData:
+                        string text2 = im.ReadString();
+                        LogHelper.LogInfo(text2);
+                        break;
                     default:
                         LogHelper.LogInfo("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
                         break;
