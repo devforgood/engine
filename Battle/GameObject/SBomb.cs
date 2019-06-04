@@ -18,13 +18,30 @@ namespace Server
 
         private float mTimeToBomb;
         private int mExplodeCount = 0;
-
+        private int default_damage = 10;
 
 
 
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
+        }
+
+        /// <summary>
+        /// 다른 폭탄에 의해 터지는 경우 호출
+        /// </summary>
+        public override int OnExplode(int player_id, int parentNetworkId, int damage)
+        {
+            // 이미 터진 폭탄이다.
+            if (mIsExplode == true)
+                return 0;
+
+            // 폭탄 터지는 시간을 현재 시간으로 맞추고
+            mTimeToBomb = Timing.sInstance.GetFrameStartTime();
+            // 터트림
+            Setoff();
+
+            return 0;
         }
 
         void Explode(Tile tile)
@@ -34,12 +51,8 @@ namespace Server
 
             foreach(var game_object in tile.gameObjects)
             {
-                switch((GameObjectClassId)game_object.GetClassId())
-                {
-                    case GameObjectClassId.kActor:
-                        ((SActor)game_object).TakeDamage(this.mPlayerId, ((SActor)game_object).GetHealth());
-                        break;
-                }
+                if(NetworkId != game_object.NetworkId)
+                    game_object.OnExplode(mPlayerId, NetworkId, default_damage);
             }
         }
 
@@ -57,30 +70,34 @@ namespace Server
 
             if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb && mExplodeCount <= MaxExplodeCount)
             {
-                // 해당 시간 뒤에 추가 폭발이 일어난다.
-                mTimeToBomb += NextExplodePeriod;
-
-                // 첫 폭발만 클라와 동기화를 맞춘다.
-                if (mExplodeCount == 0)
-                {
-                    mIsExplode = true;
-                    NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EYarnReplicationState.EYRS_Explode);
-
-                    Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation()));
-                }
-                else
-                {
-                    Explode();
-                }
-
-                ++mExplodeCount;
+                Setoff();
             }
-
 
             if (mExplodeCount == MaxExplodeCount+1)
             {
                 SetDoesWantToDie(true);
             }
+        }
+
+        private void Setoff()
+        {
+            // 해당 시간 뒤에 추가 폭발이 일어난다.
+            mTimeToBomb += NextExplodePeriod;
+
+            // 첫 폭발만 클라와 동기화를 맞춘다.
+            if (mExplodeCount == 0)
+            {
+                mIsExplode = true;
+                NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EYarnReplicationState.EYRS_Explode);
+
+                Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation()));
+            }
+            else
+            {
+                Explode();
+            }
+
+            ++mExplodeCount;
         }
 
         protected SBomb()

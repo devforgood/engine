@@ -23,6 +23,7 @@
     <None Remove="GameObject\*.meta" />
     <None Remove="World\*.meta" />
     <None Remove="Message\*.meta" />
+    <None Remove="Movement\*.meta" />
     <None Remove="obj\*" />
   </ItemGroup>
 

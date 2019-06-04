@@ -110,5 +110,9 @@ namespace core
 
         }
 
+        public virtual int OnExplode(int player_id, int parentNetworkId, int damage)
+        {
+            return 0;
+        }
     }
 }

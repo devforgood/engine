@@ -170,6 +170,13 @@ namespace Server
             //tell the world our health dropped
             NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EActorReplicationState.ECRS_Health);
         }
+
+        public override int OnExplode(int player_id, int parentNetworkId, int damage)
+        {
+            TakeDamage(player_id, damage);
+            return 0;
+        }
+
         protected SActor(byte worldId) : base(worldId)
         {
 
