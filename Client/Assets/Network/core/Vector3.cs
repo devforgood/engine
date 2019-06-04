@@ -175,6 +175,13 @@ namespace core
             };
         }
 
+        public void Copy(Vector3 fromVec)
+        {
+            mX = fromVec.mX;
+            mY = fromVec.mY;
+            mZ = fromVec.mZ;
+        }
+
         public Vector3 Round()
         {
             return new Vector3()

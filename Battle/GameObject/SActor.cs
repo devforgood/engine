@@ -27,6 +27,10 @@ namespace Server
         float mTimeOfNextBomb;
         float mTimeBetweenBomb;
 
+        Vector3 oldLocation = new Vector3();
+        Vector3 oldVelocity = new Vector3();
+        Vector3 oldRotation = new Vector3();
+
         ClientProxy mClient = null;
 
         public bool Possess(int player_id)
@@ -82,9 +86,9 @@ namespace Server
         {
             base.NetUpdate();
 
-            Vector3 oldLocation = GetLocation().Clone();
-            Vector3 oldVelocity = GetVelocity().Clone();
-            Vector3 oldRotation = GetRotation().Clone();
+            oldLocation.Copy(GetLocation());
+            oldVelocity.Copy(GetVelocity());
+            oldRotation.Copy(GetRotation());
 
             //are you controlled by a player?
             //if so, is there a move we haven't processed yet?
