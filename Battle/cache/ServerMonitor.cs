@@ -17,7 +17,6 @@ namespace Server
 
 
         public ConnectionMultiplexer cache = null;
-        public float last_update_time = 0.0f;
         public TimeSpan channel_info_expire = new TimeSpan(0, 1, 0);
         public TimeSpan server_info_expire = new TimeSpan(0, 1, 0);
 
@@ -60,24 +59,15 @@ namespace Server
 
         public void Update()
         {
-            last_update_time += Timing.sInstance.GetDeltaTime();
-            if (last_update_time > 10.0f)
+            // channel info update
+            var db = cache.GetDatabase();
+            for (byte i = 0; i < channel_list.Length; ++i)
             {
-                Task.Run(() =>
-                {
-                    // channel info update
-                    var db = cache.GetDatabase();
-                    for (byte i = 0; i < channel_list.Length; ++i)
-                    {
-                        db.StringSet(channel_list[i].channel_id, (int)channel_list[i].channel_state, channel_info_expire);
-                    }
-
-                    // server info update
-                    //db.StringSet(server_info.server_id, NetworkManagerServer.sInstance.GetPlayerCount(), server_info_expire);
-                });
-
-                last_update_time = 0.0f;
+                db.StringSet(channel_list[i].channel_id, (int)channel_list[i].channel_state, channel_info_expire);
             }
+
+            // server info update
+            //db.StringSet(server_info.server_id, NetworkManagerServer.sInstance.GetPlayerCount(), server_info_expire);
         }
 
 

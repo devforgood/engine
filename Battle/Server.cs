@@ -35,8 +35,6 @@ namespace Server
             World.LateUpdate();
 
             NetworkManagerServer.sInstance.SendOutgoingPackets();
-
-            ServerMonitor.sInstance.Update();
         }
 
         public override int Run()

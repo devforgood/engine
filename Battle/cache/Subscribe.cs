@@ -12,16 +12,13 @@ namespace Server
         public static void Do()
         {
             ISubscriber sub = ServerMonitor.sInstance.cache.GetSubscriber();
-            Task.Run(() =>
+            sub.Subscribe("messages", (channel, message) =>
             {
-                sub.Subscribe("messages", (channel, message) =>
-                {
-                    Log.Information(string.Format("redis msg {0}", message));
-                    var svr = NetworkManagerServer.sInstance.GetServer();
-                    var msg = svr.CreateMessage();
-                    msg.Write((string)message);
-                    svr.SendUnconnectedToSelf(msg, true);
-                });
+                Log.Information(string.Format("redis msg {0}", message));
+                var svr = NetworkManagerServer.sInstance.GetServer();
+                var msg = svr.CreateMessage();
+                msg.Write((string)message);
+                svr.SendUnconnectedToSelf(msg, true);
             });
         }
 

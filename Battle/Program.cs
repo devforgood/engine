@@ -54,6 +54,7 @@ namespace Server
                 {
                     ServerMonitor.sInstance.Init(world_count, server_addr, redis_addr, server_name);
                     Subscribe.Do();
+                    CacheThread.Run();
                     Server.sInstance.Run();
                 }
             }
