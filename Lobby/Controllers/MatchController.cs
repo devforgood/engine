@@ -210,6 +210,7 @@ namespace Lobby.Controllers
                 else
                 {
                     // 전투 가능한 서버가 없다
+                    Log.Information(string.Format("Cannot find Server user_no:{0}", session.user_no));
                 }
             }
 
