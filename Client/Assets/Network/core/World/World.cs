@@ -10,6 +10,7 @@ namespace core
     {
         List<NetGameObject> mGameObjects;
         public WorldMap mWorldMap;
+        private byte mWorldId = 0;
         public BEPUphysics.Space space { get; set; }
 
 
@@ -26,7 +27,12 @@ namespace core
         public static void StaticInit(byte world_count)
         {
             sInstance = new World [world_count];
-            for (int i = 0; i < sInstance.Length; i++) { sInstance[i] = new World(); }
+            for (int i = 0; i < sInstance.Length; i++)
+            {
+                sInstance[i] = new World();
+                sInstance[i].mWorldId = (byte)i;
+                sInstance[i].InitProb((byte)i);
+            }
         }
 
         private World()
@@ -161,6 +167,18 @@ namespace core
             space.ForceUpdater.Gravity = new BEPUutilities.Vector3(0, -9.81f, 0);
         }
 
+        void InitProb(byte worldId)
+        {
+            /////////////////////////
+            /// test prob
+            for (int i = 0; i < 20; ++i)
+            {
+                var go = GameObjectRegistry.sInstance.CreateGameObject((int)GameObjectClassId.kProp, worldId);
+                Vector3 mouseLocation = core.Utility.GetRandomVector(-10, 10, 0.0f);
+                go.SetLocation(mouseLocation);
+            }
+        }
+
         public void AddGameObject(NetGameObject inGameObject)
         {
             mGameObjects.Add(inGameObject);
@@ -243,6 +261,7 @@ namespace core
         public void Clear()
         {
             InitializeWrold();
+            InitProb(mWorldId);
         }
 
     }

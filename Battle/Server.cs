@@ -39,7 +39,6 @@ namespace Server
 
         public override int Run()
         {
-            SetupWorld();
             return base.Run();
         }
 
@@ -130,23 +129,5 @@ namespace Server
         {
             return NetworkManagerServer.StaticInit(port);
         }
-        void SetupWorld()
-        {
-            //spawn some random mice
-            CreateRandomMice(10);
-        }
-        void CreateRandomMice(int inMouseCount)
-        {
-            NetGameObject go;
-
-            //make a mouse somewhere- where will these come from?
-            for (int i = 0; i < inMouseCount; ++i)
-            {
-                go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp, 0);
-                Vector3 mouseLocation = core.Utility.GetRandomVector(-10, 10, 0.0f);
-                go.SetLocation(mouseLocation);
-            }
-        }
-
     }
 }
