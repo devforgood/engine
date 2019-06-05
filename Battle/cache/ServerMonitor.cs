@@ -1,5 +1,6 @@
 ﻿using core;
 using Newtonsoft.Json;
+using Serilog;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -59,16 +60,25 @@ namespace Server
 
         public void Update()
         {
-            // channel info update
-            var db = cache.GetDatabase();
-            for (byte i = 0; i < channel_list.Length; ++i)
+            try
             {
-                db.StringSet(channel_list[i].channel_id, (int)channel_list[i].channel_state, channel_info_expire);
-                db.HashSet("channel_info", string.Format("{0}:{1}", channel_list[i].server_addr, channel_list[i].world_id), JsonConvert.SerializeObject(channel_list[i]));
-            }
+                // channel info update
+                var db = cache.GetDatabase();
+                for (byte i = 0; i < channel_list.Length; ++i)
+                {
 
-            // server info update
-            //db.StringSet(server_info.server_id, NetworkManagerServer.sInstance.GetPlayerCount(), server_info_expire);
+                    db.StringSet(channel_list[i].channel_id, (int)channel_list[i].channel_state, channel_info_expire);
+                    db.HashSet("channel_info", string.Format("{0}:{1}", channel_list[i].server_addr, channel_list[i].world_id), JsonConvert.SerializeObject(channel_list[i]));
+
+                }
+
+                // server info update
+                //db.StringSet(server_info.server_id, NetworkManagerServer.sInstance.GetPlayerCount(), server_info_expire);
+            }
+            catch (Exception ex)
+            {
+                Log.Information(ex.ToString());
+            }
         }
 
 

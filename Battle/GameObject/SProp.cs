@@ -23,16 +23,6 @@ namespace Server
             Log.Information(string.Format("remove prop {0}", NetworkId));
         }
 
-        public override bool HandleCollisionWithActor(Actor inActor)
-        {
-            //kill yourself!
-            SetDoesWantToDie(true);
-
-            ScoreBoardManager.sInstance.IncScore(inActor.GetPlayerId(), 1);
-
-            return false;
-        }
-
         public override int OnExplode(int player_id, int parentNetworkId, int damage)
         {
             //kill yourself!

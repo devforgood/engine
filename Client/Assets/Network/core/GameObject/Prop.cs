@@ -92,10 +92,5 @@ namespace core
                 SetColor(color);
             }
         }
-
-        public override bool HandleCollisionWithActor(Actor inActor)
-        {
-            return false;
-        }
     }
 }

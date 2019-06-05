@@ -143,7 +143,7 @@ namespace Server
             for (int i = 0; i < inMouseCount; ++i)
             {
                 go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp, 0);
-                Vector3 mouseLocation = core.Utility.GetRandomVector(-10, 10, 0.5f);
+                Vector3 mouseLocation = core.Utility.GetRandomVector(-10, 10, 0.0f);
                 go.SetLocation(mouseLocation);
             }
         }
