@@ -44,24 +44,37 @@ namespace Server
             return 0;
         }
 
-        void Explode(Tile tile)
+        void Explode(Vector3 pos /*Tile tile*/)
         {
-            if (tile == null)
-                return;
-
-            foreach(var game_object in tile.gameObjects)
+            foreach( var game_object in World.Instance(WorldId).GetGameObjects())
             {
-                if(NetworkId != game_object.NetworkId)
+                if(NetworkId != game_object.NetworkId && game_object.GetLocation().Round().Equals(pos))
+                {
                     game_object.OnExplode(mPlayerId, NetworkId, default_damage);
+                }
             }
+
+            //if (tile == null)
+            //    return;
+
+            //foreach(var game_object in tile.gameObjects)
+            //{
+            //    if(NetworkId != game_object.NetworkId)
+            //        game_object.OnExplode(mPlayerId, NetworkId, default_damage);
+            //}
         }
 
         void Explode()
         {
-            Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.forward * mExplodeCount)));
-            Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.back * mExplodeCount)));
-            Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.right * mExplodeCount)));
-            Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.left * mExplodeCount)));
+            Explode(GetLocation().Round() + (Vector3.forward * mExplodeCount));
+            Explode(GetLocation().Round() + (Vector3.back * mExplodeCount));
+            Explode(GetLocation().Round() + (Vector3.right * mExplodeCount));
+            Explode(GetLocation().Round() + (Vector3.left * mExplodeCount));
+
+            //Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.forward * mExplodeCount)));
+            //Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.back * mExplodeCount)));
+            //Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.right * mExplodeCount)));
+            //Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.left * mExplodeCount)));
         }
 
         public override void NetUpdate()
@@ -90,7 +103,8 @@ namespace Server
                 mIsExplode = true;
                 NetworkManagerServer.sInstance.SetStateDirty(GetNetworkId(), WorldId, (uint)EYarnReplicationState.EYRS_Explode);
 
-                Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation()));
+                Explode(GetLocation().Round());
+                //Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation()));
             }
             else
             {

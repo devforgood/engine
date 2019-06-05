@@ -12,7 +12,7 @@ namespace Server
     {
         protected SProp()
         {
-            Log.Information(string.Format("create prop {0}", NetworkId));
+            //Log.Information(string.Format("create prop {0}", NetworkId));
         }
 
         public new static NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProp(), worldId); }

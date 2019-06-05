@@ -9,7 +9,7 @@ namespace core
     public class World
     {
         List<NetGameObject> mGameObjects;
-        public WorldMap mWorldMap;
+        //public WorldMap mWorldMap;
         private byte mWorldId = 0;
         public BEPUphysics.Space space { get; set; }
 
@@ -43,7 +43,7 @@ namespace core
         private void InitializeWrold()
         {
             mGameObjects = new List<NetGameObject>();
-            mWorldMap = new WorldMap();
+            //mWorldMap = new WorldMap();
 
             space = new BEPUphysics.Space();
 
@@ -184,7 +184,7 @@ namespace core
             mGameObjects.Add(inGameObject);
             inGameObject.SetIndexInWorld(mGameObjects.Count - 1);
 
-            mWorldMap.InsertObject(inGameObject);
+            //mWorldMap.InsertObject(inGameObject);
         }
         public void RemoveGameObject(NetGameObject inGameObject)
         {
@@ -203,7 +203,7 @@ namespace core
 
             inGameObject.CompleteRemove();
 
-            mWorldMap.RemoveObject(inGameObject);
+            //mWorldMap.RemoveObject(inGameObject);
         }
 
 

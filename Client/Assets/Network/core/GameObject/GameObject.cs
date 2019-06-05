@@ -70,10 +70,10 @@ namespace core
         public Vector3 GetLocation() { return mLocation; }
         public void SetLocation(Vector3 inLocation)
         {
-            if (inLocation.Equals(mLocation) == false)
-            {
-                World.Instance(WorldId).mWorldMap.ChangeLocation(this, mLocation, inLocation);
-            }
+            //if (inLocation.Equals(mLocation) == false)
+            //{
+            //    World.Instance(WorldId).mWorldMap.ChangeLocation(this, mLocation, inLocation);
+            //}
             mLocation = inLocation;
         }
 
