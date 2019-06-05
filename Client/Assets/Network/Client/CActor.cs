@@ -313,6 +313,15 @@ public class CActor : core.Actor
         mActorBehaviour = actor.GetComponent<ActorBehaviour>();
 
         mActorBehaviour.actor = this;
+
+        if(IsLocalPlayer())
+        {
+            GameObject go = GameObject.Find("Main Camera");
+            if (go != null)
+            {
+                go.GetComponent<CompleteCameraController>().SetPlayer(actor);
+            }
+        }
     }
 
 
