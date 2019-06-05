@@ -21,9 +21,9 @@ namespace core
             return inMin + (inMax - inMin) * r;
         }
 
-        public static Vector3 GetRandomVector(int minValue, int maxValue)
+        public static Vector3 GetRandomVector(int minValue, int maxValue, float fix_y = 1.0f)
         {
-            return new Vector3(rand.Next(minValue, maxValue), 1, rand.Next(minValue, maxValue));
+            return new Vector3(rand.Next(minValue, maxValue), fix_y, rand.Next(minValue, maxValue));
         }
 
 

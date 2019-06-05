@@ -47,7 +47,7 @@ public class ReplicationManagerClient
         if (gameObject == null)
         {
             //create the object and map it...
-            gameObject = GameObjectRegistry.sInstance.CreateGameObject(fourCCName, 0);
+            gameObject = GameObjectRegistry.sInstance.CreateGameObject(fourCCName);
             gameObject.SetNetworkId(inNetworkId);
             NetworkManagerClient.sInstance.AddToNetworkIdToGameObjectMap(gameObject);
 

@@ -134,21 +134,16 @@ namespace Server
         {
             //spawn some random mice
             CreateRandomMice(10);
-
-            //spawn more random mice!
-            CreateRandomMice(10);
         }
         void CreateRandomMice(int inMouseCount)
         {
-            Vector3 mouseMin = new Vector3(-5.0f, -3.0f, 0.0f);
-            Vector3 mouseMax = new Vector3(5.0f, 3.0f, 0.0f);
             NetGameObject go;
 
             //make a mouse somewhere- where will these come from?
             for (int i = 0; i < inMouseCount; ++i)
             {
                 go = GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kProp, 0);
-                Vector3 mouseLocation = core.Utility.GetRandomVector(mouseMin, mouseMax);
+                Vector3 mouseLocation = core.Utility.GetRandomVector(-10, 10, 0.5f);
                 go.SetLocation(mouseLocation);
             }
         }

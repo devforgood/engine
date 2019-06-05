@@ -158,13 +158,6 @@ namespace core
 
             //mCharacterController.HorizontalMotionConstraint.MovementDirection = BEPUutilities.Vector2.Zero;
 
-
-            if (mLastLocation.Equals(GetLocation()) == false)
-            {
-                World.Instance(WorldId).mWorldMap.ChangeLocation(this, mLastLocation, GetLocation());
-                BackupLocation();
-            }
-
         }
 
         public override uint32_t Write(NetOutgoingMessage inOutputStream, uint32_t inDirtyState)

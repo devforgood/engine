@@ -30,7 +30,7 @@ namespace core
             mNameToGameObjectCreationFunctionMap[inFourCCName] = inCreationFunction;
         }
 
-        public NetGameObject CreateGameObject(uint32_t inFourCCName, byte worldId)
+        public NetGameObject CreateGameObject(uint32_t inFourCCName, byte worldId = 0)
         {
             //no error checking- if the name isn't there, exception!
             GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];

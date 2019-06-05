@@ -1,4 +1,5 @@
 ﻿using core;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Server
     {
         protected SProp()
         {
-
+            Log.Information(string.Format("create prop {0}", NetworkId));
         }
 
         public new static NetGameObject StaticCreate(byte worldId) { return NetworkManagerServer.sInstance.RegisterAndReturn(new SProp(), worldId); }
@@ -19,8 +20,9 @@ namespace Server
         public override void HandleDying()
         {
             NetworkManagerServer.sInstance.UnregisterGameObject(this);
-
+            Log.Information(string.Format("remove prop {0}", NetworkId));
         }
+
         public override bool HandleCollisionWithActor(Actor inActor)
         {
             //kill yourself!
@@ -31,6 +33,13 @@ namespace Server
             return false;
         }
 
+        public override int OnExplode(int player_id, int parentNetworkId, int damage)
+        {
+            //kill yourself!
+            SetDoesWantToDie(true);
+
+            return 0;
+        }
     }
 
 
