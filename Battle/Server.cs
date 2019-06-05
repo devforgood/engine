@@ -70,8 +70,8 @@ namespace Server
             if(ServerMonitor.sInstance.DelUser(inClientProxy.GetWorldId())== 0)
             {
                 Log.Information(string.Format("Close World {0}", inClientProxy.GetWorldId()));
-                World.Instance(inClientProxy.GetWorldId()).Clear();
                 NetworkManagerServer.sInstance.Clear(inClientProxy.GetWorldId());
+                World.Instance(inClientProxy.GetWorldId()).Clear();
             }
         }
 
