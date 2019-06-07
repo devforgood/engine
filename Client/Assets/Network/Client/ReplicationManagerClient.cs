@@ -43,6 +43,8 @@ public class ReplicationManagerClient
 
         //we might already have this object- could happen if our ack of the create got dropped so server resends create request 
         //( even though we might have created )
+
+        bool is_create = false;
         NetGameObject gameObject = NetworkManagerClient.sInstance.GetGameObject(inNetworkId);
         if (gameObject == null)
         {
@@ -50,6 +52,7 @@ public class ReplicationManagerClient
             gameObject = GameObjectRegistry.sInstance.CreateGameObject(fourCCName);
             gameObject.SetNetworkId(inNetworkId);
             NetworkManagerClient.sInstance.AddToNetworkIdToGameObjectMap(gameObject);
+            is_create = true;
 
             //it had really be the rigth type...
             //Assert(gameObject.GetClassId() == fourCCName);
@@ -57,7 +60,8 @@ public class ReplicationManagerClient
 
         //and read state
         gameObject.Read(inInputStream);
-        gameObject.CompleteCreate();
+        if(is_create)
+            gameObject.CompleteCreate();
     }
 
     void ReadAndDoUpdateAction(NetIncomingMessage inInputStream, int inNetworkId)
