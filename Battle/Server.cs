@@ -48,7 +48,7 @@ namespace Server
             int playerId = inClientProxy.GetPlayerId();
             byte worldId = inClientProxy.GetWorldId();
 
-            ScoreBoardManager.sInstance.AddEntry((uint32_t)playerId, inClientProxy.GetName());
+            GameMode.sInstance.AddEntry((uint32_t)playerId, inClientProxy.GetName());
             SpawnActorForPlayer(playerId, worldId);
 
             ServerMonitor.sInstance.AddUser(worldId);
@@ -59,7 +59,7 @@ namespace Server
             //remove client from scoreboard
             int playerId = inClientProxy.GetPlayerId();
 
-            ScoreBoardManager.sInstance.RemoveEntry((uint32_t)playerId);
+            GameMode.sInstance.RemoveEntry((uint32_t)playerId);
             SActor actor = GetActorForPlayer(playerId, inClientProxy.GetWorldId());
             if (actor != null)
             {
@@ -97,7 +97,7 @@ namespace Server
         public void SpawnActorForPlayer(int inPlayerId, byte worldId)
         {
             SActor actor = (SActor)GameObjectRegistry.sInstance.CreateGameObject((uint32_t)GameObjectClassId.kActor, worldId);
-            actor.SetColor(ScoreBoardManager.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
+            actor.SetColor(GameMode.sInstance.GetEntry((uint32_t)inPlayerId).GetColor());
             actor.SetPlayerId((uint32_t)inPlayerId);
             actor.Possess(inPlayerId);
             actor.SetWorldId(worldId);

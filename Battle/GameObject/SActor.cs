@@ -154,7 +154,7 @@ namespace Server
             if (mHealth <= 0.0f)
             {
                 //score one for damaging player...
-                ScoreBoardManager.sInstance.IncScore((uint)inDamagingPlayerId, 1);
+                GameMode.sInstance.IncScore((uint)inDamagingPlayerId, 1);
 
                 //and you want to die
                 SetDoesWantToDie(true);

@@ -328,7 +328,7 @@ namespace Server
         }
         void AddScoreBoardStateToPacket(NetOutgoingMessage inOutputStream)
         {
-            ScoreBoardManager.sInstance.Write(inOutputStream);
+            GameMode.sInstance.Write(inOutputStream);
 
         }
 

@@ -202,7 +202,7 @@ public class NetworkManagerClient : core.NetworkManager
 
     void HandleScoreBoardState(NetIncomingMessage inInputStream)
     {
-        core.ScoreBoardManager.sInstance.Read(inInputStream);
+        core.GameMode.sInstance.Read(inInputStream);
     }
 
     void UpdateSendingInputPacket()

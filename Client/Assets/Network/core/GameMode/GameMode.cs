@@ -8,20 +8,20 @@ using uint32_t = System.UInt32;
 
 namespace core
 {
-    public class ScoreBoardManager
+    public class GameMode
     {
         /// <summary>
         /// Global instance of ScoreBoardManager
         /// </summary>
-        public static ScoreBoardManager sInstance = new ScoreBoardManager();
+        public static GameMode sInstance = new GameMode();
 
         public static void StaticInit()
         {
-            sInstance = new ScoreBoardManager();
+            sInstance = new GameMode();
         }
         public List<Entry> GetEntries() { return mEntries; }
 
-        ScoreBoardManager()
+        GameMode()
         {
             mDefaultColors.Add(Colors.LightYellow.Clone());
             mDefaultColors.Add(Colors.LightBlue.Clone());
