@@ -162,8 +162,6 @@ public class NetworkManagerClient : core.NetworkManager
         {
             ReadLastMoveProcessedOnServerTimestamp(inInputStream);
 
-            //old
-            //HandleGameObjectState( inPacketBuffer );
             HandleScoreBoardState(inInputStream);
 
             //tell the replication manager to handle the rest...
@@ -202,45 +200,6 @@ public class NetworkManagerClient : core.NetworkManager
         }
     }
 
-    void HandleGameObjectState(NetIncomingMessage inInputStream)
-    {
-        //copy the mNetworkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
-        var objectsToDestroy = mNetworkIdToGameObjectMap.ToDictionary(x => x.Key, x => x.Value);
-
-        int stateCount = inInputStream.ReadInt32();
-        if (stateCount > 0)
-        {
-            for (int stateIndex = 0; stateIndex < stateCount; ++stateIndex)
-            {
-                int networkId;
-                uint32_t fourCC;
-
-                networkId = inInputStream.ReadInt32();
-                fourCC = inInputStream.ReadUInt32();
-                core.NetGameObject go = null;
-                bool is_create = false;
-                //didn't find it, better create it!
-                if (mNetworkIdToGameObjectMap.TryGetValue(networkId, out go) == false)
-                {
-                    go = core.GameObjectRegistry.sInstance.CreateGameObject(fourCC);
-                    go.SetNetworkId(networkId);
-                    AddToNetworkIdToGameObjectMap(go);
-                    is_create = true;
-                }
-
-
-                //now we can update into it
-                go.Read(inInputStream);
-                if (is_create)
-                    go.CompleteCreate();
-
-                objectsToDestroy.Remove(networkId);
-            }
-        }
-
-        //anything left gets the axe
-        DestroyGameObjectsInMap(objectsToDestroy);
-    }
     void HandleScoreBoardState(NetIncomingMessage inInputStream)
     {
         core.ScoreBoardManager.sInstance.Read(inInputStream);
@@ -294,16 +253,5 @@ public class NetworkManagerClient : core.NetworkManager
 
             GetClient().SendMessage(inputPacket, NetDeliveryMethod.Unreliable);
         }
-    }
-
-    void DestroyGameObjectsInMap(Dictionary<int, core.NetGameObject> inObjectsToDestroy)
-    {
-        foreach (var pair in inObjectsToDestroy)
-        {
-            pair.Value.SetDoesWantToDie(true);
-            //and remove from our map!
-            mNetworkIdToGameObjectMap.Remove(pair.Key);
-        }
-
     }
 }
