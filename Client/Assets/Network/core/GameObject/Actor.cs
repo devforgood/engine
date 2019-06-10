@@ -13,6 +13,11 @@ namespace core
         static readonly float HALF_WORLD_HEIGHT = 3.6f;
         static readonly float HALF_WORLD_WIDTH = 6.4f;
 
+        bool IsForward = false;
+        bool IsBack = false;
+        bool IsRight = false;
+        bool IsLeft = false;
+
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kActor; }
 
 
@@ -76,14 +81,31 @@ namespace core
         {
             //process our input....
             Vector3 direction = new Vector3();
+
+            IsForward = false;
+            IsBack = false;
+            IsRight = false;
+            IsLeft = false;
             if (inInputState.mIsForward)
+            {
                 direction += Vector3.forward;
+                IsForward = true;
+            }
             if (inInputState.mIsBack)
+            {
                 direction += Vector3.back;
+                IsBack = true;
+            }
             if (inInputState.mIsRight)
+            {
                 direction += Vector3.right;
+                IsRight = true;
+            }
             if (inInputState.mIsLeft)
+            {
                 direction += Vector3.left;
+                IsLeft = true;
+            }
 
             direction.Normalize();
             mDirection = direction;
@@ -261,7 +283,10 @@ namespace core
 
                 inOutputStream.Write(GetLocation());
 
-                inOutputStream.Write(mDirection);
+                inOutputStream.Write(IsRight);
+                inOutputStream.Write(IsLeft);
+                inOutputStream.Write(IsForward);
+                inOutputStream.Write(IsBack);
 
                 writtenState |= (uint32_t)EActorReplicationState.ECRS_Pose;
             }

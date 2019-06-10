@@ -115,7 +115,16 @@ public class CActor : core.Actor
             SetLocation(replicatedLocation);
             //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
-            inInputStream.Read(mDirection);
+            mDirection.mX = 0.0f;
+            mDirection.mZ = 0.0f;
+            mDirection.mX += inInputStream.ReadBoolean() ? core.Vector3.right.mX : 0.0f;
+            mDirection.mX += inInputStream.ReadBoolean() ? core.Vector3.left.mX : 0.0f;
+            mDirection.mZ += inInputStream.ReadBoolean() ? core.Vector3.forward.mZ : 0.0f;
+            mDirection.mZ += inInputStream.ReadBoolean() ? core.Vector3.back.mZ : 0.0f;
+            mDirection.Normalize();
+
+            Debug.Log("mDirection : " + mDirection + ", player_id :" + GetPlayerId());
+
             mThrustDir = 1.0f;
             readState |= (uint32_t)EActorReplicationState.ECRS_Pose;
         }
