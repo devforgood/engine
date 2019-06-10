@@ -124,17 +124,17 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
-            mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
-            mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.mX, mDirection.mY, mDirection.mZ);
+            mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().x, GetLocation().y, GetLocation().z);
+            mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.x, mDirection.y, mDirection.z);
             if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
             {
                 if (GetVelocity().IsZero() == false)
-                    mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().mX, GetVelocity().mY, GetVelocity().mZ);
+                    mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z);
             }
 
 
-            //body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
-            //body.LinearVelocity = new Jitter.LinearMath.JVector(GetVelocity().mX, GetLocation().mY, GetVelocity().mZ);
+            //body.Position = new BEPUutilities.Vector3(GetLocation().x, GetLocation().y, GetLocation().z);
+            //body.LinearVelocity = new Jitter.LinearMath.JVector(GetVelocity().x, GetLocation().y, GetVelocity().z);
 
             if (!oldLocation.Equals(GetLocation()) ||
                 !oldVelocity.Equals(GetVelocity()) ||
@@ -219,7 +219,7 @@ namespace Server
         public override void JumpServer(int power)
         {
             var location = GetLocation();
-            location.mY += power;
+            location.y += power;
             location += mDirection * power;
             SetLocation(location);
         }

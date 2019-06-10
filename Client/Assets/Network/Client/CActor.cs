@@ -23,9 +23,6 @@ public class CActor : core.Actor
 
     public override void NetUpdate()
     {
-        core.Vector3 oldLocation = GetLocation().Clone();
-        core.Vector3 oldVelocity = GetVelocity().Clone();
-
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {
             core.Move pendingMove = InputManager.sInstance.GetAndClearPendingMove();
@@ -59,13 +56,13 @@ public class CActor : core.Actor
 
         }
 
-        mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
-        mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.mX, mDirection.mY, mDirection.mZ);
+        mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().x, GetLocation().y, GetLocation().z);
+        mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.x, mDirection.y, mDirection.z);
 
         if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
         {
             if (GetVelocity().IsZero() == false)
-                mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().mX, GetVelocity().mY, GetVelocity().mZ);
+                mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z);
         }
 
 
@@ -98,32 +95,33 @@ public class CActor : core.Actor
             readState |= (uint32_t)EActorReplicationState.ECRS_PlayerId;
         }
 
-        core.Vector3 oldRotation = GetRotation().Clone();
-        core.Vector3 oldLocation = GetLocation().Clone();
-        core.Vector3 oldVelocity = GetVelocity().Clone();
+        Vector3 oldRotation = GetRotation();
+        Vector3 oldLocation = GetLocation();
+        Vector3 oldVelocity = GetVelocity();
 
-        core.Vector3 replicatedLocation = new core.Vector3();
-        core.Vector3 replicatedVelocity = new core.Vector3();
+        Vector3 replicatedLocation = new Vector3();
+        Vector3 replicatedVelocity = new Vector3();
 
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            inInputStream.Read(replicatedVelocity);
+            inInputStream.Read(ref replicatedVelocity);
             SetVelocity(replicatedVelocity);
+            //Debug.Log("replicatedVelocity : " + replicatedVelocity + ", player_id :" + GetPlayerId());
 
-            inInputStream.Read(replicatedLocation);
+            inInputStream.Read(ref replicatedLocation);
             SetLocation(replicatedLocation);
             //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
-            mDirection.mX = 0.0f;
-            mDirection.mZ = 0.0f;
-            mDirection.mX += inInputStream.ReadBoolean() ? core.Vector3.right.mX : 0.0f;
-            mDirection.mX += inInputStream.ReadBoolean() ? core.Vector3.left.mX : 0.0f;
-            mDirection.mZ += inInputStream.ReadBoolean() ? core.Vector3.forward.mZ : 0.0f;
-            mDirection.mZ += inInputStream.ReadBoolean() ? core.Vector3.back.mZ : 0.0f;
+            mDirection.x = 0.0f;
+            mDirection.z = 0.0f;
+            mDirection.x += inInputStream.ReadBoolean() ? Vector3.right.x : 0.0f;
+            mDirection.x += inInputStream.ReadBoolean() ? Vector3.left.x : 0.0f;
+            mDirection.z += inInputStream.ReadBoolean() ? Vector3.forward.z : 0.0f;
+            mDirection.z += inInputStream.ReadBoolean() ? Vector3.back.z : 0.0f;
             mDirection.Normalize();
 
-            Debug.Log("mDirection : " + mDirection + ", player_id :" + GetPlayerId());
+            //Debug.Log("mDirection : " + mDirection + ", player_id :" + GetPlayerId());
 
             mThrustDir = 1.0f;
             readState |= (uint32_t)EActorReplicationState.ECRS_Pose;
@@ -133,8 +131,8 @@ public class CActor : core.Actor
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            core.Vector3 color = new core.Vector3();
-            inInputStream.Read(color);
+            Vector3 color = new Vector3();
+            inInputStream.Read(ref color);
             SetColor(color);
             readState |= (uint32_t)EActorReplicationState.ECRS_Color;
         }
@@ -230,9 +228,7 @@ public class CActor : core.Actor
         mTimeVelocityBecameOutOfSync = 0.0f;
     }
 
-    void InterpolateClientSidePrediction(
-        core.Vector3 inOldRotation,
-        core.Vector3 inOldLocation, core.Vector3 inOldVelocity, bool inIsForRemoteActor)
+    void InterpolateClientSidePrediction(Vector3 inOldRotation, Vector3 inOldLocation, Vector3 inOldVelocity, bool inIsForRemoteActor)
     {
         if (inOldRotation != GetRotation() && !inIsForRemoteActor)
         {
@@ -258,13 +254,13 @@ public class CActor : core.Actor
             {
                 if(inIsForRemoteActor)
                 {
-                    SetLocation(core.Vector3.Lerp(inOldLocation, GetLocation(), (durationOutOfSync / roundTripTime)));
+                    SetLocation(Vector3.Lerp(inOldLocation, GetLocation(), (durationOutOfSync / roundTripTime)));
                     //Debug.Log("location " + GetLocation().ToString());
 
                 }
                 else
                 {
-                    SetLocation(core.Vector3.Lerp(inOldLocation, GetLocation(), 0.1f));
+                    SetLocation(Vector3.Lerp(inOldLocation, GetLocation(), 0.1f));
 
                 }
 
@@ -293,7 +289,7 @@ public class CActor : core.Actor
             if (durationOutOfSync < roundTripTime)
             {
 
-                SetVelocity(core.Vector3.Lerp(inOldVelocity, GetVelocity(), inIsForRemoteActor ? (durationOutOfSync / roundTripTime) : 0.1f));
+                SetVelocity(Vector3.Lerp(inOldVelocity, GetVelocity(), inIsForRemoteActor ? (durationOutOfSync / roundTripTime) : 0.1f));
             }
             //otherwise, fine...
 
@@ -312,10 +308,7 @@ public class CActor : core.Actor
 
         GameObject prefab = Resources.Load("Ralph") as GameObject;
 
-        var location = new Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
-        var rotation = new Vector3(mDirection.mX, mDirection.mY, mDirection.mZ);
-
-        GameObject actor = MonoBehaviour.Instantiate(prefab, location, Quaternion.Euler(rotation)) as GameObject;
+        GameObject actor = MonoBehaviour.Instantiate(prefab, GetLocation(), Quaternion.Euler(mDirection)) as GameObject;
         mTarget = actor;
 
         //GameObject instance = Instantiate(Resources.Load("Brick", typeof(GameObject))) as GameObject;

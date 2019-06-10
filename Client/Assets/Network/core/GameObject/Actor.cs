@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY
+using UnityEngine;
+#endif 
 
 using uint32_t = System.UInt32;
 
@@ -37,7 +40,7 @@ namespace core
 
             mMaxRotationSpeed = 5.0f;
             mMaxLinearSpeed = 60.0f;
-            mVelocity = Vector3.Zero.Clone();
+            mVelocity = Vector3.zero;
             mWallRestitution = 0.1f;
 
             mActorRestitution = 0.1f;
@@ -152,7 +155,7 @@ namespace core
         {
 
             float sourceRadius = GetCollisionRadius();
-            Vector3 sourceLocation = GetLocation().Clone();
+            Vector3 sourceLocation = GetLocation();
 
             //now let's iterate through the world and see what we hit...
             //note: since there's a small number of objects in our game, this is fine.
@@ -168,7 +171,7 @@ namespace core
                     float targetRadius = target.GetCollisionRadius();
 
                     Vector3 delta = targetLocation - sourceLocation;
-                    float distSq = delta.LengthSq();
+                    float distSq = delta.sqrMagnitude;
                     float collisionDist = (sourceRadius + targetRadius);
                     if (distSq < (collisionDist * collisionDist))
                     {
@@ -185,7 +188,7 @@ namespace core
                             SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
 
 
-                            Vector3 relVel = mVelocity.Clone();
+                            Vector3 relVel = mVelocity;
 
                             //if other object is a cat, it might have velocity, so there might be relative velocity...
                             Actor targetActor = target.GetAsActor();
@@ -279,9 +282,9 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(mVelocity);
+                inOutputStream.Write(ref mVelocity);
 
-                inOutputStream.Write(GetLocation());
+                inOutputStream.Write(ref GetLocation());
 
                 inOutputStream.Write(IsRight);
                 inOutputStream.Write(IsLeft);
@@ -298,7 +301,7 @@ namespace core
             if ((inDirtyState & (uint32_t)EActorReplicationState.ECRS_Color) != 0)
             {
                 inOutputStream.Write((bool)true);
-                inOutputStream.Write(GetColor());
+                inOutputStream.Write(ref GetColor());
 
                 writtenState |= (uint32_t)EActorReplicationState.ECRS_Color;
             }

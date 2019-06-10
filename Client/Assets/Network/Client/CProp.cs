@@ -26,9 +26,7 @@ public class CProp : core.Prop
             return;
         }
 
-        var location = new Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
-
-        GameObject bomb = GameObject.Instantiate(go, location, go.transform.rotation);
+        GameObject bomb = GameObject.Instantiate(go, GetLocation(), go.transform.rotation);
         mTarget = bomb;
     }
 

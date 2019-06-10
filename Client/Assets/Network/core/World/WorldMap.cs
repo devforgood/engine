@@ -4,6 +4,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+#if UNITY
+using UnityEngine;
+#endif
 
 namespace core
 {
@@ -85,19 +88,19 @@ namespace core
         public Tile GetTile(Vector3 pos)
         {
             LogHelper.LogInfo("GetTile " + pos);
-            return GetTile((short)pos.mX, (short)pos.mY, (short)pos.mZ);
+            return GetTile((short)pos.x, (short)pos.y, (short)pos.z);
         }
 
         public void ChangeLocation(NetGameObject target, Vector3 src_pos, Vector3 dest_pos)
         {
-            var x = (short)Math.Round(dest_pos.mX);
-            var y = (short)Math.Round(dest_pos.mY);
-            var z = (short)Math.Round(dest_pos.mZ);
+            var x = (short)Math.Round(dest_pos.x);
+            var y = (short)Math.Round(dest_pos.y);
+            var z = (short)Math.Round(dest_pos.z);
 
 
-            var old_x = (short)Math.Round(src_pos.mX);
-            var old_y = (short)Math.Round(src_pos.mY);
-            var old_z = (short)Math.Round(src_pos.mZ);
+            var old_x = (short)Math.Round(src_pos.x);
+            var old_y = (short)Math.Round(src_pos.y);
+            var old_z = (short)Math.Round(src_pos.z);
 
             if ( old_x == x && old_y == y && old_z == z )
             {
@@ -124,9 +127,9 @@ namespace core
 
         public void InsertObject(NetGameObject target)
         {
-            var x = (short)Math.Round(target.GetLocation().mX);
-            var y = (short)Math.Round(target.GetLocation().mY);
-            var z = (short)Math.Round(target.GetLocation().mZ);
+            var x = (short)Math.Round(target.GetLocation().x);
+            var y = (short)Math.Round(target.GetLocation().y);
+            var z = (short)Math.Round(target.GetLocation().z);
 
             var dest_tile = GetTile(x, y, z);
             if (dest_tile == null)
@@ -139,9 +142,9 @@ namespace core
 
         public void RemoveObject(NetGameObject target)
         {
-            var x = (short)Math.Round(target.GetLocation().mX);
-            var y = (short)Math.Round(target.GetLocation().mY);
-            var z = (short)Math.Round(target.GetLocation().mZ);
+            var x = (short)Math.Round(target.GetLocation().x);
+            var y = (short)Math.Round(target.GetLocation().y);
+            var z = (short)Math.Round(target.GetLocation().z);
 
             var src_tile = GetTile(x, y, z);
             if (src_tile != null)

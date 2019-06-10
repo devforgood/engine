@@ -5,22 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if UNITY
+using UnityEngine;
+#endif 
 
 
 public static partial class NetBufferExtensions
 {
-    public static void Write(this NetBuffer buff, core.Vector3 vec)
+    public static void Write(this NetBuffer buff, ref Vector3 vec)
     {
-        buff.Write(vec.mX);
-        buff.Write(vec.mY);
-        buff.Write(vec.mZ);
+        buff.Write(vec.x);
+        buff.Write(vec.y);
+        buff.Write(vec.z);
     }
 
-    public static void Read(this NetBuffer buff, core.Vector3 vec)
+    public static void Read(this NetBuffer buff, ref Vector3 vec)
     {
-        vec.mX = buff.ReadFloat();
-        vec.mY = buff.ReadFloat();
-        vec.mZ = buff.ReadFloat();
+        vec.x = buff.ReadFloat();
+        vec.y = buff.ReadFloat();
+        vec.z = buff.ReadFloat();
     }
 
 
@@ -68,7 +71,7 @@ public static partial class NetBufferExtensions
         if (type == typeof(Vector3))
         {
             Vector3 v = new Vector3();
-            buff.Read(v);
+            buff.Read(ref v);
             return v;
         }
         if (type == typeof(char))
@@ -158,7 +161,8 @@ public static partial class NetBufferExtensions
         }
         else if (value is Vector3)
         {
-            buff.Write((Vector3)value);
+            Vector3 v = (Vector3)value;
+            buff.Write(ref v);
             return;
         }
         else if (value is char)

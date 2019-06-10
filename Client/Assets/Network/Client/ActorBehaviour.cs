@@ -25,18 +25,15 @@ public class ActorBehaviour : MonoBehaviour
     {
         if (actor != null)
         {
-            var remoteLocation = new Vector3(actor.GetLocation().mX, actor.GetLocation().mY, actor.GetLocation().mZ);
-            var remoteVelocity = new Vector3(actor.GetVelocity().mX, actor.GetVelocity().mY, actor.GetVelocity().mZ);
-
             if (actor.IsLocalPlayer() == false)
             {
-                transform.position = Vector3.Lerp(transform.position, remoteLocation, Time.deltaTime * 10f);
-                velocity = Vector3.Lerp(velocity, remoteVelocity, Time.deltaTime * 10f);
+                transform.position = Vector3.Lerp(transform.position, actor.GetLocation(), Time.deltaTime * 10f);
+                velocity = Vector3.Lerp(velocity, actor.GetVelocity(), Time.deltaTime * 10f);
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, remoteLocation, Time.deltaTime * 10f);
-                velocity = Vector3.Lerp(velocity, remoteVelocity, Time.deltaTime * 10f);
+                transform.position = Vector3.Lerp(transform.position, actor.GetLocation(), Time.deltaTime * 10f);
+                velocity = Vector3.Lerp(velocity, actor.GetVelocity(), Time.deltaTime * 10f);
             }
 
 
@@ -65,7 +62,7 @@ public class ActorBehaviour : MonoBehaviour
             }
             else
             {
-                transform.rotation = Quaternion.LookRotation(new Vector3(actor.mDirection.mX, actor.mDirection.mY, actor.mDirection.mZ));
+                transform.rotation = Quaternion.LookRotation(actor.mDirection);
             }
 
             if (actor.IsLocalPlayer())

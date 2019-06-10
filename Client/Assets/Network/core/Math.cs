@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY
+using UnityEngine;
+#endif
+
 
 namespace core
 {
@@ -9,16 +13,10 @@ namespace core
     {
         public static float PI = 3.1415926535f;
 
-        private static Random rand = new Random();
+        private static System.Random rand = new System.Random();
         public static float GetRandomFloat(double maximum = 1.0, double minimum = 0.0)
         {
             return (float)(rand.NextDouble() * (maximum - minimum) + minimum);
-        }
-
-        public static Vector3 GetRandomVector( Vector3 inMin, Vector3 inMax )
-        {
-            Vector3 r = new Vector3(GetRandomFloat(), GetRandomFloat(), GetRandomFloat());
-            return inMin + (inMax - inMin) * r;
         }
 
         public static Vector3 GetRandomVector(int minValue, int maxValue, float fix_y = 1.0f)

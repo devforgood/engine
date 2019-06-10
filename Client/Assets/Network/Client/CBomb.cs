@@ -12,10 +12,10 @@ class CBomb : core.Bomb
         bool stateBit;
 
         stateBit = inInputStream.ReadBoolean();
-        if (stateBit)
+        if (stateBit) 
         {
-            core.Vector3 location = new core.Vector3();
-            inInputStream.Read(location);
+            Vector3 location = new Vector3();
+            inInputStream.Read(ref location);
 
             //dead reckon ahead by rtt, since this was spawned a while ago!
             SetLocation(location);
@@ -24,8 +24,8 @@ class CBomb : core.Bomb
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            core.Vector3 color = new core.Vector3();
-            inInputStream.Read(color);
+            Vector3 color = new Vector3();
+            inInputStream.Read(ref color);
             SetColor(color);
         }
 
@@ -64,9 +64,7 @@ class CBomb : core.Bomb
         if (go == null)
             return;
 
-        var location = new Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
-
-        GameObject bomb = GameObject.Instantiate(go, location, go.transform.rotation);
+        GameObject bomb = GameObject.Instantiate(go, GetLocation(), go.transform.rotation);
         mTarget = bomb;
         mBombBehaviour = bomb.GetComponent<BombBehaviour>();
 

@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY
+using UnityEngine;
+#endif 
 
 using uint32_t = System.UInt32;
 using uint8_t = System.Byte;
@@ -27,8 +30,6 @@ namespace core
 
         float mCollisionRadius;
 
-        protected Vector3 mLastLocation = new Vector3();
-
         float mScale;
         int mIndexInWorld;
 
@@ -36,11 +37,6 @@ namespace core
 
         int mNetworkId;
 
-
-        public void BackupLocation()
-        {
-            mLastLocation = mLocation.Clone();
-        }
 
         public int NetworkId { get { return mNetworkId; } }
 
@@ -67,7 +63,7 @@ namespace core
         public float GetScale() { return mScale; }
 
 
-        public Vector3 GetLocation() { return mLocation; }
+        public ref Vector3 GetLocation() { return ref mLocation; }
         public void SetLocation(Vector3 inLocation)
         {
             //if (inLocation.Equals(mLocation) == false)
@@ -87,7 +83,7 @@ namespace core
 
 
         public void SetColor(Vector3 inColor) { mColor = inColor; }
-        public Vector3 GetColor() { return mColor; }
+        public ref Vector3 GetColor() { return ref mColor; }
 
         public bool DoesWantToDie() { return mDoesWantToDie; }
         public void SetDoesWantToDie(bool inWants) { mDoesWantToDie = inWants; }

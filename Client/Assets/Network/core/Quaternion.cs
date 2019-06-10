@@ -7,9 +7,9 @@ namespace core
 {
     public class Quaternion
     {
-        public float mX = 0;
-        public float mY = 0;
-        public float mZ = 0;
-        public float mW = 0;
+        public float x = 0;
+        public float y = 0;
+        public float z = 0;
+        public float w = 0;
     }
 }

@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY
+using UnityEngine;
+#endif 
 
 using uint32_t = System.UInt32;
 
@@ -43,9 +46,9 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetLocation());
+                inOutputStream.Write(ref GetLocation());
 
-                inOutputStream.Write(mDirection);
+                inOutputStream.Write(ref mDirection);
 
                 writtenState |= (uint32_t)EMouseReplicationState.EMRS_Pose;
             }
@@ -58,7 +61,7 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetColor());
+                inOutputStream.Write(ref GetColor());
 
                 writtenState |= (uint32_t)EMouseReplicationState.EMRS_Color;
             }
@@ -77,10 +80,10 @@ namespace core
             if (stateBit)
             {
                 Vector3 location = new Vector3();
-                inInputStream.Read(location);
+                inInputStream.Read(ref location);
                 SetLocation(location);
 
-                inInputStream.Read(mDirection);
+                inInputStream.Read(ref mDirection);
             }
 
 
@@ -88,7 +91,7 @@ namespace core
             if (stateBit)
             {
                 Vector3 color = new Vector3();
-                inInputStream.Read(color);
+                inInputStream.Read(ref color);
                 SetColor(color);
             }
         }

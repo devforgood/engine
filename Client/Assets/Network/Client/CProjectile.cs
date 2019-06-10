@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 
 class CProjectile : core.Projectile
@@ -15,27 +16,27 @@ class CProjectile : core.Projectile
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            core.Vector3 location = new core.Vector3();
-            inInputStream.Read(location);
+            Vector3 location = new Vector3();
+            inInputStream.Read(ref location);
 
 
-            core.Vector3 velocity = new core.Vector3();
-            inInputStream.Read(velocity);
+            Vector3 velocity = new Vector3();
+            inInputStream.Read(ref velocity);
             SetVelocity(velocity);
 
             //dead reckon ahead by rtt, since this was spawned a while ago!
             SetLocation(location + velocity * NetworkManagerClient.sInstance.GetRoundTripTime());
 
 
-            inInputStream.Read(mDirection);
+            inInputStream.Read(ref mDirection);
         }
 
 
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            core.Vector3 color = new core.Vector3();
-            inInputStream.Read(color);
+            Vector3 color = new Vector3();
+            inInputStream.Read(ref color);
             SetColor(color);
         }
 

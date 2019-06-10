@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY
+using UnityEngine;
+#endif 
 
 using uint32_t = System.UInt32;
 
@@ -35,7 +38,7 @@ namespace core
         protected Projectile()
         {
             mMuzzleSpeed = 3.0f;
-            mVelocity = Vector3.Zero.Clone();
+            mVelocity = Vector3.zero;
             mPlayerId = 0;
             SetScale(GetScale() * 0.25f);
             SetCollisionRadius(0.125f);
@@ -43,7 +46,7 @@ namespace core
 
 
         public void SetVelocity(Vector3 inVelocity) { mVelocity = inVelocity; }
-        public Vector3 GetVelocity() { return mVelocity; }
+        public ref Vector3 GetVelocity() { return ref mVelocity; }
 
         public void SetPlayerId(int inPlayerId) { mPlayerId = inPlayerId; }
         public int GetPlayerId() { return mPlayerId; }
@@ -56,11 +59,11 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetLocation());
+                inOutputStream.Write(ref GetLocation());
 
-                inOutputStream.Write(GetVelocity());
+                inOutputStream.Write(ref GetVelocity());
 
-                inOutputStream.Write(mDirection);
+                inOutputStream.Write(ref mDirection);
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Pose;
             }
@@ -73,7 +76,7 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetColor());
+                inOutputStream.Write(ref GetColor());
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Color;
             }
@@ -111,14 +114,14 @@ namespace core
 
         public void InitFromShooter(Actor inShooter)
         {
-            SetColor(inShooter.GetColor().Clone());
+            SetColor(inShooter.GetColor());
             SetPlayerId((int)inShooter.GetPlayerId());
 
             Vector3 forward = inShooter.GetForwardVector();
             SetVelocity(inShooter.GetVelocity() + forward * mMuzzleSpeed);
-            SetLocation(inShooter.GetLocation().Clone() );
+            SetLocation(inShooter.GetLocation());
 
-            mDirection = inShooter.GetRotation().Clone();
+            mDirection = inShooter.GetRotation();
         }
 
         public override void NetUpdate()

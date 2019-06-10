@@ -51,7 +51,7 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetLocation());
+                inOutputStream.Write(ref GetLocation());
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Pose;
             }
@@ -64,7 +64,7 @@ namespace core
             {
                 inOutputStream.Write((bool)true);
 
-                inOutputStream.Write(GetColor());
+                inOutputStream.Write(ref GetColor());
 
                 writtenState |= (uint32_t)EYarnReplicationState.EYRS_Color;
             }
@@ -128,13 +128,13 @@ namespace core
 
         public void InitFrom(Actor inShooter)
         {
-            SetColor(inShooter.GetColor().Clone());
+            SetColor(inShooter.GetColor());
             SetPlayerId((int)inShooter.GetPlayerId());
             mParentNetworkId = inShooter.GetNetworkId();
 
             SetLocation(inShooter.GetLocation().Round());
 
-            mDirection = inShooter.GetRotation().Clone();
+            mDirection = inShooter.GetRotation();
         }
 
         public override void NetUpdate()

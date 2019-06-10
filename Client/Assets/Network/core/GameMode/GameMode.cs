@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY
+using UnityEngine;
+#endif
 
 using uint32_t = System.UInt32;
 
@@ -23,10 +26,10 @@ namespace core
 
         GameMode()
         {
-            mDefaultColors.Add(Colors.LightYellow.Clone());
-            mDefaultColors.Add(Colors.LightBlue.Clone());
-            mDefaultColors.Add(Colors.LightPink.Clone());
-            mDefaultColors.Add(Colors.LightGreen.Clone());
+            mDefaultColors.Add(Colors.LightYellow);
+            mDefaultColors.Add(Colors.LightBlue);
+            mDefaultColors.Add(Colors.LightPink);
+            mDefaultColors.Add(Colors.LightGreen);
         }
 
         List<Entry> mEntries = new List<Entry>();
@@ -61,7 +64,7 @@ namespace core
             {
                 bool didSucceed = true;
 
-                inOutputStream.Write(mColor);
+                inOutputStream.Write(ref mColor);
                 inOutputStream.Write(mPlayerId);
                 inOutputStream.Write(mPlayerName);
                 inOutputStream.Write(mScore);
@@ -72,7 +75,7 @@ namespace core
             {
                 bool didSucceed = true;
 
-                inInputStream.Read(mColor);
+                inInputStream.Read(ref mColor);
                 mPlayerId = inInputStream.ReadUInt32();
 
                 mPlayerName = inInputStream.ReadString();
