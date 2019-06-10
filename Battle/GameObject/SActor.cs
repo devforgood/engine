@@ -33,6 +33,11 @@ namespace Server
 
         ClientProxy mClient = null;
 
+        BEPUutilities.Vector3 physicsLocation = new BEPUutilities.Vector3();
+        BEPUutilities.Vector3 physicsVelocity = new BEPUutilities.Vector3();
+        BEPUutilities.Vector3 physicsRotation = new BEPUutilities.Vector3();
+
+
         public bool Possess(int player_id)
         {
             mClient = NetworkManagerServer.sInstance.GetClientProxy(player_id);
@@ -124,12 +129,14 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
-            mCharacterController.Body.Position = new BEPUutilities.Vector3(GetLocation().x, GetLocation().y, GetLocation().z);
-            mCharacterController.HorizontalMotionConstraint.LastDirection = new BEPUutilities.Vector3(mDirection.x, mDirection.y, mDirection.z);
+            mCharacterController.Body.Position = GetLocation().CopyTo(ref physicsLocation);
+            mDirection.CopyTo(ref mCharacterController.HorizontalMotionConstraint.LastDirection);
             if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
             {
                 if (GetVelocity().IsZero() == false)
-                    mCharacterController.Body.LinearVelocity = new BEPUutilities.Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z);
+                {
+                    mCharacterController.Body.LinearVelocity = GetVelocity().CopyTo(ref physicsVelocity);
+                }
             }
 
 

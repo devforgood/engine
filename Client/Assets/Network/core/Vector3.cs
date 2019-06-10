@@ -195,6 +195,14 @@ public struct Vector3
         z = fromVec.z;
     }
 
+    public ref BEPUutilities.Vector3 CopyTo(ref BEPUutilities.Vector3 toVec)
+    {
+        toVec.X = x;
+        toVec.Y = y;
+        toVec.Z = z;
+        return ref toVec;
+    }
+
     public Vector3 Round()
     {
         return new Vector3()
