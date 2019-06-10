@@ -23,6 +23,14 @@ public static partial class Vector3Extensions
     {
         return vec.x == 0 && vec.y == 0 && vec.z == 0;
     }
+
+    public static ref BEPUutilities.Vector3 CopyTo(this Vector3 vec, ref BEPUutilities.Vector3 toVec)
+    {
+        toVec.X = vec.x;
+        toVec.Y = vec.y;
+        toVec.Z = vec.z;
+        return ref toVec;
+    }
 }
 
 #else

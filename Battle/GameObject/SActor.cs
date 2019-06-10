@@ -35,7 +35,6 @@ namespace Server
 
         BEPUutilities.Vector3 physicsLocation = new BEPUutilities.Vector3();
         BEPUutilities.Vector3 physicsVelocity = new BEPUutilities.Vector3();
-        BEPUutilities.Vector3 physicsRotation = new BEPUutilities.Vector3();
 
 
         public bool Possess(int player_id)
