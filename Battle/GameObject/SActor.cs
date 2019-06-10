@@ -86,9 +86,9 @@ namespace Server
 
         }
 
-        public override void NetUpdate()
+        public override void Update()
         {
-            base.NetUpdate();
+            base.Update();
 
             oldLocation.Copy(GetLocation());
             oldVelocity.Copy(GetVelocity());

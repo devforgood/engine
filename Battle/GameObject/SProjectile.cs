@@ -31,9 +31,9 @@ namespace Server
             return false;
         }
 
-        public override void NetUpdate()
+        public override void Update()
         {
-            base.NetUpdate();
+            base.Update();
 
             if (Timing.sInstance.GetFrameStartTime() > mTimeToDie)
             {

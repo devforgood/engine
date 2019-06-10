@@ -50,7 +50,7 @@ namespace core
 
         public virtual bool HandleCollisionWithActor(Actor inActor) { return true; }
 
-        public virtual void NetUpdate() { }
+        public virtual void Update() { }
         public virtual void LateUpdate() { }
         public virtual void HandleDying() { }
 

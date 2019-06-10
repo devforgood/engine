@@ -230,7 +230,7 @@ namespace core
         public override uint32_t GetAllStateMask() { return (uint32_t)EActorReplicationState.ECRS_AllState; }
 
         public override Actor GetAsActor() { return this; }
-        public override void NetUpdate()
+        public override void Update()
         {
 
         }

@@ -24,7 +24,7 @@ public class CActor : core.Actor
         return GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId();
     }
 
-    public override void NetUpdate()
+    public override void Update()
     {
         if (GetPlayerId() == NetworkManagerClient.sInstance.GetPlayerId())
         {

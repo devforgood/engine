@@ -77,9 +77,9 @@ namespace Server
             //Explode(World.Instance(WorldId).mWorldMap.GetTile(GetLocation() + (Vector3.left * mExplodeCount)));
         }
 
-        public override void NetUpdate()
+        public override void Update()
         {
-            base.NetUpdate();
+            base.Update();
 
             if (Timing.sInstance.GetFrameStartTime() > mTimeToBomb && mExplodeCount <= MaxExplodeCount)
             {

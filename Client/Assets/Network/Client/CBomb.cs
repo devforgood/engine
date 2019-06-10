@@ -83,7 +83,7 @@ class CBomb : core.Bomb
             GameObject.Destroy(mTarget, 0.3f);
     }
 
-    public override void NetUpdate()
+    public override void Update()
     {
         if(mIsExplode)
         {

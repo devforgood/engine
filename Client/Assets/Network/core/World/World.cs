@@ -224,7 +224,7 @@ namespace core
 
                     if (!go.DoesWantToDie())
                     {
-                        go.NetUpdate();
+                        go.Update();
                     }
                     //you might suddenly want to die after your update, so check again
                     if (go.DoesWantToDie())

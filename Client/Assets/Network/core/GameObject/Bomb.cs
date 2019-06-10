@@ -137,7 +137,7 @@ namespace core
             mDirection = inShooter.GetRotation();
         }
 
-        public override void NetUpdate()
+        public override void Update()
         {
 
             float deltaTime = Timing.sInstance.GetDeltaTime();
