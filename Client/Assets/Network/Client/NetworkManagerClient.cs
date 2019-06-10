@@ -120,6 +120,13 @@ public class NetworkManagerClient : core.NetworkManager
         GetClient().Connect(mServerAddress, hail);
     }
 
+    public override void OnDisconnected()
+    {
+        Debug.Log(string.Format("OnDisconnected {0}, {1}", mName, mWorldId));
+        // todo : 재접속 화면으로 이동
+    }
+
+
     void UpdateSayingHello()
     {
 

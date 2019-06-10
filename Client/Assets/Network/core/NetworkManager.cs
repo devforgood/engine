@@ -106,6 +106,9 @@ namespace core
 
         public virtual void ProcessInternalMessage(string msg) { }
 
+        public virtual void OnDisconnected() { }
+
+
         public void ProcessIncomingPackets()
         {
              ProcessQueuedPackets();
@@ -144,6 +147,10 @@ namespace core
                         if (status == NetConnectionStatus.Connected)
                         {
                             //LogHelper.LogInfo("Remote hail: " + im.SenderConnection.RemoteHailMessage.ReadString());
+                        }
+                        else if(status == NetConnectionStatus.Disconnected)
+                        {
+                            OnDisconnected();
                         }
 
                         //UpdateConnectionsList();
