@@ -70,7 +70,7 @@ public static partial class NetBufferExtensions
             return buff.PeekBoolean();
         if (type == typeof(Vector3))
         {
-            Vector3 v = new Vector3();
+            Vector3 v = default(Vector3);
             buff.Read(ref v);
             return v;
         }

@@ -83,7 +83,7 @@ namespace core
         public void ProcessInput(float inDeltaTime, InputState inInputState)
         {
             //process our input....
-            Vector3 direction = new Vector3();
+            Vector3 direction = default(Vector3);
 
             IsForward = false;
             IsBack = false;

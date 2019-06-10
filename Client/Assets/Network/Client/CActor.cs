@@ -99,8 +99,8 @@ public class CActor : core.Actor
         Vector3 oldLocation = GetLocation();
         Vector3 oldVelocity = GetVelocity();
 
-        Vector3 replicatedLocation = new Vector3();
-        Vector3 replicatedVelocity = new Vector3();
+        Vector3 replicatedLocation = default(Vector3);
+        Vector3 replicatedVelocity = default(Vector3);
 
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
@@ -131,7 +131,7 @@ public class CActor : core.Actor
         stateBit = inInputStream.ReadBoolean();
         if (stateBit)
         {
-            Vector3 color = new Vector3();
+            Vector3 color = default(Vector3);
             inInputStream.Read(ref color);
             SetColor(color);
             readState |= (uint32_t)EActorReplicationState.ECRS_Color;

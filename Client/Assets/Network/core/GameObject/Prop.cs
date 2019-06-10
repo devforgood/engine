@@ -79,7 +79,7 @@ namespace core
 
             if (stateBit)
             {
-                Vector3 location = new Vector3();
+                Vector3 location = default(Vector3);
                 inInputStream.Read(ref location);
                 SetLocation(location);
 
@@ -90,7 +90,7 @@ namespace core
             stateBit = inInputStream.ReadBoolean();
             if (stateBit)
             {
-                Vector3 color = new Vector3();
+                Vector3 color = default(Vector3);
                 inInputStream.Read(ref color);
                 SetColor(color);
             }

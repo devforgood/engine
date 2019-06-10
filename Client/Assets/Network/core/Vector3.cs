@@ -176,7 +176,7 @@ public struct Vector3
 
     public static Vector3 Cross(Vector3 inLeft, Vector3 inRight)
     {
-        Vector3 temp = new Vector3();
+        Vector3 temp = default(Vector3);
         temp.x = inLeft.y * inRight.z - inLeft.z * inRight.y;
         temp.y = inLeft.z * inRight.x - inLeft.x * inRight.z;
         temp.z = inLeft.x * inRight.y - inLeft.y * inRight.x;
