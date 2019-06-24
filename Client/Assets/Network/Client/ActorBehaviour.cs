@@ -30,12 +30,14 @@ public class ActorBehaviour : MonoBehaviour
     {
         if (actor != null)
         {
-            Debug.Log("update() location " + transform.position.y + ", remote " + actor.GetLocation().y);
+            //Debug.Log("update() location " + transform.position.y + ", remote " + actor.GetLocation().y + ", is_local " + actor.IsLocalPlayer());
 
             if (actor.IsLocalPlayer())
             {
                 InputManager.sInstance.GetState().mIsChangeY = transform.position.y != actor.GetLocation().y;
                 InputManager.sInstance.GetState().mYaxis = transform.position.y;
+                //if (InputManager.sInstance.GetState().mIsChangeY)
+                //    Debug.Log("change Y -----------------------------");
             }
 
             position = actor.GetLocation();
