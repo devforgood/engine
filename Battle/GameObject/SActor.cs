@@ -110,8 +110,15 @@ namespace Server
                         ProcessInput(deltaTime, currentState);
 
                         // 서버만 y 축 좌표를 업데이트한다. 서버에서는 물리 연산이 없으므로
-                        if(currentState.mIsChangeY)
+                        if (currentState.mIsChangeY)
+                        {
+                            // todo : y 좌표값 변경 허가 여부 체크
+                            // raycast를 사용하여 위, 아래
+                            // up 근처에 경사로가 있는지 
+                            // down 낙하 지점인지
+
                             GetLocation().y = currentState.mYaxis;
+                        }
 
                         SimulateMovement(deltaTime);
 
