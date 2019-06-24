@@ -109,6 +109,9 @@ namespace Server
 
                         ProcessInput(deltaTime, currentState);
 
+                        // 서버만 y 축 좌표를 업데이트한다. 서버에서는 물리 연산이 없으므로
+                        GetLocation().y = currentState.mYaxis;
+
                         SimulateMovement(deltaTime);
 
                         //log.InfoFormat( "Server Move Time: {0} deltaTime: {1} location:{2}, old_location{3}, player_id{4}", unprocessedMove.GetTimestamp(), deltaTime, GetLocation(), oldLocation, GetPlayerId() );

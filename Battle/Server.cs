@@ -102,7 +102,7 @@ namespace Server
             actor.Possess(inPlayerId);
             actor.SetWorldId(worldId);
             //gotta pick a better spawn location than this...
-            actor.SetLocation(core.Utility.GetRandomVector(-10, 10));
+            actor.SetLocation(core.Utility.GetRandomVector(-10, 10, 0));
 
             Log.Information(string.Format("SpawnActorForPlayer player_id{0}, world{1}", inPlayerId, worldId));
         }

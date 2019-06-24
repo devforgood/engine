@@ -14,6 +14,7 @@ namespace core
         public bool mIsLeft;
         public bool mIsShooting;
         public bool mIsBomb;
+        public float mYaxis;
 
         public override string ToString()
         {
@@ -23,6 +24,7 @@ namespace core
                 + ",mIsLeft:  " + mIsLeft
                 + ",mIsShooting:  " + mIsShooting
                 + ",mIsBomb:  " + mIsBomb
+                + ",mYaxis:  " + mYaxis
                 ;
         }
 
@@ -34,6 +36,7 @@ namespace core
             mIsLeft = false;
             mIsShooting = false;
             mIsBomb = false;
+            mYaxis = 0.0f;
         }
 
         public bool IsShooting() { return mIsShooting; }
@@ -47,6 +50,7 @@ namespace core
             inOutputStream.Write(mIsLeft);
             inOutputStream.Write(mIsShooting);
             inOutputStream.Write(mIsBomb);
+            inOutputStream.Write(mYaxis);
 
             return false;
         }
@@ -58,6 +62,7 @@ namespace core
             mIsLeft = inInputStream.ReadBoolean();
             mIsShooting = inInputStream.ReadBoolean();
             mIsBomb = inInputStream.ReadBoolean();
+            mYaxis = inInputStream.ReadFloat();
 
             return true;
         }

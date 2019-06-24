@@ -16,10 +16,10 @@ namespace core
         static readonly float HALF_WORLD_HEIGHT = 3.6f;
         static readonly float HALF_WORLD_WIDTH = 6.4f;
 
-        bool IsForward = false;
-        bool IsBack = false;
-        bool IsRight = false;
-        bool IsLeft = false;
+        public bool IsForward = false;
+        public bool IsBack = false;
+        public bool IsRight = false;
+        public bool IsLeft = false;
 
         public override uint32_t GetClassId() { return (uint32_t)GameObjectClassId.kActor; }
 
@@ -113,7 +113,7 @@ namespace core
             direction.Normalize();
             mDirection = direction;
 
-            //LogHelper.LogInfo("direction " + mDirection);
+            LogHelper.LogInfo("direction " + mDirection);
             //turning...
 
 
@@ -135,7 +135,7 @@ namespace core
             Vector3 forwardVector = GetForwardVector();
             mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
 
-            //LogHelper.LogInfo("mVelocity " + mVelocity);
+            LogHelper.LogInfo("mVelocity " + mVelocity);
 
         }
 
@@ -246,7 +246,7 @@ namespace core
             if(v.Equals(GetLocation()) == false)
             {
                 //LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
-                SetLocation(v);
+                //SetLocation(v);
             }
 
 
@@ -329,7 +329,7 @@ namespace core
         public uint32_t GetPlayerId() { return mPlayerId; }
 
         public void SetVelocity(Vector3 inVelocity) { mVelocity = inVelocity; }
-        public Vector3 GetVelocity() { return mVelocity; }
+        public ref Vector3 GetVelocity() { return ref mVelocity; }
 
         public int GetHealth() { return mHealth; }
 

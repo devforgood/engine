@@ -46,6 +46,8 @@ public struct Vector3
     public static readonly Vector3 back = new Vector3(0, 0, -1);
     public static readonly Vector3 right = new Vector3(1, 0, 0);
     public static readonly Vector3 left = new Vector3(-1, 0, 0);
+    public static readonly Vector3 up = new Vector3(0, 1, 0);
+    public static readonly Vector3 down = new Vector3(0, -1, 0);
 
     public float x;
     public float y;

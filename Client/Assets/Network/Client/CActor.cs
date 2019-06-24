@@ -9,6 +9,7 @@ using uint32_t = System.UInt32;
 
 public class CActor : core.Actor
 {
+    public string model_name = "Ralph";
     public static new core.NetGameObject StaticCreate(byte worldId) { return new CActor(worldId); }
     public GameObject mTarget = null;
     public ActorBehaviour mActorBehaviour = null;
@@ -42,7 +43,7 @@ public class CActor : core.Actor
 
                 SimulateMovement(deltaTime);
 
-                //Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
+                Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
             }
         }
         else
@@ -108,19 +109,26 @@ public class CActor : core.Actor
         if (stateBit)
         {
             inInputStream.Read(ref replicatedVelocity);
+            //replicatedVelocity.y = GetVelocity().y;
             SetVelocity(replicatedVelocity);
             //Debug.Log("replicatedVelocity : " + replicatedVelocity + ", player_id :" + GetPlayerId());
 
             inInputStream.Read(ref replicatedLocation);
+            //replicatedLocation.y = GetLocation().y;
             SetLocation(replicatedLocation);
             //Debug.Log("replicatedLocation : " + replicatedLocation + ", player_id :" + GetPlayerId());
 
+            IsRight = inInputStream.ReadBoolean();
+            IsLeft = inInputStream.ReadBoolean();
+            IsForward = inInputStream.ReadBoolean();
+            IsBack = inInputStream.ReadBoolean();
+
             mDirection.x = 0.0f;
             mDirection.z = 0.0f;
-            mDirection.x += inInputStream.ReadBoolean() ? Vector3.right.x : 0.0f;
-            mDirection.x += inInputStream.ReadBoolean() ? Vector3.left.x : 0.0f;
-            mDirection.z += inInputStream.ReadBoolean() ? Vector3.forward.z : 0.0f;
-            mDirection.z += inInputStream.ReadBoolean() ? Vector3.back.z : 0.0f;
+            mDirection.x += IsRight ? Vector3.right.x : 0.0f;
+            mDirection.x += IsLeft ? Vector3.left.x : 0.0f;
+            mDirection.z += IsForward ? Vector3.forward.z : 0.0f;
+            mDirection.z += IsBack ? Vector3.back.z : 0.0f;
             mDirection.Normalize();
 
             //Debug.Log("mDirection : " + mDirection + ", player_id :" + GetPlayerId());
@@ -308,7 +316,7 @@ public class CActor : core.Actor
     public override void CompleteCreate()
     {
 
-        GameObject prefab = Resources.Load("Ralph") as GameObject;
+        GameObject prefab = Resources.Load(model_name) as GameObject;
 
         GameObject actor = MonoBehaviour.Instantiate(prefab, GetLocation(), Quaternion.Euler(mDirection)) as GameObject;
         mTarget = actor;
