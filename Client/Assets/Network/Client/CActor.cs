@@ -60,6 +60,7 @@ public class CActor : core.Actor
 
         }
 
+#if _USE_BEPU_PHYSICS
         mCharacterController.Body.Position = GetLocation().CopyTo(ref physicsLocation);
         mDirection.CopyTo(ref mCharacterController.HorizontalMotionConstraint.LastDirection);
         if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
@@ -67,9 +68,7 @@ public class CActor : core.Actor
             if (GetVelocity().IsZero() == false)
                 mCharacterController.Body.LinearVelocity = GetVelocity().CopyTo(ref physicsVelocity);
         }
-
-
-        //body.Position = new BEPUutilities.Vector3(GetLocation().mX, GetLocation().mY, GetLocation().mZ);
+#endif 
 
     }
     public override void HandleDying()

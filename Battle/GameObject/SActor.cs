@@ -131,6 +131,7 @@ namespace Server
             HandleShooting();
             HandleBomb();
 
+#if _USE_BEPU_PHYSICS
             mCharacterController.Body.Position = GetLocation().CopyTo(ref physicsLocation);
             mDirection.CopyTo(ref mCharacterController.HorizontalMotionConstraint.LastDirection);
             if (mCharacterController.HorizontalMotionConstraint.MovementMode != BEPUphysics.Character.MovementMode.Floating)
@@ -140,10 +141,8 @@ namespace Server
                     mCharacterController.Body.LinearVelocity = GetVelocity().CopyTo(ref physicsVelocity);
                 }
             }
+#endif
 
-
-            //body.Position = new BEPUutilities.Vector3(GetLocation().x, GetLocation().y, GetLocation().z);
-            //body.LinearVelocity = new Jitter.LinearMath.JVector(GetVelocity().x, GetLocation().y, GetVelocity().z);
 
             if (!oldLocation.Equals(GetLocation()) ||
                 !oldVelocity.Equals(GetVelocity()) ||

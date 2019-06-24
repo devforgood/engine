@@ -14,8 +14,10 @@ namespace core
         List<NetGameObject> mGameObjects;
         //public WorldMap mWorldMap;
         private byte mWorldId = 0;
-        public BEPUphysics.Space space { get; set; }
 
+#if _USE_BEPU_PHYSICS
+        public BEPUphysics.Space space { get; set; }
+#endif
 
         /// <summary>
         /// Global instance of GameObjectRegistry
@@ -48,6 +50,7 @@ namespace core
             mGameObjects = new List<NetGameObject>();
             //mWorldMap = new WorldMap();
 
+#if _USE_BEPU_PHYSICS
             space = new BEPUphysics.Space();
 
 
@@ -168,6 +171,7 @@ namespace core
 
 
             space.ForceUpdater.Gravity = new BEPUutilities.Vector3(0, -9.81f, 0);
+#endif
         }
 
         void InitProb(byte worldId)
@@ -240,6 +244,7 @@ namespace core
 
         public static void LateUpdate()
         {
+#if _USE_BEPU_PHYSICS
             for (byte worldId = 0; worldId < sInstance.Length; ++worldId)
             {
                 World world = sInstance[worldId];
@@ -256,6 +261,7 @@ namespace core
                     }
                 }
             }
+#endif
         }
 
         public List<NetGameObject> GetGameObjects() { return mGameObjects; }

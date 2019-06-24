@@ -57,26 +57,14 @@ namespace core
 
             CacheAttributes();
 
-            /*
-            body = new BEPUphysics.Entities.Prefabs.Cylinder(new BEPUutilities.Vector3(0, 0, 0), 1.0f, 0.5f, 10f);
-            body.IgnoreShapeChanges = true;
-            body.CollisionInformation.Shape.CollisionMargin = 0.1f;
-            //Making the character a continuous object prevents it from flying through walls which would be pretty jarring from a player's perspective.
-            body.PositionUpdateMode = BEPUphysics.PositionUpdating.PositionUpdateMode.Continuous;
-            body.LocalInertiaTensorInverse = new BEPUutilities.Matrix3x3();
-            //TODO: In v0.16.2, compound bodies would override the material properties that get set in the CreatingPair event handler.
-            //In a future version where this is changed, change this to conceptually minimally required CreatingPair.
-            //body.CollisionInformation.Events.DetectingInitialCollision += RemoveFriction;
-            body.LinearDamping = 0;
 
-            Engine.sInstance.world.Add(body);
-            */
-
+#if _USE_BEPU_PHYSICS
             mCharacterController = new BEPUphysics.Character.CharacterController(new BEPUutilities.Vector3(0, 3, 0), 1.0f, 1.0f * 0.7f, 1.0f * 0.3f, 0.5f, 0.001f, 10f, 0.8f, 1.3f, 8.0f
                 , 3f, 1.5f, 1000, 0f, 0f, 0f, 0f
                 );
 
             World.Instance(worldId).space.Add(mCharacterController);
+#endif
 
         }
 
@@ -237,18 +225,20 @@ namespace core
 
         public override void CompleteRemove()
         {
+#if _USE_BEPU_PHYSICS
             mCharacterController.OnRemovalFromSpace(World.Instance(WorldId).space);
+#endif
         }
 
         public override void LateUpdate()
         {
+#if _USE_BEPU_PHYSICS
             Vector3 v = new Vector3(mCharacterController.Body.Position.X, mCharacterController.Body.Position.Y, mCharacterController.Body.Position.Z);
             if(v.Equals(GetLocation()) == false)
             {
                 //LogHelper.LogInfo("old location " + GetLocation() + ", new location " + v);
-                //SetLocation(v);
+                SetLocation(v);
             }
-
 
             //Vector3 v2 = new Vector3(mCharacterController.Body.LinearVelocity.X, mCharacterController.Body.LinearVelocity.Y, mCharacterController.Body.LinearVelocity.Z);
             //if (v2.Equals(GetVelocity()) == false)
@@ -257,7 +247,7 @@ namespace core
             //}
 
             //mCharacterController.HorizontalMotionConstraint.MovementDirection = BEPUutilities.Vector2.Zero;
-
+#endif
         }
 
         public override uint32_t Write(NetOutgoingMessage inOutputStream, uint32_t inDirtyState)
@@ -359,7 +349,9 @@ namespace core
         protected bool mIsShooting;
         protected bool mIsBomb;
 
+#if _USE_BEPU_PHYSICS
         public BEPUphysics.Character.CharacterController mCharacterController = null;
+#endif
 
 
         [ServerRPC(RequireOwnership = false)]
