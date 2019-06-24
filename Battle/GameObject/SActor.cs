@@ -110,7 +110,8 @@ namespace Server
                         ProcessInput(deltaTime, currentState);
 
                         // 서버만 y 축 좌표를 업데이트한다. 서버에서는 물리 연산이 없으므로
-                        GetLocation().y = currentState.mYaxis;
+                        if(currentState.mIsChangeY)
+                            GetLocation().y = currentState.mYaxis;
 
                         SimulateMovement(deltaTime);
 

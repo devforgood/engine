@@ -32,7 +32,11 @@ public class ActorBehaviour : MonoBehaviour
         {
             Debug.Log("update() location " + transform.position.y + ", remote " + actor.GetLocation().y);
 
-            InputManager.sInstance.GetState().mYaxis = transform.position.y;
+            if (actor.IsLocalPlayer())
+            {
+                InputManager.sInstance.GetState().mIsChangeY = transform.position.y != actor.GetLocation().y;
+                InputManager.sInstance.GetState().mYaxis = transform.position.y;
+            }
 
             position = actor.GetLocation();
             position.y = transform.position.y; // y축은 서버 동기화 하지 않는다.
