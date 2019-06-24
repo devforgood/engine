@@ -101,7 +101,7 @@ namespace core
             direction.Normalize();
             mDirection = direction;
 
-            LogHelper.LogInfo("direction " + mDirection);
+            //LogHelper.LogInfo("direction " + mDirection);
             //turning...
 
 
@@ -123,7 +123,7 @@ namespace core
             Vector3 forwardVector = GetForwardVector();
             mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
 
-            LogHelper.LogInfo("mVelocity " + mVelocity);
+            //LogHelper.LogInfo("mVelocity " + mVelocity);
 
         }
 
