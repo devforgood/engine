@@ -14,5 +14,6 @@ namespace Lobby.Models
         }
 
         public DbSet<Lobby.Models.User> User { get; set; }
+        public DbSet<Lobby.Models.Bill> Bill { get; set; }
     }
 }
