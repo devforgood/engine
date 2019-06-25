@@ -11,9 +11,9 @@ namespace Lobby.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly UserContext _context;
+        private readonly CommonContext _context;
 
-        public UsersController(UserContext context)
+        public UsersController(CommonContext context)
         {
             _context = context;
         }

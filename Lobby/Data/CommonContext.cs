@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lobby.Models
 {
-    public class UserContext : DbContext
+    public class CommonContext : DbContext
     {
-        public UserContext (DbContextOptions<UserContext> options)
+        public CommonContext(DbContextOptions<CommonContext> options)
             : base(options)
         {
         }

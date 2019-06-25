@@ -45,8 +45,8 @@ namespace Lobby
 
             });
 
-            services.AddDbContext<UserContext>(options =>
-                    options.UseMySQL(Configuration.GetConnectionString("UserContext")));
+            services.AddDbContext<CommonContext>(options =>
+                    options.UseMySQL(Configuration.GetConnectionString("CommonContext")));
 
             //services.AddDbContext<BookContext>(options =>
             //        options.UseMySQL(Configuration.GetConnectionString("BookContext")));
