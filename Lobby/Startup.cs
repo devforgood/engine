@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Lobby.Models;
 
 namespace Lobby
 {
@@ -42,6 +44,13 @@ namespace Lobby
                 options.Filters.Add(new CustomExceptionFilterAttribute());
 
             });
+
+            services.AddDbContext<UserContext>(options =>
+                    options.UseMySQL(Configuration.GetConnectionString("UserContext")));
+
+            //services.AddDbContext<BookContext>(options =>
+            //        options.UseMySQL(Configuration.GetConnectionString("BookContext")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

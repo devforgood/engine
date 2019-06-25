@@ -7,12 +7,10 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutputPath>..\..\..\..\bin\core</OutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\obj\core</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutputPath>..\..\..\..\bin\core</OutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\obj\core</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
