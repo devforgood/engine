@@ -1,9 +1,13 @@
-﻿using BEPUphysics.Entities.Prefabs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+
+#if _USE_BEPU_PHYSICS
+using BEPUphysics.Entities.Prefabs;
+#endif
+
 
 namespace core
 {

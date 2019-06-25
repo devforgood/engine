@@ -17,8 +17,10 @@ public class CActor : core.Actor
     float mTimeLocationBecameOutOfSync;
     float mTimeVelocityBecameOutOfSync;
 
+#if _USE_BEPU_PHYSICS
     BEPUutilities.Vector3 physicsLocation = new BEPUutilities.Vector3();
     BEPUutilities.Vector3 physicsVelocity = new BEPUutilities.Vector3();
+#endif
 
     public bool IsLocalPlayer()
     {
@@ -68,7 +70,7 @@ public class CActor : core.Actor
             if (GetVelocity().IsZero() == false)
                 mCharacterController.Body.LinearVelocity = GetVelocity().CopyTo(ref physicsVelocity);
         }
-#endif 
+#endif
 
     }
     public override void HandleDying()

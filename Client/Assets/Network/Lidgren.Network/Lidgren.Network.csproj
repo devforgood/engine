@@ -32,9 +32,9 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Server\bin\Debug\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\Server\obj\Debug\</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\Debug\</BaseIntermediateOutputPath>
+    <OutputPath>..\..\..\..\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\obj\Debug\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\obj\Debug\</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,9 +55,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\Server\bin\x64\Debug\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\Server\obj\x64\Debug\</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\x64\Debug\</BaseIntermediateOutputPath>
+    <OutputPath>..\..\..\..\bin\x64\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\obj\x64\Debug\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\obj\x64\Debug\</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>bin\Debug\Lidgren.Network.XML</DocumentationFile>
     <DebugType>full</DebugType>
@@ -66,9 +66,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\..\..\Server\bin\x64\Release\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\Server\obj\x64\Release\</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\..\Server\obj\x64\Release\</BaseIntermediateOutputPath>
+    <OutputPath>..\..\..\..\bin\x64\Release\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\obj\x64\Release\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\obj\x64\Release\</BaseIntermediateOutputPath>
     <DefineConstants>TRACE;__CONSTRAINED__</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType />
