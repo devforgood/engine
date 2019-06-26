@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Facebook-NetCore" Version="1.0.0" />
+    <PackageReference Include="Google.Apis" Version="1.40.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
@@ -21,10 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Client\Assets\Network\core\core.csproj" />
     <ProjectReference Include="..\ServerCommon\ServerCommon.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="OAuth\" />
   </ItemGroup>
 
 </Project>

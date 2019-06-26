@@ -15,8 +15,10 @@ namespace Lobby.Bill
         public int statusCode = -1;
         string appleResponseText = null;
         bool SendboxReceiptEnable = false;
-        bool is_test_account = false;
         public string transactionID;
+
+        bool is_test_account { get; set; }
+
 
 
         /// <summary>
