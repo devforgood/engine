@@ -9,5 +9,7 @@ namespace Lobby.Models
     {
         public int Id { get; set; }
         public string receipt { get; set; }
+
+        public DateTime submit_date { get; set; }
     }
 }
