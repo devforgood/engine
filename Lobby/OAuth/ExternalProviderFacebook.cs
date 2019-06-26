@@ -17,19 +17,22 @@ namespace Lobby.OAuth
             try
             {
                 var client = new FacebookClient();
-                dynamic result = client.GetTaskAsync("/oauth/access_token", new
+                var task = client.GetTaskAsync("/oauth/access_token", new
                 {
                     grant_type = "client_credentials",
                     client_id = FacebookAppId,
                     client_secret = FacebookSecretKey,
-                }).GetAwaiter().GetResult();
+                });
+                task.Wait();
+                dynamic result = task.Result;
 
                 client = new FacebookClient((string)result.access_token);
-
-                dynamic debugResult = client.GetTaskAsync("/debug_token", new
-                {
-                    input_token = platformToken
-                }).GetAwaiter().GetResult();
+                 var task2 = client.GetTaskAsync("/debug_token", new
+                 {
+                     input_token = platformToken
+                 });
+                task2.Wait();
+                dynamic debugResult = task2.Result;
 
                 return debugResult.data.is_valid && debugResult.data.user_id == platformId;
             }
