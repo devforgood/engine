@@ -24,11 +24,13 @@ namespace Lobby.OAuth
 
         public bool CheckAuth(string platformId, string platformToken)
         {
-            GooglePlusGetAccessToken(platformId, platformToken);
-            return GooglePlusGoogleIdCheck(platformId, accessToken);
+            if (GetAccessToken(platformId, platformToken) == false)
+                return false;
+
+            return GoogleIdCheck(platformId, accessToken);
         }
 
-        public bool GooglePlusGetAccessToken(string venderUID, string venderToken)
+        public bool GetAccessToken(string venderUID, string venderToken)
         {
             try
             {
@@ -70,7 +72,7 @@ namespace Lobby.OAuth
             return true;
         }
 
-        public bool GooglePlusGoogleIdCheck(string venderUID, string accessToken)
+        public bool GoogleIdCheck(string venderUID, string accessToken)
         {
 
             bool isSuccess = true;
