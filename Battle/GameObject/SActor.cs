@@ -33,9 +33,10 @@ namespace Server
 
         ClientProxy mClient = null;
 
+#if _USE_BEPU_PHYSICS
         BEPUutilities.Vector3 physicsLocation = new BEPUutilities.Vector3();
         BEPUutilities.Vector3 physicsVelocity = new BEPUutilities.Vector3();
-
+#endif
 
         public bool Possess(int player_id)
         {
