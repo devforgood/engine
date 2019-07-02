@@ -17,7 +17,7 @@ namespace Lobby.Controllers
         private static TimeSpan user_state_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_user_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_expire = new TimeSpan(0, 5, 0);
-        private static TimeSpan startplay_polling_period = new TimeSpan(0, 0, 5);
+        private static TimeSpan startplay_polling_period = new TimeSpan(0, 0, 1);
         private static TimeSpan channel_reserve_expire = new TimeSpan(0, 1, 0);
 
 
