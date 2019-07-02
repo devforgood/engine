@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Assets\Network\core\core.csproj" />
+    <ProjectReference Include="..\core\core.csproj" />
     <ProjectReference Include="..\ServerCommon\ServerCommon.csproj" />
   </ItemGroup>
 

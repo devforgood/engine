@@ -21,6 +21,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 
+#pragma warning disable 3021
 namespace Lidgren.Network
 {
 	public partial class NetBuffer
@@ -310,3 +311,4 @@ namespace Lidgren.Network
 	}
 }
 
+#pragma warning restore 3021

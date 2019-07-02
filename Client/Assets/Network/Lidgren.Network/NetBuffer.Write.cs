@@ -25,6 +25,8 @@ using System.Reflection;
 using System.Text;
 using System.Runtime.InteropServices;
 
+#pragma warning disable 3021
+
 namespace Lidgren.Network
 {
 	/// <summary>
@@ -701,3 +703,5 @@ namespace Lidgren.Network
 		}
 	}
 }
+
+#pragma warning restore 3021

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
 
+#pragma warning disable 3021
 namespace Lidgren.Network
 {
 	public static partial class NetUtility
@@ -21,6 +22,8 @@ namespace Lidgren.Network
 			return seed ^ ((ulong)(new object().GetHashCode()) << 32);
 		}
 		
+
+#pragma warning disable 162
 		/// <summary>
 		/// Gets my local IPv4 address (not necessarily external) and subnet mask
 		/// </summary>
@@ -44,6 +47,7 @@ namespace Lidgren.Network
 #endif
 			return null;
 		}
+#pragma warning restore 162
 
 		public static byte[] GetMacAddressBytes()
 		{
@@ -87,4 +91,7 @@ namespace Lidgren.Network
 		public static double Now { get { return (double)((uint)Environment.TickCount - s_timeInitialized) / 1000.0; } }
 	}
 }
+#pragma warning restore 3021
+
 #endif
+

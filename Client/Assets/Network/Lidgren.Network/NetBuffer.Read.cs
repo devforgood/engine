@@ -9,6 +9,7 @@ using System.Threading;
 using NetEndPoint = System.Net.IPEndPoint;
 #endif
 
+#pragma warning disable 3021
 namespace Lidgren.Network
 {
 	/// <summary>
@@ -711,3 +712,4 @@ namespace Lidgren.Network
 		}
 	}
 }
+#pragma warning restore 3021

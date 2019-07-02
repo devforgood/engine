@@ -205,6 +205,7 @@ public struct Vector3
         z = fromVec.z;
     }
 
+#if _USE_BEPU_PHYSICS
     public ref BEPUutilities.Vector3 CopyTo(ref BEPUutilities.Vector3 toVec)
     {
         toVec.X = x;
@@ -212,6 +213,7 @@ public struct Vector3
         toVec.Z = z;
         return ref toVec;
     }
+#endif
 
     public Vector3 Round()
     {

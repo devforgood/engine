@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
+#pragma warning disable 3021
 namespace Lidgren.Network
 {
 	/// <summary>
@@ -467,3 +468,4 @@ namespace Lidgren.Network
 		}
 	}
 }
+#pragma warning restore 3021

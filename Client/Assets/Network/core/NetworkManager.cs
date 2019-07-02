@@ -20,8 +20,8 @@ namespace core
 
     public class NetworkManager
     {
-        static readonly int kMaxPacketsPerFrameCount = 10;
-        static readonly int kMaxBufferSize = 1500;
+        //static readonly int kMaxPacketsPerFrameCount = 10;
+        //static readonly int kMaxBufferSize = 1500;
 
 
 

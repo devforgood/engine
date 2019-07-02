@@ -13,8 +13,8 @@ namespace core
 {
     public class Actor : NetGameObject
     {
-        static readonly float HALF_WORLD_HEIGHT = 3.6f;
-        static readonly float HALF_WORLD_WIDTH = 6.4f;
+        //static readonly float HALF_WORLD_HEIGHT = 3.6f;
+        //static readonly float HALF_WORLD_WIDTH = 6.4f;
 
         public bool IsForward = false;
         public bool IsBack = false;
@@ -38,7 +38,7 @@ namespace core
         {
             WorldId = worldId;
 
-            mMaxRotationSpeed = 5.0f;
+            //mMaxRotationSpeed = 5.0f;
             mMaxLinearSpeed = 60.0f;
             mVelocity = Vector3.zero;
             mWallRestitution = 0.1f;
@@ -328,7 +328,7 @@ namespace core
 
 
         float mMaxLinearSpeed;
-        float mMaxRotationSpeed;
+        //float mMaxRotationSpeed;
 
         //bounce fraction when hitting various things
         float mWallRestitution;
