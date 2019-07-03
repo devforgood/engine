@@ -21,7 +21,6 @@
     <ProjectReference Include="..\Client\Assets\Network\Lidgren.Network\Lidgren.Network.csproj" />
     <ProjectReference Include="..\Client\Assets\Network\Physics\Physics.csproj" />
     <ProjectReference Include="..\core\core.csproj" />
-    <ProjectReference Include="..\ServerCommon\ServerCommon.csproj" />
   </ItemGroup>
 
   <ItemGroup>
