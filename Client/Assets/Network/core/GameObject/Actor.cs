@@ -132,11 +132,21 @@ namespace core
             //simulate us...
             AdjustVelocityByThrust(inDeltaTime);
 
-
             SetLocation(GetLocation() + mVelocity * inDeltaTime);
 
             ProcessCollisions();
         }
+
+
+        bool circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh)
+        {
+
+            float Dx = cx- Math.Max(rx, Math.Min(cx, rx + rw));
+            float Dy = cy - Math.Max(ry, Math.Min(cy, ry + rh));
+
+            return (Dx * Dx + Dy * Dy) < (radius * radius);
+        }
+
 
 
         public void ProcessCollisions()
@@ -161,12 +171,16 @@ namespace core
                     Vector3 delta = targetLocation - sourceLocation;
                     float distSq = delta.sqrMagnitude;
                     float collisionDist = (sourceRadius + targetRadius);
-                    if (distSq < (collisionDist * collisionDist))
+                    //if (distSq < (collisionDist * collisionDist))
+                    collisionDist = 1.01f;
+                    if (circleRect(GetLocation().x, GetLocation().z, sourceRadius, target.GetLocation().x-0.5f, target.GetLocation().z-0.5f, 1f, 1f))
                     {
                         //first, tell the other guy there was a collision with a cat, so it can do something...
-
                         if (target.HandleCollisionWithActor(this))
                         {
+
+                            LogHelper.LogInfo("collision " + GetLocation() + ", " + target.GetLocation() + ", " + delta + ", " + collisionDist);
+
                             //okay, you hit something!
                             //so, project your location far enough that you're not colliding
                             Vector3 dirToTarget = delta;
@@ -368,6 +382,12 @@ namespace core
         [ServerRPC(RequireOwnership = false)]
         public virtual void JumpServer(int power)
         {
+        }
+
+        [ServerRPC(RequireOwnership = false)]
+        public virtual void Teleport(Vector3 pos)
+        {
+
         }
     }
 }

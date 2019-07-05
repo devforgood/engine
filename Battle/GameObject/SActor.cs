@@ -240,5 +240,12 @@ namespace Server
             location += mDirection * power;
             SetLocation(location);
         }
+
+        [ServerRPC(RequireOwnership = false)]
+        public override void Teleport(Vector3 pos)
+        {
+            Log.Information("old location {0} new location {1}", GetLocation(), pos);
+            SetLocation(pos);
+        }
     }
 }

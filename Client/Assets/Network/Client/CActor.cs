@@ -45,7 +45,7 @@ public class CActor : core.Actor
 
                 SimulateMovement(deltaTime);
 
-                Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
+                //Debug.Log( "Local Client Move Time: " + pendingMove.GetTimestamp()  +" deltaTime: "+ deltaTime + " left rot at " + GetRotation() + " location: " + GetLocation() );
             }
         }
         else
