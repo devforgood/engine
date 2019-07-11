@@ -1,7 +1,10 @@
 ﻿using Assets.Network.Lobby;
 using GameService;
 using Grpc.Core;
+using Lidgren.Network;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -26,10 +29,12 @@ public class Lobby : MonoBehaviour
 
     float current_wait_time = 0.0f;
 
+    CancellationTokenSource cts = new CancellationTokenSource();
+    private readonly NetQueue<Action> m_releasedIncomingMessages = new NetQueue<Action>(4);
 
 
     // Start is called before the first frame update
-    void Start()
+    public async void Start()
     {
         //web = new GameWebRequest(ServiceUrl);
 
@@ -40,8 +45,8 @@ public class Lobby : MonoBehaviour
         //    StartPlay();
         //});
 
-        Login();
-        var reply = StartPlay();
+        await Login();
+        var reply = await StartPlay();
         if(reply.Code == GameService.ErrorCode.Success)
         {
             Debug.Log(string.Format("StartPlay success addr {0}, world_id {1}", reply.BattleServerAddr, reply.WorldId));
@@ -55,69 +60,49 @@ public class Lobby : MonoBehaviour
         }
     }
 
-    void Login()
+    async Task Login()
     {
         Channel channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
 
         var client = new GameService.Lobby.LobbyClient(channel);
         LoginReply reply = null;
 
-        CancellationTokenSource source = new CancellationTokenSource();
-        CancellationToken token = source.Token;
 
         using (var call = client.Login(new LoginRequest { Name = "" }))
         {
             var responseStream = call.ResponseStream;
 
-            while (true)
+            while (await responseStream.MoveNext())
             {
-                Task<bool> t = responseStream.MoveNext(token);
-                t.Wait();
-                if (t.Result == false)
-                {
-                    break;
-                }
                 reply = responseStream.Current;
                 session_id = reply.SessionId;
                 Debug.Log(string.Format("SessionId {0}", session_id));
             }
         }
 
-
-
-        channel.ShutdownAsync().Wait();
+        await channel.ShutdownAsync();
     }
 
 
-    StartPlayReply StartPlay()
+    async Task<StartPlayReply> StartPlay()
     {
         Channel channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
 
         var client = new GameService.Lobby.LobbyClient(channel);
         StartPlayReply reply = null;
 
-        CancellationTokenSource source = new CancellationTokenSource();
-        CancellationToken token = source.Token;
 
         using (var call = client.StartPlay(new StartPlayRequest { SessionId = session_id }))
         {
             var responseStream = call.ResponseStream;
 
-            while (true)
+            while (await responseStream.MoveNext())
             {
-                Task<bool> t = responseStream.MoveNext(token);
-                t.Wait();
-                if (t.Result == false)
-                {
-                    break;
-                }
                 reply = responseStream.Current;
-
-
             }
         }
 
-        channel.ShutdownAsync().Wait();
+        await channel.ShutdownAsync();
 
         return reply;
     }
@@ -153,17 +138,22 @@ public class Lobby : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        return;
-        web.Update();
-        
-        if(is_try_startplay)
+        if (m_releasedIncomingMessages.TryDequeue(out Action retval))
         {
-            current_wait_time += Time.deltaTime;
-            if((int)current_wait_time >= wait_time_sec)
-            {
-                current_wait_time = 0.0f;
-                StartPlay();
-            }
+            retval.Invoke();
+
         }
+
+        //web.Update();
+        
+        //if(is_try_startplay)
+        //{
+        //    current_wait_time += Time.deltaTime;
+        //    if((int)current_wait_time >= wait_time_sec)
+        //    {
+        //        current_wait_time = 0.0f;
+        //        StartPlay();
+        //    }
+        //}
     }
 }

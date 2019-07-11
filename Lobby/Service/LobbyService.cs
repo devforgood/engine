@@ -18,7 +18,7 @@ namespace Lobby
         private static TimeSpan user_state_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_user_expire = new TimeSpan(0, 5, 0);
         private static TimeSpan match_expire = new TimeSpan(0, 5, 0);
-        private static TimeSpan startplay_polling_period = new TimeSpan(0, 0, 1);
+        private static TimeSpan startplay_polling_period = new TimeSpan(0, 0, 30);
         private static TimeSpan channel_reserve_expire = new TimeSpan(0, 1, 0);
 
         private static int MAX_START_PLAYER_COUNT = 4;
@@ -112,6 +112,7 @@ namespace Lobby
 
         public override async Task StartPlay(StartPlayRequest request, IServerStreamWriter<StartPlayReply> responseStream, ServerCallContext context)
         {
+            Log.Information("StartPlay {0}", context.Peer);
             var session = await Session.GetSession(request.SessionId);
             if (session == null)
             {
@@ -168,6 +169,7 @@ namespace Lobby
                 for (int i = 0; i < waiting_list.Length; ++i)
                 {
                     long user_no = (long)waiting_list[i];
+                    Log.Information("searching... waiting user {0}", user_no);
                     // 자신은 스킵
                     if (user_no == session.user_no)
                         continue;
@@ -183,15 +185,22 @@ namespace Lobby
                             if (player_list.Count == MAX_START_PLAYER_COUNT - 1)
                                 break;
                         }
+                        else
+                        {
+                            Log.Information("already other match assign user {0}", user_no);
+                        }
                     }
                     else
                     {
+                        Log.Information("wait timeout user {0}", user_no);
+
                         // 유효하지 않는 유저는 대기자 목록에서 삭제한다.
                         await RemoveMatchUser(user_no);
                     }
                 }
             }
 
+            Log.Information("StartPlay player_list {0}", player_list);
             if (player_list.Count == MAX_START_PLAYER_COUNT - 1)
             {
                 // 매칭에 필요한 인원을 모두 찾았을때
@@ -240,6 +249,7 @@ namespace Lobby
             // 매칭 시도를 실패하면 선점한 유저를 삭제
             await db.KeyDeleteAsync(player_list.Select(key => (RedisKey)string.Format("match_user:{0}", key)).ToArray());
 
+            Log.Information("StartPlay waiting... {0}", session.user_no);
 
             // 대기자로 등록
             await db.SortedSetAddAsync("waiting_list", session.user_no, session.rating);
@@ -250,7 +260,7 @@ namespace Lobby
             var queue = Cache.Instance.GetSubscriber().Subscribe(string.Format("sub_user:{0}", session.user_no));
 
             var cts = new CancellationTokenSource();
-            cts.CancelAfter(15 * 1000);
+            cts.CancelAfter((int)startplay_polling_period.TotalMilliseconds);
             try
             {
                 var ret = await queue.ReadAsync(cts.Token);
