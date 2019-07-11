@@ -1,42 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Grpc.Core;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using System;
 
 namespace Lobby
 {
-    public class Program
+    class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            try
-            {
-                Log.Logger = new LoggerConfiguration()
-                    .MinimumLevel.Debug()
-                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                    .Enrich.FromLogContext()
-                    .WriteTo.File(@"d:\tmp\lobby.txt", rollingInterval: RollingInterval.Day)
-                    .CreateLogger();
 
-                Log.Information("Lobby server start!");
-            }
-            catch(Exception ex)
-            {
-                Controllers.HomeController.msg = ex.Message;
-            }
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
 
-            CreateWebHostBuilder(args).Build().Run();
+            var server_name = config["name"];
+            var ip = config["ip"];
+            var port = Convert.ToUInt16(config["port"]);
+            var world_count = Convert.ToByte(config["world_count"]);
+            var server_addr = ip + ":" + port;
+
+            var redis_ip = config["redis:ip"];
+            var redis_port = config["redis:port"];
+            var redis_addr = redis_ip + ":" + redis_port;
+
+
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.WithThreadId()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("logs\\lobby.txt", rollingInterval: RollingInterval.Day
+                    , outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} ({ThreadId}) [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            Server server = new Server
+            {
+                Services = { GameService.Lobby.BindService(new LobbyService()) },
+                Ports = { new ServerPort("localhost", port, ServerCredentials.Insecure) }
+            };
+            server.Start();
+
+            Console.WriteLine("Greeter server listening on port " + port);
+            Console.WriteLine("Press any key to stop the server...");
+            Console.ReadKey();
+
+            server.ShutdownAsync().Wait();
         }
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
     }
 }
