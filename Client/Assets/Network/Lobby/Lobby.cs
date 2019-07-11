@@ -29,8 +29,8 @@ public class Lobby : MonoBehaviour
 
     float current_wait_time = 0.0f;
 
-    CancellationTokenSource cts = new CancellationTokenSource();
-    private readonly NetQueue<Action> m_releasedIncomingMessages = new NetQueue<Action>(4);
+    //CancellationTokenSource cts = new CancellationTokenSource();
+    //private readonly NetQueue<Action> m_releasedIncomingMessages = new NetQueue<Action>(4);
 
 
     // Start is called before the first frame update
