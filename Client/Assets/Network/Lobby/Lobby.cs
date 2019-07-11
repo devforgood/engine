@@ -17,8 +17,8 @@ using UnityEngine.SceneManagement;
 
 public class Lobby : MonoBehaviour
 {
-    //public string ServiceUrl  = "https://localhost:44326/";
-    public string ServiceUrl = "http://172.25.51.101/";
+    public string ServiceUrl  = "127.0.0.1:50051";
+    //public string ServiceUrl = "172.25.51.101:50051";
 
     GameWebRequest web;
 
@@ -62,7 +62,7 @@ public class Lobby : MonoBehaviour
 
     async Task Login()
     {
-        Channel channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+        Channel channel = new Channel(ServiceUrl, ChannelCredentials.Insecure);
 
         var client = new GameService.Lobby.LobbyClient(channel);
         LoginReply reply = null;
@@ -86,7 +86,7 @@ public class Lobby : MonoBehaviour
 
     async Task<StartPlayReply> StartPlay()
     {
-        Channel channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+        Channel channel = new Channel(ServiceUrl, ChannelCredentials.Insecure);
 
         var client = new GameService.Lobby.LobbyClient(channel);
         StartPlayReply reply = null;

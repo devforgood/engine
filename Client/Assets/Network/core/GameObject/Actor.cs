@@ -172,7 +172,7 @@ namespace core
                     float distSq = delta.sqrMagnitude;
                     float collisionDist = (sourceRadius + targetRadius);
                     //if (distSq < (collisionDist * collisionDist))
-                    collisionDist = 1.01f;
+                    collisionDist = 1.02f;
                     if (circleRect(GetLocation().x, GetLocation().z, sourceRadius, target.GetLocation().x-0.5f, target.GetLocation().z-0.5f, 1f, 1f))
                     {
                         //first, tell the other guy there was a collision with a cat, so it can do something...

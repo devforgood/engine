@@ -39,7 +39,7 @@ namespace Lobby
             Server server = new Server
             {
                 Services = { GameService.Lobby.BindService(new LobbyService()) },
-                Ports = { new ServerPort("localhost", port, ServerCredentials.Insecure) }
+                Ports = { new ServerPort("0.0.0.0", port, ServerCredentials.Insecure) }
             };
             server.Start();
 
