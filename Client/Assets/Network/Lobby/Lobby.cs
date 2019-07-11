@@ -136,14 +136,8 @@ public class Lobby : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
-    {
-        if (m_releasedIncomingMessages.TryDequeue(out Action retval))
-        {
-            retval.Invoke();
-
-        }
-
+    //void Update()
+    //{
         //web.Update();
         
         //if(is_try_startplay)
@@ -155,5 +149,5 @@ public class Lobby : MonoBehaviour
         //        StartPlay();
         //    }
         //}
-    }
+    //}
 }
