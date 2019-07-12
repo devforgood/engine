@@ -13,10 +13,12 @@ namespace Lobby
         public static readonly ServerConfiguration Instance = new ServerConfiguration();
 
         public IConfiguration config;
+        public string CommonContext { get; private set; }
 
         private ServerConfiguration()
         {
             config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
+            CommonContext = config["ConnectionStrings:CommonContext"];
         }
     }
 }

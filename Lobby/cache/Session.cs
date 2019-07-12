@@ -50,9 +50,9 @@ namespace Lobby
             return session;
         }
 
-        public static bool IsAvailableSesssion(long user_no)
+        public static async Task<bool> IsAvailableSesssion(long user_no)
         {
-            return Cache.Instance.GetDatabase().StringGet(string.Format("user:{0}", user_no)).HasValue;
+            return (await Cache.Instance.GetDatabase().StringGetAsync(string.Format("user:{0}", user_no))).HasValue;
 
         }
 

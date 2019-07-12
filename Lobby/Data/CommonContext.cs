@@ -13,7 +13,7 @@ namespace Lobby.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL(ServerConfiguration.Instance.config["ConnectionStrings:CommonContext"]);
+            optionsBuilder.UseMySQL(ServerConfiguration.Instance.CommonContext);
         }
 
     }
