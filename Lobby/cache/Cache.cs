@@ -13,9 +13,9 @@ namespace Lobby
         /// </summary>
         public static readonly Cache Instance = new Cache();
 
-        string redis_server_addr = "172.25.51.101:6379";
-        string redis_server_ip = "172.25.51.101";
-        UInt16 redis_server_port = 6379;
+        string redis_server_addr = ServerConfiguration.Instance.config["redis:ip"] + ":" + ServerConfiguration.Instance.config["redis:port"];
+        string redis_server_ip = ServerConfiguration.Instance.config["redis:ip"];
+        UInt16 redis_server_port = UInt16.Parse(ServerConfiguration.Instance.config["redis:port"]);
 
         public ConnectionMultiplexer redis;
 

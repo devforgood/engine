@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Lobby.Migrations
 {
-    public partial class addSubmitDate : Migration
+    public partial class AddLastPlayTime : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<DateTime>(
-                name: "submit_date",
-                table: "Bill",
+                name: "last_play_time",
+                table: "User",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
@@ -17,8 +17,8 @@ namespace Lobby.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "submit_date",
-                table: "Bill");
+                name: "last_play_time",
+                table: "User");
         }
     }
 }

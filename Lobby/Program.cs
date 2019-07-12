@@ -10,20 +10,7 @@ namespace Lobby
     {
         static void Main(string[] args)
         {
-
-            IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", true, true)
-                .Build();
-
-            var server_name = config["name"];
-            var ip = config["ip"];
-            var port = Convert.ToUInt16(config["port"]);
-            var world_count = Convert.ToByte(config["world_count"]);
-            var server_addr = ip + ":" + port;
-
-            var redis_ip = config["redis:ip"];
-            var redis_port = config["redis:port"];
-            var redis_addr = redis_ip + ":" + redis_port;
+            var port = Convert.ToUInt16(ServerConfiguration.Instance.config["port"]);
 
 
             Log.Logger = new LoggerConfiguration()

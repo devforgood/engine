@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Lobby.Migrations
 {
-    public partial class LobbyModelsCommonContext : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +13,8 @@ namespace Lobby.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    receipt = table.Column<string>(nullable: true)
+                    receipt = table.Column<string>(nullable: true),
+                    submit_date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,7 +27,8 @@ namespace Lobby.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    name = table.Column<string>(nullable: true)
+                    name = table.Column<string>(nullable: true),
+                    nation = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

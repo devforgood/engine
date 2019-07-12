@@ -8,12 +8,13 @@ namespace Lobby.Models
 {
     public class CommonContext : DbContext
     {
-        public CommonContext(DbContextOptions<CommonContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Lobby.Models.User> User { get; set; }
         public DbSet<Lobby.Models.Bill> Bill { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseMySQL(ServerConfiguration.Instance.config["ConnectionStrings:CommonContext"]);
+        }
+
     }
 }
