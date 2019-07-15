@@ -622,13 +622,13 @@ namespace Lidgren.Network
 		{
 			if (string.IsNullOrEmpty(source))
 			{
-                WriteVariableUInt32(0);
-                return;
+				WriteVariableUInt32(0);
+				return;
 			}
 
 			byte[] bytes = Encoding.UTF8.GetBytes(source);
 			EnsureBufferSize(m_bitLength + 8 + (bytes.Length * 8));
-            WriteVariableUInt32((uint)bytes.Length);
+			WriteVariableUInt32((uint)bytes.Length);
 			Write(bytes);
 		}
 

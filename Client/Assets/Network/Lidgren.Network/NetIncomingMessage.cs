@@ -58,7 +58,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// endpoint of sender, if any
 		/// </summary>
-		public NetEndPoint SenderEndPoint { get { return m_senderEndPoint; } set { m_senderEndPoint = value; } }
+		public NetEndPoint SenderEndPoint { get { return m_senderEndPoint; } }
 
 		/// <summary>
 		/// NetConnection of sender, if any
@@ -70,7 +70,7 @@ namespace Lidgren.Network
 		/// </summary>
 		public double ReceiveTime { get { return m_receiveTime; } }
 
-		public NetIncomingMessage()
+		internal NetIncomingMessage()
 		{
 		}
 
@@ -79,7 +79,7 @@ namespace Lidgren.Network
 			m_incomingMessageType = tp;
 		}
 
-		public void Reset()
+		internal void Reset()
 		{
 			m_incomingMessageType = NetIncomingMessageType.Error;
 			m_readPosition = 0;
