@@ -1,0 +1,17 @@
+@startuml
+actor Client1 #red
+actor Client2 #blue
+participant Battle
+
+Client1->Battle: Input State(→, ←, ←, ↑, ↑, ↓)
+Client1->Client1:Simulate
+Battle->Battle: Simulate
+Battle->Client1: Revise Self State &\n Update World State
+Client2->Battle: Input State(←, ←)
+Client2->Client2: Simulate
+Battle->Battle: Simulate
+Battle->Client2: Revise Self State &\n Update World State
+
+
+
+@enduml

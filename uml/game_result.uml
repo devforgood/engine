@@ -1,0 +1,17 @@
+@startuml
+actor Client #red
+participant Lobby
+participant Battle
+participant Cache
+participant DB
+
+Client->Lobby: Game Result Request
+Lobby->Cache: Sub (waiting end game)
+Battle->Battle:Time out or\n Normal Finished
+Battle->Cache:Game Result
+Battle->Cache:Pub (end game)
+Cache->Lobby:await (stop waiting end game)
+Lobby->DB:Update User Info (reward: level, exp, item)
+Lobby->Client:  Game Result Response
+
+@enduml

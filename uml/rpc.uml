@@ -1,0 +1,11 @@
+@startuml
+actor Client1 #red
+actor Client2 #blue
+participant Battle
+
+Client1->Battle: Use Skill Request
+Battle->Battle: Verify Skill & Update
+Battle->Client1: Use Skill Response
+Battle->Client2: Use Skill Notify
+
+@enduml
