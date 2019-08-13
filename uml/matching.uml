@@ -14,7 +14,7 @@ Client2->Lobby2 : Start Play Request
 Lobby2->Cache : search Player & match success & available battle server
 Lobby2->Client2 : Start Play Response
 Client2->Battle : Connect to Battle
-Lobby2->Cache : Pub (client2 notice)
+Lobby2->Cache : Pub (client1 notice)
 Cache->Lobby1 : awake (stop waiting)
 Lobby1->Client1 : Start Play Response
 Client1->Battle : Connect to Battle
