@@ -5,13 +5,13 @@ participant Battle
 participant Cache
 participant DB
 
-Client->Lobby: Game Result Request
+Client->Lobby: Game result request
 Lobby->Cache: Sub (waiting end game)
-Battle->Battle:Time out or\n Normal Finished
-Battle->Cache:Game Result
-Battle->Cache:Pub (end game)
-Cache->Lobby:await (stop waiting end game)
-Lobby->DB:Update User Info (reward: level, exp, item)
-Lobby->Client:  Game Result Response
+Battle->Battle:Time out or\n Normal finished
+Battle->DB:Insert game result
+Battle->Cache:Pub (game result)
+Cache->Lobby:await (stop waiting, result game)
+Lobby->DB:Update game result complete & Update User Info (reward: level, exp, item)
+Lobby->Client:  Game result response
 
 @enduml
